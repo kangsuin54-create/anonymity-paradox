@@ -2092,118 +2092,358 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
       <!-- ══ LAYER 4: 탈춤 공연자들 (전경) ══ -->
       <div class="vl" id="vl4" style="z-index:5;">
         <svg viewBox="0 0 1000 700" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
-          <!-- ══ 탈춤꾼 1: 왼쪽, 덩실덩실 ══ -->
-          <g style="animation:dance1 1.6s ease-in-out infinite;transform-origin:300px 560px;">
-            <!-- 흰 바지 -->
-            <path d="M285,560 Q280,610 275,650 L295,650 L300,600 L305,650 L325,650 Q320,610 315,560 Z" fill="#F0ECE0" stroke="#C8C0A8" stroke-width="1.5"/>
-            <!-- 파란 저고리 몸통 -->
-            <path d="M278,510 Q275,535 280,560 L320,560 Q325,535 322,510 Z" fill="#4A6ACC"/>
-            <!-- 오른팔 위로 (한삼 들기) -->
-            <path d="M320,520 Q345,500 358,480" stroke="#4A6ACC" stroke-width="14" stroke-linecap="round" fill="none"/>
-            <!-- 알록달록 소매 줄무늬 -->
-            <path d="M322,525 Q342,508 354,490" stroke="#E84030" stroke-width="4.5" fill="none"/>
-            <path d="M319,531 Q338,514 350,496" stroke="#3AAA40" stroke-width="4.5" fill="none"/>
-            <path d="M316,537 Q334,521 345,503" stroke="#E8C020" stroke-width="4.5" fill="none"/>
-            <!-- 한삼 (흰 리본) -->
-            <path d="M358,478 Q380,460 400,470 Q420,480 415,500 Q410,520 430,515" stroke="rgba(240,235,220,.95)" stroke-width="7" fill="none" stroke-linecap="round"/>
-            <!-- 왼팔 내리기 -->
-            <path d="M280,520 Q262,540 255,558" stroke="#4A6ACC" stroke-width="14" stroke-linecap="round" fill="none"/>
-            <path d="M278,527 Q262,544 256,560" stroke="#E84030" stroke-width="4" fill="none"/>
-            <path d="M275,533 Q260,549 254,564" stroke="#3AAA40" stroke-width="4" fill="none"/>
-            <!-- 머리/탈 -->
-            <circle cx="300" cy="493" r="22" fill="#CC3830"/>
-            <!-- 탈 눈 -->
-            <ellipse cx="292" cy="489" rx="5" ry="4.5" fill="#1A0A00"/>
-            <ellipse cx="308" cy="489" rx="5" ry="4.5" fill="#1A0A00"/>
-            <!-- 눈 노란 점 -->
-            <circle cx="292" cy="489" r="2" fill="#F0D020"/>
-            <circle cx="308" cy="489" r="2" fill="#F0D020"/>
-            <!-- 이마 줄무늬 -->
-            <path d="M285,483 L315,483" stroke="#1A0A00" stroke-width="1.5" opacity=".6"/>
-            <path d="M284,479 L316,479" stroke="#1A0A00" stroke-width="1.5" opacity=".5"/>
-            <!-- 코 -->
-            <ellipse cx="300" cy="496" rx="6" ry="5" fill="#D04040" stroke="#1A0A00" stroke-width="1"/>
-            <!-- 입 -->
-            <path d="M290,504 Q300,512 310,504" stroke="#1A0A00" stroke-width="1.5" fill="rgba(180,50,30,.3)"/>
-            <!-- 머리 장식 -->
-            <path d="M280,476 Q290,464 300,460 Q310,464 320,476" stroke="#4A6ACC" stroke-width="3" fill="#2A40A0" opacity=".8"/>
-            <!-- 발 (한쪽 들기) -->
-            <path d="M312,650 Q318,660 325,658" stroke="#C8B888" stroke-width="10" stroke-linecap="round" fill="none"/>
-            <path d="M280,650 Q272,655 268,650" stroke="#C8B888" stroke-width="10" stroke-linecap="round" fill="none"/>
+          <!-- ══ 탈춤꾼 1 — 양반 탈 (왼쪽) ══ -->
+          <g style="animation:dance1 1.6s ease-in-out infinite;transform-origin:300px 558px;">
+            <ellipse cx="300" cy="660" rx="38" ry="10" fill="rgba(0,0,0,.18)"/>
+            <!-- 흰 바지 (주름 포함) -->
+            <path d="M285,558 C278,595 272,630 268,658 L288,658 L300,598 L312,658 L332,658 C328,630 322,595 315,558 Z" fill="#F2EEE2" stroke="#C8C0A8" stroke-width="1.5"/>
+            <path d="M281,558 C276,592 272,625 270,654" stroke="#D8D0BC" stroke-width="0.8" fill="none" opacity="0.6"/>
+            <path d="M300,558 C300,598 300,628 300,655" stroke="#D8D0BC" stroke-width="0.8" fill="none" opacity="0.5"/>
+            <path d="M319,558 C324,592 328,625 330,654" stroke="#D8D0BC" stroke-width="0.8" fill="none" opacity="0.6"/>
+            <!-- 바지 대님 (정강이 묶음) -->
+            <rect x="270" y="624" width="18" height="5" rx="2" fill="#8B5A20" opacity="0.7"/>
+            <rect x="312" y="622" width="18" height="5" rx="2" fill="#8B5A20" opacity="0.7"/>
+            <!-- 저고리 몸통 (파랑, 깃 포함) -->
+            <path d="M278,508 C274,532 278,548 280,558 L320,558 C322,548 326,532 322,508 Z" fill="#3A5AC8"/>
+            <!-- 저고리 깃 (collar) -->
+            <path d="M290,508 L300,520 L310,508" stroke="#D8B880" stroke-width="2" fill="#F8F0D8"/>
+            <path d="M289,508 Q295,516 300,522 Q305,516 311,508" stroke="#FFFCE8" stroke-width="1" fill="none"/>
+            <!-- 저고리 주름 -->
+            <path d="M282,520 C281,535 281,545 282,555" stroke="#2A4AB8" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M318,520 C319,535 319,545 318,555" stroke="#2A4AB8" stroke-width="1" fill="none" opacity="0.5"/>
+            <!-- 고름 (리본) -->
+            <path d="M292,530 Q300,526 308,530 Q306,538 300,540 Q294,538 292,530 Z" fill="#E8A020"/>
+            <path d="M300,540 L294,550 M300,540 L306,550" stroke="#E8A020" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- 오른소매 (위로 크게) -->
+            <path d="M320,520 Q342,502 358,482 Q364,474 360,466" stroke="#3A5AC8" stroke-width="15" stroke-linecap="round" fill="none"/>
+            <!-- 색동 줄무늬 (촘촘하게) -->
+            <path d="M330,518 Q350,500 364,480" stroke="#E84030" stroke-width="5" fill="none"/>
+            <path d="M327,524 Q346,506 359,487" stroke="#F5F0E0" stroke-width="3" fill="none"/>
+            <path d="M325,529 Q342,512 354,494" stroke="#3AAA40" stroke-width="5" fill="none"/>
+            <path d="M322,535 Q338,518 349,501" stroke="#F5F0E0" stroke-width="3" fill="none"/>
+            <path d="M320,540 Q335,524 345,508" stroke="#E8C020" stroke-width="5" fill="none"/>
+            <path d="M318,545 Q332,530 341,514" stroke="#F5F0E0" stroke-width="3" fill="none"/>
+            <path d="M316,550 Q329,536 337,520" stroke="#CC2A8A" stroke-width="5" fill="none"/>
+            <!-- 소맷부리 흰 -->
+            <path d="M358,464 Q366,456 360,448 Q354,444 350,452 Q346,462 356,466 Z" fill="#F0ECD8" stroke="#D8D0C0" stroke-width="1"/>
+            <!-- 한삼 오른쪽 (크게 펄럭) -->
+            <path d="M360,462 Q390,440 408,418 Q420,400 410,388 Q398,380 386,394 Q374,410 384,428 Q394,446 380,454 Q366,460 362,474" stroke="rgba(248,244,232,.95)" stroke-width="9" fill="none" stroke-linecap="round"/>
+            <!-- 왼소매 (아래로) -->
+            <path d="M280,520 Q260,542 250,562 Q246,572 250,580" stroke="#3A5AC8" stroke-width="15" stroke-linecap="round" fill="none"/>
+            <path d="M276,526 Q258,546 249,565" stroke="#E84030" stroke-width="5" fill="none"/>
+            <path d="M273,532 Q256,552 248,570" stroke="#F5F0E0" stroke-width="3" fill="none"/>
+            <path d="M271,538 Q254,558 247,574" stroke="#3AAA40" stroke-width="5" fill="none"/>
+            <path d="M269,544 Q253,564 246,578" stroke="#F5F0E0" stroke-width="3" fill="none"/>
+            <path d="M267,549 Q251,569 245,582" stroke="#E8C020" stroke-width="5" fill="none"/>
+            <!-- 소맷부리 흰 (왼) -->
+            <path d="M250,580 Q244,590 250,596 Q256,598 260,590 Q264,582 256,578 Z" fill="#F0ECD8" stroke="#D8D0C0" stroke-width="1"/>
+            <!-- 한삼 왼쪽 -->
+            <path d="M248,596 Q232,612 228,634 Q224,652 238,656 Q252,658 254,640 Q256,622 242,616 Q230,612 240,600 Q250,590 252,578" stroke="rgba(248,244,232,.9)" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <!-- 손 (오른) -->
+            <path d="M352,450 Q348,442 354,438 Q360,438 362,446 Q362,454 356,456 Z" fill="#EEC888"/>
+            <path d="M350,444 Q347,440 352,438" stroke="#D8A868" stroke-width="0.8" fill="none"/>
+            <!-- 손 (왼) -->
+            <path d="M252,588 Q246,584 246,578 Q250,572 256,576 Q262,580 258,586 Z" fill="#EEC888"/>
+            <!-- 목 -->
+            <path d="M294,508 Q300,502 306,508 L305,498 Q300,494 295,498 Z" fill="#EEC888"/>
+            <!-- 귀 -->
+            <ellipse cx="278" cy="488" rx="4" ry="5.5" fill="#EEC888"/>
+            <ellipse cx="322" cy="488" rx="4" ry="5.5" fill="#EEC888"/>
+            <!-- ══ 하회 양반 탈 ══ -->
+            <ellipse cx="300" cy="484" rx="24" ry="27" fill="#E8C870"/>
+            <ellipse cx="300" cy="484" rx="24" ry="27" fill="none" stroke="#C8A040" stroke-width="1.2"/>
+            <!-- 탈 이마 주름 (특징) -->
+            <path d="M281,472 Q300,464 319,472" stroke="#B88020" stroke-width="1.8" fill="none"/>
+            <path d="M280,477 Q300,469 320,477" stroke="#B88020" stroke-width="1.5" fill="none" opacity="0.7"/>
+            <path d="M280,482 Q300,474 320,482" stroke="#B88020" stroke-width="1.2" fill="none" opacity="0.5"/>
+            <!-- 눈썹 (치켜올린 양반형) -->
+            <path d="M281,468 Q291,460 300,463 Q309,460 319,468" stroke="#1A0A00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- 눈 (가늘고 날카로운) -->
+            <path d="M282,476 Q291,470 300,473 Q291,479 282,476 Z" fill="#1A0A00"/>
+            <path d="M300,473 Q309,470 318,476 Q309,479 300,473 Z" fill="#1A0A00"/>
+            <!-- 눈 노란 동공 (하회탈 특징) -->
+            <ellipse cx="291" cy="475" rx="3" ry="2.2" fill="#E8D020"/>
+            <ellipse cx="309" cy="475" rx="3" ry="2.2" fill="#E8D020"/>
+            <circle cx="291" cy="475" r="1.5" fill="#1A0800"/>
+            <circle cx="309" cy="475" r="1.5" fill="#1A0800"/>
+            <!-- 볼 주름 (나이든 양반) -->
+            <path d="M280,488 Q276,496 278,504" stroke="#B88020" stroke-width="1.2" fill="none"/>
+            <path d="M320,488 Q324,496 322,504" stroke="#B88020" stroke-width="1.2" fill="none"/>
+            <!-- 코 (크고 둥근) -->
+            <path d="M290,490 Q284,498 288,506 Q300,512 312,506 Q316,498 310,490 Z" fill="#D4A040" stroke="#B88020" stroke-width="1.2"/>
+            <ellipse cx="290" cy="502" rx="4" ry="3" fill="#C89030" opacity="0.5"/>
+            <ellipse cx="310" cy="502" rx="4" ry="3" fill="#C89030" opacity="0.5"/>
+            <!-- 탈 입 (하회탈 특유의 반달 미소) -->
+            <path d="M283,512 Q300,528 317,512" stroke="#1A0A00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M286,515 Q300,524 314,515" fill="#C04020" opacity="0.45"/>
+            <!-- 이빨 힌트 -->
+            <path d="M288,517 Q300,522 312,517" stroke="white" stroke-width="1" fill="none" opacity="0.5"/>
+            <!-- 탈 끈 구멍 -->
+            <circle cx="277" cy="488" r="3" fill="#C89030" stroke="#A07020" stroke-width="0.8"/>
+            <circle cx="323" cy="488" r="3" fill="#C89030" stroke="#A07020" stroke-width="0.8"/>
+            <!-- 머리 장식 (고깔/상투) -->
+            <ellipse cx="300" cy="460" rx="22" ry="8" fill="#1A1410"/>
+            <path d="M280,460 Q290,444 300,440 Q310,444 320,460" fill="#2A2010" stroke="#1A1410" stroke-width="1"/>
+            <!-- 갓 or 고깔 상단 -->
+            <ellipse cx="300" cy="438" rx="14" ry="6" fill="#1A1410"/>
+            <rect x="292" y="424" width="16" height="16" rx="2" fill="#1A1410"/>
+            <!-- 장식 술 -->
+            <circle cx="300" cy="422" r="6" fill="#E8A020"/>
+            <circle cx="300" cy="422" r="3.5" fill="#CC2020"/>
+            <!-- 꽃신 (오른, 들린 발) -->
+            <path d="M312,650 Q318,656 328,654 Q326,662 314,662 Q306,662 308,653 Z" fill="#E8B840" stroke="#C88020" stroke-width="1"/>
+            <path d="M312,653 Q318,658 326,656" stroke="#C88020" stroke-width="0.8" fill="none" opacity="0.6"/>
+            <!-- 꽃신 (왼, 땅) -->
+            <path d="M268,654 Q274,660 284,658 Q282,666 270,666 Q262,666 264,657 Z" fill="#E8B840" stroke="#C88020" stroke-width="1"/>
           </g>
 
-          <!-- ══ 탈춤꾼 2: 중앙 주인공, 덩실 ══ -->
-          <g style="animation:dance2 1.4s ease-in-out infinite;transform-origin:500px 550px;">
-            <!-- 흰 바지 -->
-            <path d="M480,570 Q474,625 470,670 L492,670 L500,615 L508,670 L530,670 Q526,625 520,570 Z" fill="#EEE8D8" stroke="#C8C0A8" stroke-width="1.5"/>
-            <!-- 하늘색 저고리 -->
-            <path d="M475,512 Q472,540 478,570 L522,570 Q528,540 525,512 Z" fill="#7AB8D8"/>
-            <!-- 왼팔 크게 올림 (한삼) -->
-            <path d="M478,520 Q450,495 430,468" stroke="#7AB8D8" stroke-width="16" stroke-linecap="round" fill="none"/>
-            <path d="M478,526 Q452,501 433,475" stroke="#E84030" stroke-width="5" fill="none"/>
-            <path d="M477,533 Q452,509 434,483" stroke="#3AAA40" stroke-width="5" fill="none"/>
-            <path d="M476,540 Q453,516 436,490" stroke="#E8C020" stroke-width="5" fill="none"/>
-            <!-- 한삼 크게 펄럭 -->
-            <path d="M428,466 Q408,445 415,420 Q422,398 445,405 Q465,412 460,435 Q455,455 475,448" stroke="rgba(240,235,220,.95)" stroke-width="9" fill="none" stroke-linecap="round"/>
-            <!-- 오른팔 옆으로 -->
-            <path d="M522,520 Q548,505 565,518" stroke="#7AB8D8" stroke-width="16" stroke-linecap="round" fill="none"/>
-            <path d="M523,526 Q546,512 562,523" stroke="#E84030" stroke-width="5" fill="none"/>
-            <path d="M524,533 Q546,519 561,529" stroke="#3AAA40" stroke-width="5" fill="none"/>
-            <!-- 머리/탈 (크고 선명) -->
-            <circle cx="500" cy="493" r="26" fill="#CC3830"/>
-            <ellipse cx="490" cy="488" rx="6" ry="5.5" fill="#1A0A00"/>
-            <ellipse cx="510" cy="488" rx="6" ry="5.5" fill="#1A0A00"/>
-            <circle cx="490" cy="488" r="2.5" fill="#F0D020"/>
-            <circle cx="510" cy="488" r="2.5" fill="#F0D020"/>
-            <path d="M484,482 L516,482" stroke="#1A0A00" stroke-width="2" opacity=".6"/>
-            <path d="M483,477 L517,477" stroke="#1A0A00" stroke-width="2" opacity=".5"/>
-            <ellipse cx="500" cy="497" rx="7" ry="6" fill="#D04040" stroke="#1A0A00" stroke-width="1.5"/>
-            <path d="M488,508 Q500,518 512,508" stroke="#1A0A00" stroke-width="2" fill="rgba(180,50,30,.3)"/>
-            <!-- 머리 화려한 장식 -->
-            <path d="M476,470 Q490,455 500,450 Q510,455 524,470" fill="#CC3830" stroke="#1A0A00" stroke-width="1.5"/>
-            <rect x="490" y="448" width="20" height="8" rx="2" fill="#2A40A0"/>
-            <circle cx="500" cy="444" r="5" fill="#E8C020"/>
-            <!-- 다리 (한 발 들기) -->
-            <path d="M510,570 Q520,595 525,610 Q532,620 528,628" stroke="#C8B888" stroke-width="14" stroke-linecap="round" fill="none"/>
-            <path d="M490,570 Q484,595 480,610" stroke="#C8B888" stroke-width="14" stroke-linecap="round" fill="none"/>
-            <!-- 신발 -->
-            <ellipse cx="527" cy="630" rx="14" ry="7" fill="#E8B840" transform="rotate(15,527,630)"/>
-            <ellipse cx="478" cy="612" rx="13" ry="6" fill="#E8B840"/>
+          <!-- ══ 탈춤꾼 2 — 취발이 탈 (중앙 주인공) ══ -->
+          <g style="animation:dance2 1.4s ease-in-out infinite;transform-origin:500px 548px;">
+            <ellipse cx="500" cy="678" rx="46" ry="13" fill="rgba(0,0,0,.2)"/>
+            <!-- 흰 도포 바지 (크고 풍성) -->
+            <path d="M480,568 C470,608 462,644 458,672 L482,672 L500,608 L518,672 L542,672 C538,644 530,608 520,568 Z" fill="#F5F1E5" stroke="#C8C0A8" stroke-width="1.8"/>
+            <!-- 바지 주름 -->
+            <path d="M475,568 C468,604 464,638 462,666" stroke="#D8D0BC" stroke-width="1" fill="none" opacity="0.55"/>
+            <path d="M500,568 C500,608 500,642 500,668" stroke="#D8D0BC" stroke-width="0.9" fill="none" opacity="0.45"/>
+            <path d="M525,568 C532,604 536,638 538,666" stroke="#D8D0BC" stroke-width="1" fill="none" opacity="0.55"/>
+            <!-- 대님 -->
+            <rect x="462" y="634" width="20" height="6" rx="2" fill="#8B5A20" opacity="0.7"/>
+            <rect x="518" y="632" width="20" height="6" rx="2" fill="#8B5A20" opacity="0.7"/>
+            <!-- 저고리 (하늘색, 넓은) -->
+            <path d="M474,506 C468,536 474,552 477,568 L523,568 C526,552 532,536 526,506 Z" fill="#72AAD0"/>
+            <!-- 깃 -->
+            <path d="M487,506 L500,522 L513,506" stroke="#D8B870" stroke-width="2.5" fill="#F8F0D8"/>
+            <path d="M486,506 Q494,518 500,524 Q506,518 514,506" stroke="#FFFCE8" stroke-width="1.2" fill="none"/>
+            <!-- 저고리 주름 -->
+            <path d="M478,520 C476,538 477,550 478,565" stroke="#5A90C0" stroke-width="1.2" fill="none" opacity="0.5"/>
+            <path d="M522,520 C524,538 523,550 522,565" stroke="#5A90C0" stroke-width="1.2" fill="none" opacity="0.5"/>
+            <!-- 고름 -->
+            <path d="M489,538 Q500,534 511,538 Q508,548 500,550 Q492,548 489,538 Z" fill="#E8A820"/>
+            <path d="M500,550 L492,562 M500,550 L508,562" stroke="#E8A820" stroke-width="3" stroke-linecap="round"/>
+            <!-- 왼소매 (크게 위로) -->
+            <path d="M477,518 Q448,492 426,466 Q418,454 420,442" stroke="#72AAD0" stroke-width="17" stroke-linecap="round" fill="none"/>
+            <!-- 색동 (7겹, 촘촘) -->
+            <path d="M464,510 Q438,486 420,462" stroke="#E84030" stroke-width="6" fill="none"/>
+            <path d="M460,516 Q435,491 418,468" stroke="#F8F0E0" stroke-width="3.5" fill="none"/>
+            <path d="M457,522 Q432,497 416,473" stroke="#3AAA40" stroke-width="6" fill="none"/>
+            <path d="M453,527 Q429,503 413,479" stroke="#F8F0E0" stroke-width="3.5" fill="none"/>
+            <path d="M450,533 Q425,509 410,486" stroke="#E8C020" stroke-width="6" fill="none"/>
+            <path d="M447,538 Q422,514 407,492" stroke="#F8F0E0" stroke-width="3.5" fill="none"/>
+            <path d="M444,543 Q419,519 405,498" stroke="#CC2A8A" stroke-width="6" fill="none"/>
+            <path d="M441,548 Q416,524 403,504" stroke="#F8F0E0" stroke-width="3.5" fill="none"/>
+            <path d="M438,553 Q413,529 402,510" stroke="#2A5ACC" stroke-width="6" fill="none"/>
+            <!-- 소맷부리 -->
+            <path d="M420,440 Q412,430 416,420 Q424,414 432,422 Q438,432 430,440 Z" fill="#F0ECD8" stroke="#D8D0C0" stroke-width="1.2"/>
+            <!-- 한삼 왼 (크게 펄럭, 복잡한 곡선) -->
+            <path d="M416,432 Q394,410 388,382 Q382,354 402,348 Q422,342 428,370 Q434,398 412,408 Q390,418 400,436 Q410,454 420,442" stroke="rgba(250,246,236,.95)" stroke-width="11" fill="none" stroke-linecap="round"/>
+            <!-- 오른소매 -->
+            <path d="M523,518 Q552,502 572,488 Q584,478 582,466" stroke="#72AAD0" stroke-width="17" stroke-linecap="round" fill="none"/>
+            <path d="M536,516 Q562,500 580,487" stroke="#E84030" stroke-width="6" fill="none"/>
+            <path d="M539,522 Q564,506 582,494" stroke="#F8F0E0" stroke-width="3.5" fill="none"/>
+            <path d="M541,528 Q565,512 582,501" stroke="#3AAA40" stroke-width="6" fill="none"/>
+            <path d="M543,534 Q566,518 582,508" stroke="#F8F0E0" stroke-width="3.5" fill="none"/>
+            <path d="M544,540 Q566,524 581,515" stroke="#E8C020" stroke-width="6" fill="none"/>
+            <path d="M545,546 Q566,530 580,522" stroke="#F8F0E0" stroke-width="3.5" fill="none"/>
+            <path d="M546,551 Q566,536 579,528" stroke="#2A5ACC" stroke-width="6" fill="none"/>
+            <!-- 소맷부리 오른 -->
+            <path d="M582,464 Q590,454 586,444 Q578,438 570,446 Q564,456 572,464 Z" fill="#F0ECD8" stroke="#D8D0C0" stroke-width="1.2"/>
+            <!-- 한삼 오른 -->
+            <path d="M586,450 Q604,428 608,400 Q612,372 594,368 Q576,364 574,392 Q572,420 592,428 Q612,436 602,452 Q592,466 584,456" stroke="rgba(250,246,236,.9)" stroke-width="10" fill="none" stroke-linecap="round"/>
+            <!-- 손 -->
+            <path d="M414,422 Q408,416 410,408 Q418,404 424,412 Q428,420 420,424 Z" fill="#EEC888"/>
+            <path d="M412,416 Q409,412 414,410" stroke="#D8A868" stroke-width="0.9" fill="none"/>
+            <path d="M574,446 Q580,440 578,432 Q570,428 564,436 Q560,444 568,448 Z" fill="#EEC888"/>
+            <!-- 목 -->
+            <path d="M493,506 Q500,499 507,506 L506,494 Q500,490 494,494 Z" fill="#EEC888"/>
+            <!-- 귀 -->
+            <ellipse cx="476" cy="484" rx="5" ry="6.5" fill="#EEC888"/>
+            <ellipse cx="524" cy="484" rx="5" ry="6.5" fill="#EEC888"/>
+            <!-- ══ 취발이 탈 (붉고 강렬) ══ -->
+            <ellipse cx="500" cy="480" rx="28" ry="31" fill="#CC2820"/>
+            <ellipse cx="500" cy="480" rx="28" ry="31" fill="none" stroke="#AA1A10" stroke-width="1.5"/>
+            <!-- 이마 줄 (강렬한 성격 표현) -->
+            <path d="M478,466 Q500,456 522,466" stroke="#1A0A00" stroke-width="2.5" fill="none"/>
+            <path d="M478,471 Q500,461 522,471" stroke="#1A0A00" stroke-width="2" fill="none" opacity="0.7"/>
+            <path d="M478,476 Q500,466 522,476" stroke="#1A0A00" stroke-width="1.5" fill="none" opacity="0.5"/>
+            <!-- 취발이 특유의 흰 줄무늬 이마 -->
+            <path d="M480,460 Q500,452 520,460" stroke="white" stroke-width="1.5" fill="none" opacity="0.4"/>
+            <!-- 눈썹 (짙게, 크게) -->
+            <path d="M478,462 Q489,454 500,457 Q511,454 522,462" stroke="#1A0A00" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <!-- 눈 (크게 부리부리) -->
+            <path d="M479,472 Q489,464 500,467 Q489,474 479,472 Z" fill="#1A0A00"/>
+            <path d="M500,467 Q511,464 521,472 Q511,474 500,467 Z" fill="#1A0A00"/>
+            <ellipse cx="489" cy="470" rx="4.5" ry="3.5" fill="#F0D020"/>
+            <ellipse cx="511" cy="470" rx="4.5" ry="3.5" fill="#F0D020"/>
+            <circle cx="489" cy="470" r="2.5" fill="#0A0400"/>
+            <circle cx="511" cy="470" r="2.5" fill="#0A0400"/>
+            <circle cx="488" cy="469" r="1" fill="white" opacity="0.7"/>
+            <circle cx="510" cy="469" r="1" fill="white" opacity="0.7"/>
+            <!-- 볼 줄무늬 (취발이 특징) -->
+            <path d="M477,480 Q473,490 476,502" stroke="#1A0A00" stroke-width="2" fill="none"/>
+            <path d="M474,482 Q470,492 474,504" stroke="#1A0A00" stroke-width="1.5" fill="none" opacity="0.5"/>
+            <path d="M523,480 Q527,490 524,502" stroke="#1A0A00" stroke-width="2" fill="none"/>
+            <path d="M526,482 Q530,492 526,504" stroke="#1A0A00" stroke-width="1.5" fill="none" opacity="0.5"/>
+            <!-- 코 (크고 험악) -->
+            <path d="M487,486 Q480,496 484,508 Q500,516 516,508 Q520,496 513,486 Z" fill="#B01818" stroke="#8A0808" stroke-width="1.5"/>
+            <ellipse cx="487" cy="504" rx="5" ry="3.5" fill="#980A0A" opacity="0.55"/>
+            <ellipse cx="513" cy="504" rx="5" ry="3.5" fill="#980A0A" opacity="0.55"/>
+            <!-- 입 (크게 벌린 익살) -->
+            <path d="M480,514 Q500,534 520,514" stroke="#1A0A00" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M484,518 Q500,530 516,518" fill="#880808" opacity="0.55"/>
+            <!-- 이빨 -->
+            <g fill="white" opacity="0.7">
+              <rect x="487" y="520" width="5" height="6" rx="1"/>
+              <rect x="495" y="521" width="5" height="7" rx="1"/>
+              <rect x="503" y="521" width="5" height="7" rx="1"/>
+              <rect x="511" y="520" width="5" height="6" rx="1"/>
+            </g>
+            <!-- 탈 끈 구멍 -->
+            <circle cx="474" cy="484" r="3.5" fill="#A01818" stroke="#800808" stroke-width="1"/>
+            <circle cx="526" cy="484" r="3.5" fill="#A01818" stroke="#800808" stroke-width="1"/>
+            <!-- 머리 장식 (화려한 상모) -->
+            <ellipse cx="500" cy="452" rx="26" ry="9" fill="#1A1410"/>
+            <path d="M476,452 Q488,432 500,428 Q512,432 524,452" fill="#2A2010" stroke="#1A1410" stroke-width="1.2"/>
+            <!-- 상모 꼭대기 -->
+            <ellipse cx="500" cy="426" rx="16" ry="6" fill="#1A1410"/>
+            <rect x="492" y="408" width="16" height="20" rx="3" fill="#1A1410"/>
+            <!-- 상모 장식 (오방색 술) -->
+            <circle cx="500" cy="406" r="8" fill="#E8A820"/>
+            <circle cx="500" cy="406" r="5" fill="#CC2020"/>
+            <circle cx="500" cy="406" r="2.5" fill="#E8D020"/>
+            <!-- 상모 줄 장식 -->
+            <path d="M500,398 Q492,390 488,378" stroke="#C82020" stroke-width="2.5" fill="none"/>
+            <path d="M500,398 Q508,390 512,378" stroke="#1B4A8A" stroke-width="2.5" fill="none"/>
+            <circle cx="488" cy="376" r="4" fill="#E8D020"/>
+            <circle cx="512" cy="376" r="4" fill="#2D7A4F"/>
+            <!-- 다리 (한발 들기, 역동적) -->
+            <path d="M518,568 C526,598 530,622 534,644 Q538,656 534,664" stroke="#D8C8A0" stroke-width="16" stroke-linecap="round" fill="none"/>
+            <path d="M518,568 C526,598 530,622 534,644" stroke="#B8A878" stroke-width="1.2" fill="none" opacity="0.5"/>
+            <path d="M482,568 C476,598 473,624 470,646" stroke="#D8C8A0" stroke-width="16" stroke-linecap="round" fill="none"/>
+            <!-- 꽃신 오른 (들린) -->
+            <path d="M534,660 Q542,664 554,662 Q552,672 538,672 Q528,672 530,662 Z" fill="#E8B840" stroke="#C88020" stroke-width="1.2"/>
+            <path d="M534,663 Q542,667 552,665" stroke="#C88020" stroke-width="0.8" fill="none" opacity="0.6"/>
+            <!-- 꽃신 왼 (땅) -->
+            <path d="M468,642 Q476,648 488,646 Q486,656 472,656 Q462,656 464,645 Z" fill="#E8B840" stroke="#C88020" stroke-width="1.2"/>
           </g>
 
-          <!-- ══ 탈춤꾼 3: 오른쪽, 작은 figure ══ -->
-          <g style="animation:dance3 1.8s ease-in-out infinite .4s;transform-origin:700px 565px;">
+          <!-- ══ 탈춤꾼 3 — 각시 탈 (오른쪽) ══ -->
+          <g style="animation:dance3 1.8s ease-in-out infinite .4s;transform-origin:700px 562px;">
+            <ellipse cx="700" cy="656" rx="36" ry="10" fill="rgba(0,0,0,.16)"/>
             <!-- 흰 바지 -->
-            <path d="M685,565 Q680,610 677,648 L695,648 L700,600 L705,648 L723,648 Q720,610 715,565 Z" fill="#F0ECE0" stroke="#C8C0A8" stroke-width="1.5"/>
-            <!-- 초록 저고리 -->
-            <path d="M678,518 Q676,542 680,565 L720,565 Q724,542 722,518 Z" fill="#4AA858"/>
-            <!-- 오른팔 크게 위로 -->
-            <path d="M720,525 Q740,508 755,488" stroke="#4AA858" stroke-width="13" stroke-linecap="round" fill="none"/>
-            <path d="M720,531 Q739,515 753,496" stroke="#E84030" stroke-width="4" fill="none"/>
-            <path d="M719,537 Q737,521 750,502" stroke="#2A5ACC" stroke-width="4" fill="none"/>
-            <path d="M718,543 Q735,528 748,508" stroke="#E8C020" stroke-width="4" fill="none"/>
-            <!-- 한삼 -->
-            <path d="M755,486 Q775,468 778,448 Q780,430 765,428 Q750,428 748,445 Q746,460 762,462" stroke="rgba(240,235,220,.9)" stroke-width="7" fill="none" stroke-linecap="round"/>
-            <!-- 왼팔 내림 -->
-            <path d="M680,525 Q664,545 658,562" stroke="#4AA858" stroke-width="13" stroke-linecap="round" fill="none"/>
-            <path d="M679,531 Q664,549 659,565" stroke="#E84030" stroke-width="4" fill="none"/>
-            <!-- 머리/탈 -->
-            <circle cx="700" cy="500" r="20" fill="#CC3830"/>
-            <ellipse cx="693" cy="496" rx="4.5" ry="4" fill="#1A0A00"/>
-            <ellipse cx="707" cy="496" rx="4.5" ry="4" fill="#1A0A00"/>
-            <circle cx="693" cy="496" r="1.8" fill="#F0D020"/>
-            <circle cx="707" cy="496" r="1.8" fill="#F0D020"/>
-            <path d="M686,490 L714,490" stroke="#1A0A00" stroke-width="1.5" opacity=".6"/>
-            <ellipse cx="700" cy="503" rx="5.5" ry="5" fill="#D04040" stroke="#1A0A00" stroke-width="1"/>
-            <path d="M691,512 Q700,518 709,512" stroke="#1A0A00" stroke-width="1.5" fill="rgba(180,50,30,.3)"/>
-            <!-- 장식 -->
-            <path d="M683,483 Q692,472 700,469 Q708,472 717,483" fill="#4AA858" stroke="#1A0A00" stroke-width="1.5"/>
+            <path d="M685,562 C679,598 675,630 672,654 L690,654 L700,596 L710,654 L728,654 C725,630 721,598 715,562 Z" fill="#F2EEE2" stroke="#C8C0A8" stroke-width="1.5"/>
+            <path d="M681,562 C676,596 673,628 673,650" stroke="#D8D0BC" stroke-width="0.8" fill="none" opacity="0.55"/>
+            <path d="M700,562 C700,598 700,630 700,652" stroke="#D8D0BC" stroke-width="0.7" fill="none" opacity="0.45"/>
+            <path d="M719,562 C724,596 727,628 727,650" stroke="#D8D0BC" stroke-width="0.8" fill="none" opacity="0.55"/>
+            <rect x="674" y="622" width="17" height="5" rx="2" fill="#8B5A20" opacity="0.65"/>
+            <rect x="710" y="621" width="17" height="5" rx="2" fill="#8B5A20" opacity="0.65"/>
+            <!-- 저고리 (연분홍) -->
+            <path d="M679,512 C675,538 679,552 681,562 L719,562 C721,552 725,538 721,512 Z" fill="#E8A0B8"/>
+            <!-- 깃 -->
+            <path d="M690,512 L700,524 L710,512" stroke="#D8B070" stroke-width="2" fill="#F8F0E0"/>
+            <path d="M689,512 Q696,520 700,526 Q704,520 711,512" stroke="#FFFCE8" stroke-width="1" fill="none"/>
+            <!-- 주름 -->
+            <path d="M682,525 C681,540 681,550 682,559" stroke="#C87898" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M718,525 C719,540 719,550 718,559" stroke="#C87898" stroke-width="1" fill="none" opacity="0.5"/>
+            <!-- 고름 -->
+            <path d="M691,534 Q700,530 709,534 Q707,542 700,544 Q693,542 691,534 Z" fill="#C89840"/>
+            <path d="M700,544 L694,554 M700,544 L706,554" stroke="#C89840" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- 오른소매 (위) -->
+            <path d="M721,522 Q742,505 757,486 Q762,478 758,470" stroke="#E8A0B8" stroke-width="14" stroke-linecap="round" fill="none"/>
+            <path d="M731,519 Q750,503 763,485" stroke="#E84030" stroke-width="5" fill="none"/>
+            <path d="M728,525 Q747,509 759,492" stroke="#F8F0E0" stroke-width="3" fill="none"/>
+            <path d="M726,531 Q744,515 755,498" stroke="#3AAA40" stroke-width="5" fill="none"/>
+            <path d="M724,537 Q741,521 751,505" stroke="#F8F0E0" stroke-width="3" fill="none"/>
+            <path d="M722,543 Q738,527 748,512" stroke="#E8C020" stroke-width="5" fill="none"/>
+            <path d="M720,549 Q735,534 744,519" stroke="#F8F0E0" stroke-width="3" fill="none"/>
+            <path d="M718,554 Q732,540 740,526" stroke="#CC2A8A" stroke-width="5" fill="none"/>
+            <!-- 소맷부리 오른 -->
+            <path d="M758,468 Q766,460 762,450 Q754,444 746,452 Q740,462 748,470 Z" fill="#F0ECD8" stroke="#D8D0C0" stroke-width="1"/>
+            <!-- 한삼 오른 (우아하게) -->
+            <path d="M762,456 Q782,434 780,406 Q778,382 760,380 Q742,380 744,406 Q746,428 764,436 Q782,444 770,460 Q758,476 754,462" stroke="rgba(248,244,232,.92)" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <!-- 왼소매 (아래) -->
+            <path d="M681,522 Q663,544 657,562 Q653,574 658,582" stroke="#E8A0B8" stroke-width="14" stroke-linecap="round" fill="none"/>
+            <path d="M677,528 Q661,548 656,565" stroke="#E84030" stroke-width="5" fill="none"/>
+            <path d="M674,534 Q659,554 655,570" stroke="#F8F0E0" stroke-width="3" fill="none"/>
+            <path d="M672,540 Q657,560 654,575" stroke="#3AAA40" stroke-width="5" fill="none"/>
+            <path d="M670,546 Q655,565 653,579" stroke="#F8F0E0" stroke-width="3" fill="none"/>
+            <path d="M668,551 Q654,570 652,582" stroke="#E8C020" stroke-width="5" fill="none"/>
+            <!-- 소맷부리 왼 -->
+            <path d="M658,580 Q650,590 656,596 Q664,598 668,590 Q672,580 664,576 Z" fill="#F0ECD8" stroke="#D8D0C0" stroke-width="1"/>
+            <!-- 한삼 왼 -->
+            <path d="M654,594 Q638,612 636,636 Q634,658 650,660 Q666,660 664,640 Q662,620 648,612 Q634,606 642,592 Q650,578 656,584" stroke="rgba(248,244,232,.88)" stroke-width="7" fill="none" stroke-linecap="round"/>
+            <!-- 손 -->
+            <path d="M748,452 Q744,444 748,436 Q756,432 762,440 Q766,448 758,454 Z" fill="#EEC888"/>
+            <path d="M652,588 Q646,582 648,574 Q656,570 662,578 Q666,586 658,592 Z" fill="#EEC888"/>
+            <!-- 목/귀 -->
+            <path d="M694,512 Q700,505 706,512 L705,502 Q700,498 695,502 Z" fill="#EEC888"/>
+            <ellipse cx="678" cy="490" rx="4.2" ry="5.5" fill="#EEC888"/>
+            <ellipse cx="722" cy="490" rx="4.2" ry="5.5" fill="#EEC888"/>
+            <!-- ══ 각시 탈 (하얀 얼굴, 여성) ══ -->
+            <ellipse cx="700" cy="487" rx="22" ry="26" fill="#F4ECD8"/>
+            <ellipse cx="700" cy="487" rx="22" ry="26" fill="none" stroke="#D4C8A0" stroke-width="1.2"/>
+            <!-- 이마 (고운 하얀 분) -->
+            <ellipse cx="700" cy="477" rx="18" ry="10" fill="#FAF4E8" opacity="0.6"/>
+            <!-- 눈썹 (섬세하게 그린) -->
+            <path d="M685,474 Q693,470 700,472 Q707,470 715,474" stroke="#3A1C08" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- 눈 (가늘고 우아한) -->
+            <path d="M685,480 Q692,476 700,478 Q692,483 685,480 Z" fill="#2A1408"/>
+            <path d="M700,478 Q708,476 715,480 Q708,483 700,478 Z" fill="#2A1408"/>
+            <!-- 눈 반짝임 -->
+            <circle cx="692" cy="479" r="1.2" fill="white" opacity="0.7"/>
+            <circle cx="708" cy="479" r="1.2" fill="white" opacity="0.7"/>
+            <!-- 볼 주름 (우아하게) -->
+            <path d="M680,492 Q676,502 678,510" stroke="#C0A080" stroke-width="1" fill="none"/>
+            <path d="M720,492 Q724,502 722,510" stroke="#C0A080" stroke-width="1" fill="none"/>
+            <!-- 코 (작고 오뚝) -->
+            <path d="M695,488 Q690,496 694,504 Q700,508 706,504 Q710,496 705,488 Z" fill="#E8C098" stroke="#C8A070" stroke-width="1"/>
+            <ellipse cx="694" cy="501" rx="3" ry="2.2" fill="#D4A880" opacity="0.45"/>
+            <ellipse cx="706" cy="501" rx="3" ry="2.2" fill="#D4A880" opacity="0.45"/>
+            <!-- 입 (작고 예쁜) -->
+            <path d="M692,510 Q700,516 708,510" stroke="#CC6080" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+            <path d="M694,510 Q700,514 706,510" fill="#E8808A" opacity="0.4"/>
+            <!-- 볼 홍조 (연지) -->
+            <ellipse cx="685" cy="497" rx="6" ry="4" fill="#E8A090" opacity="0.3"/>
+            <ellipse cx="715" cy="497" rx="6" ry="4" fill="#E8A090" opacity="0.3"/>
+            <!-- 탈 끈 구멍 -->
+            <circle cx="679" cy="491" r="3" fill="#D4B890" stroke="#B4987A" stroke-width="0.8"/>
+            <circle cx="721" cy="491" r="3" fill="#D4B890" stroke="#B4987A" stroke-width="0.8"/>
+            <!-- 머리 (족두리 스타일) -->
+            <ellipse cx="700" cy="464" rx="20" ry="8" fill="#1A1410"/>
+            <path d="M682,464 Q692,446 700,442 Q708,446 718,464" fill="#2A2010" stroke="#1A1410" stroke-width="1"/>
+            <!-- 족두리 -->
+            <ellipse cx="700" cy="440" rx="12" ry="5" fill="#1A1410"/>
+            <rect x="693" y="426" width="14" height="16" rx="2" fill="#1A1410"/>
+            <!-- 족두리 장식 (꽃) -->
+            <circle cx="700" cy="424" r="7" fill="#E8A8C0"/>
+            <circle cx="700" cy="424" r="4.5" fill="#E84080"/>
+            <circle cx="700" cy="424" r="2.5" fill="#E8D020"/>
+            <!-- 비녀 -->
+            <line x1="680" y1="460" x2="720" y2="464" stroke="#C8A020" stroke-width="2"/>
+            <circle cx="720" cy="464" r="4" fill="#E8B820"/>
+            <circle cx="720" cy="464" r="2.5" fill="#CC2020"/>
+            <!-- 노리개 귀고리 -->
+            <path d="M678" y1="491" x2="678" y2="504" stroke="#C8A020" stroke-width="1.8"/>
+            <line x1="678" y1="491" x2="678" y2="504" stroke="#C8A020" stroke-width="1.8"/>
+            <ellipse cx="678" cy="507" rx="4" ry="6" fill="#CC2020" stroke="#C8A020" stroke-width="1"/>
+            <path d="M722" y1="491" x2="722" y2="504" stroke="#C8A020" stroke-width="1.8"/>
+            <line x1="722" y1="491" x2="722" y2="504" stroke="#C8A020" stroke-width="1.8"/>
+            <ellipse cx="722" cy="507" rx="4" ry="6" fill="#CC2020" stroke="#C8A020" stroke-width="1"/>
             <!-- 다리 -->
-            <path d="M692,565 Q686,595 684,625" stroke="#C8B888" stroke-width="12" stroke-linecap="round" fill="none"/>
-            <path d="M708,565 Q716,590 720,618 Q724,628 718,635" stroke="#C8B888" stroke-width="12" stroke-linecap="round" fill="none"/>
-            <ellipse cx="717" cy="637" rx="12" ry="6" fill="#E8B840" transform="rotate(12,717,637)"/>
+            <path d="M717,562 C724,592 728,618 730,640 Q732,652 728,660" stroke="#D8C8A0" stroke-width="14" stroke-linecap="round" fill="none"/>
+            <path d="M683,562 C678,592 675,618 673,640" stroke="#D8C8A0" stroke-width="14" stroke-linecap="round" fill="none"/>
+            <!-- 꽃신 오른 -->
+            <path d="M728,656 Q736,660 748,658 Q746,668 732,668 Q722,668 724,658 Z" fill="#E8B840" stroke="#C88020" stroke-width="1"/>
+            <path d="M728,659 Q736,663 746,661" stroke="#C88020" stroke-width="0.8" fill="none" opacity="0.6"/>
+            <!-- 꽃신 왼 -->
+            <path d="M671,636 Q679,642 691,640 Q689,650 675,650 Q665,650 667,639 Z" fill="#E8B840" stroke="#C88020" stroke-width="1"/>
           </g>
-          <ellipse cx="500" cy="695" rx="280" ry="24" fill="rgba(200,160,80,.15)"/>
+
+          <!-- 마당 빛 그림자 -->
+          <ellipse cx="500" cy="695" rx="300" ry="28" fill="rgba(180,140,60,.12)"/>
+          <!-- 공연 중 먼지/흙 효과 -->
+          <ellipse cx="305" cy="668" rx="45" ry="8" fill="rgba(200,170,100,.15)"/>
+          <ellipse cx="500" cy="682" rx="55" ry="10" fill="rgba(200,170,100,.12)"/>
+          <ellipse cx="700" cy="662" rx="42" ry="7" fill="rgba(200,170,100,.14)"/>
         </svg>
       </div>
       <div class="vl" id="vl5" style="z-index:6;pointer-events:none;">
