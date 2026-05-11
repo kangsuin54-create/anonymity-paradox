@@ -83,23 +83,7 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 .deco-d{width:10px;height:10px;background:var(--red);transform:rotate(45deg);}
 .bq{border-left:4px solid var(--red);padding:20px 28px;margin:26px 0;background:rgba(193,39,45,.05);font-size:1.18rem;font-weight:600;line-height:1.75;}
 
-/* ── Paradox ── */
-#s-paradox{min-height:100vh;background:#0E0B06;color:var(--hanji);}
-.bq-lg{font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:600;line-height:1.65;text-align:center;margin:56px 0;}
-.bq-lg em{color:var(--gold);font-style:normal;}
-.split2{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin:46px 0;}
-.sp-card{padding:44px 36px;}
-.sp-card.jos{background:#EDD9A3;color:var(--ink);}
-.sp-card.mod{background:#0D1117;color:#D8D2C8;border:1px solid rgba(255,255,255,.04);}
-.sp-era{font-family:'Noto Sans KR',sans-serif;font-size:.7rem;letter-spacing:.45em;margin-bottom:16px;}
-.jos .sp-era{color:var(--red);}.mod .sp-era{color:#58A6FF;}
-.sp-ico{font-size:2.6rem;display:block;margin-bottom:16px;}
-.sp-h{font-size:1.35rem;font-weight:700;margin-bottom:14px;line-height:1.4;}
-.sp-b{font-family:'Noto Sans KR',sans-serif;font-size:.9rem;line-height:1.9;opacity:.78;}
-.ins{background:linear-gradient(135deg,rgba(193,39,45,.12),rgba(27,74,138,.12));border:1px solid rgba(201,168,76,.28);padding:46px 42px;margin:46px 0;text-align:center;}
-.ins h3{font-size:1.25rem;color:var(--gold);margin-bottom:18px;}
-.ins p{font-size:1rem;line-height:2.1;color:rgba(242,224,181,.82);}
-.ins strong{color:var(--gold);}
+/* (paradox section removed) */
 
 /* ══════════════════════════════
    FLIGHT TRANSITION SECTION
@@ -112,7 +96,7 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 /* Sky layers */
 #fl-sky-jos{
   position:absolute;inset:0;z-index:0;
-  background:linear-gradient(180deg,#0A1840 0%,#1A3A78 25%,#3A7AC8 55%,#C87A30 78%,#8B3A18 100%);
+  background:linear-gradient(180deg,#4A90D9 0%,#87BEEE 30%,#C8E4F8 60%,#F0C878 80%,#D4884A 100%);
 }
 #fl-sky-mod{
   position:absolute;inset:0;z-index:1;
@@ -125,10 +109,10 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 /* Sun (Joseon side) */
 #fl-sun{
   position:absolute;z-index:1;
-  width:90px;height:90px;border-radius:50%;
-  background:radial-gradient(circle at 40% 40%,#FFE870,#FFB820,#FF8010);
-  box-shadow:0 0 60px rgba(255,180,20,.6),0 0 120px rgba(255,120,0,.3);
-  top:18%;left:20%;
+  width:110px;height:110px;border-radius:50%;
+  background:radial-gradient(circle at 38% 38%,#FFFAC0,#FFE040,#FFB820);
+  box-shadow:0 0 80px rgba(255,220,40,.8),0 0 160px rgba(255,180,20,.4),0 0 240px rgba(255,140,0,.2);
+  top:15%;left:18%;
   transition:opacity 2.5s ease .5s;
 }
 #s-flight.flying #fl-sun{opacity:0;}
@@ -144,7 +128,7 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 #fl-clouds{position:absolute;inset:0;z-index:3;pointer-events:none;}
 .fcloud{
   position:absolute;
-  background:rgba(255,255,255,.75);
+  background:rgba(255,255,255,.9);
   border-radius:60px;
   animation:cloudDrift var(--dur,9s) linear var(--del,0s) infinite;
 }
@@ -240,32 +224,36 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 #fl-arrival span{font-family:'Noto Sans KR',sans-serif;font-size:.78rem;letter-spacing:.3em;color:rgba(242,224,181,.6);}
 #fl-arrival .wico{font-size:1.4rem;display:block;margin-bottom:6px;animation:hpulse2 2s ease-in-out infinite;}
 
-/* ── Modern ── */
-#s-modern{min-height:100vh;background:#0D1117;color:#E0D8CC;border-top:3px solid transparent;border-image:linear-gradient(90deg,var(--red),var(--blue),var(--green)) 1;}
-.mod-lbl{font-family:'Noto Sans KR',sans-serif;font-size:.72rem;letter-spacing:.55em;color:#58A6FF;margin-bottom:16px;}
-.mod-ttl{font-size:clamp(2rem,4.5vw,3.3rem);font-weight:900;line-height:1.25;margin-bottom:42px;}
-.mod-ttl span{background:linear-gradient(135deg,#58A6FF,#7EE8A2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+/* ── Modern (BRIGHT) ── */
+#s-modern{min-height:100vh;background:#F5F0E8;color:var(--ink);border-top:5px solid;border-image:linear-gradient(90deg,var(--red),var(--gold),var(--green),var(--blue)) 1;}
+.mod-lbl{font-family:'Noto Sans KR',sans-serif;font-size:.72rem;letter-spacing:.55em;color:var(--blue);margin-bottom:16px;}
+.mod-ttl{font-size:clamp(2rem,4.5vw,3.3rem);font-weight:900;line-height:1.25;margin-bottom:42px;color:var(--ink);}
+.mod-ttl span{background:linear-gradient(135deg,var(--blue),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .cflow{display:flex;align-items:center;justify-content:center;gap:20px;margin:52px 0;flex-wrap:wrap;}
 .ci{text-align:center;padding:24px 28px;}
 .ci-ico{font-size:2.8rem;display:block;margin-bottom:12px;}
-.ci-era{font-family:'Noto Sans KR',sans-serif;font-size:.7rem;color:rgba(224,216,204,.45);letter-spacing:.14em;margin-bottom:5px;}
+.ci-era{font-family:'Noto Sans KR',sans-serif;font-size:.7rem;color:rgba(26,20,14,.45);letter-spacing:.14em;margin-bottom:5px;}
 .ci-n{font-size:1.15rem;font-weight:700;}
-.carr{font-size:2rem;color:var(--gold);opacity:.5;}
-.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:36px 0;}
-.pc{background:#161B22;border:1px solid #30363D;border-radius:6px;padding:24px 20px;transition:border-color .3s,transform .3s;}
-.pc:hover{border-color:rgba(88,166,255,.4);transform:translateY(-5px);}
-.pc-ico{font-size:1.9rem;margin-bottom:11px;}
-.pc-lbl{font-family:'Noto Sans KR',sans-serif;font-size:.68rem;color:#58A6FF;letter-spacing:.2em;margin-bottom:7px;}
-.pc-n{font-size:1.05rem;font-weight:700;margin-bottom:10px;}
-.pc-d{font-family:'Noto Sans KR',sans-serif;font-size:.82rem;line-height:1.75;color:rgba(224,216,204,.56);}
-.mod-q{text-align:center;font-size:clamp(1.2rem,2.8vw,1.8rem);font-weight:600;line-height:1.8;padding:52px 0;}
-.mod-q em{color:#7EE8A2;font-style:normal;}
-.clist{background:#161B22;border:1px solid #30363D;border-left:4px solid #58A6FF;padding:34px 38px;}
-.clist h3{font-family:'Noto Sans KR',sans-serif;font-size:1rem;color:#58A6FF;margin-bottom:16px;}
-.ccols{display:grid;grid-template-columns:1fr 1fr;gap:18px;font-family:'Noto Sans KR',sans-serif;font-size:.87rem;line-height:2;color:rgba(224,216,204,.7);}
+.carr{font-size:2rem;color:var(--gold);}
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:36px 0;}
+.pc{background:#FFFFFF;border:1px solid rgba(26,20,14,.1);border-radius:12px;padding:28px 22px;
+  transition:transform .3s,box-shadow .3s;box-shadow:0 2px 14px rgba(0,0,0,.07);}
+.pc:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(0,0,0,.12);}
+.pc.oc{border-top:4px solid #FFCC00;}
+.pc.et{border-top:4px solid var(--red);}
+.pc.bl{border-top:4px solid var(--blue);}
+.pc-ico{font-size:2rem;margin-bottom:12px;}
+.pc-lbl{font-family:'Noto Sans KR',sans-serif;font-size:.68rem;color:var(--blue);letter-spacing:.2em;margin-bottom:7px;}
+.pc-n{font-size:1.1rem;font-weight:700;margin-bottom:10px;color:var(--ink);}
+.pc-d{font-family:'Noto Sans KR',sans-serif;font-size:.84rem;line-height:1.8;color:rgba(26,20,14,.62);}
+.mod-q{text-align:center;font-size:clamp(1.2rem,2.8vw,1.9rem);font-weight:600;line-height:1.8;padding:52px 0;color:var(--ink);}
+.mod-q em{color:var(--green);font-style:normal;}
+.clist{background:#FFFFFF;border:1px solid rgba(26,20,14,.1);border-left:4px solid var(--blue);padding:34px 38px;border-radius:0 8px 8px 0;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.clist h3{font-family:'Noto Sans KR',sans-serif;font-size:1rem;color:var(--blue);margin-bottom:16px;}
+.ccols{display:grid;grid-template-columns:1fr 1fr;gap:18px;font-family:'Noto Sans KR',sans-serif;font-size:.87rem;line-height:2.1;color:rgba(26,20,14,.7);}
 
 /* ── Conclusion ── */
-#s-conclusion{min-height:100vh;background:linear-gradient(180deg,#EEDAD0 0%,#E4D29A 50%,#EEDAD0 100%);color:var(--ink);position:relative;text-align:center;}
+#s-conclusion{min-height:100vh;background:linear-gradient(180deg,#FDF8F0 0%,#F5EDD8 50%,#FDF8F0 100%);color:var(--ink);position:relative;text-align:center;}
 #s-conclusion::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--red),#E8A427,var(--green),var(--blue));}
 .conc-q{font-size:clamp(1.5rem,3.3vw,2.4rem);font-weight:600;line-height:1.75;margin:38px 0;}
 .conc-q strong{color:var(--red);}
@@ -471,27 +459,10 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 <div id="main-content">
 
   <nav class="snav">
-    <div class="sdot on" data-s="s-paradox"    onclick="goTo('s-paradox')"></div>
-    <div class="sdot"    data-s="s-flight"     onclick="goTo('s-flight')"></div>
+    <div class="sdot on" data-s="s-flight"     onclick="goTo('s-flight')"></div>
     <div class="sdot"    data-s="s-modern"     onclick="goTo('s-modern')"></div>
     <div class="sdot"    data-s="s-conclusion" onclick="goTo('s-conclusion')"></div>
   </nav>
-
-  <!-- § 친밀함의 역설 -->
-  <section id="s-paradox">
-    <div class="si">
-      <div class="reveal">
-        <div class="s-lbl" style="color:var(--gold);">섹션 01 · 친밀함의 역설</div>
-        <h2 class="s-ttl">왜 낯선 사람에게<br>더 솔직해질까?</h2>
-      </div>
-      <div class="bq-lg reveal d2">10년 친구에게는 못 할 이야기를,<br><em>기차에서 만난 낯선 사람</em>에게는<br>술술 털어놓는다.</div>
-      <div class="split2">
-        <div class="sp-card jos rev-l d2"><span class="sp-ico">🎭</span><div class="sp-era">조선시대 · 탈춤</div><div class="sp-h">탈 뒤의 해방</div><div class="sp-b">하인이 양반을 조롱하고, 중이 여인을 희롱하는 장면도 탈춤에서는 허용됐다. 탈이 얼굴을 가리는 순간, 사회적 지위도 책임도 잠시 사라졌다.</div></div>
-        <div class="sp-card mod rev-r d2"><span class="sp-ico">💬</span><div class="sp-era">현대 · 익명 커뮤니티</div><div class="sp-h">닉네임 뒤의 솔직함</div><div class="sp-b">"실은 부모님한테 화가 나 있어요." "그냥 외로워요." 아무도 이걸 실명으로는 못 적는다. 하지만 익명 공간에서는 매일 수천 명이 이런 고백을 쏟아낸다.</div></div>
-      </div>
-      <div class="ins reveal d3"><h3>왜 이런 역설이 생기는 걸까?</h3><p>심리학자들은 이를 <strong>스트레인저 온 어 트레인 효과</strong>라 부릅니다.<br>다시 만날 가능성이 없는 사람에게는 판단받을 두려움이 사라집니다.<br>역설적으로, 가장 친한 사람일수록 그 관계를 잃을까 두려워 <strong>진짜 이야기를 숨기게</strong> 됩니다.</p></div>
-    </div>
-  </section>
 
   <!-- ════════════════════════════════
        § 비행기 타고 현대로
@@ -617,7 +588,7 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 
     <!-- Direction labels -->
     <div id="fl-from">조선 하회마을 · 1700년대</div>
-    <div id="fl-to">현대 대한민국 · 서울</div>
+    <div id="fl-to">현대 대한민국 · 2026년</div>
 
     <!-- Airplane -->
     <div id="fl-plane-wrap">
@@ -680,16 +651,16 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
   <!-- § 현대의 탈 -->
   <section id="s-modern">
     <div class="si">
-      <div class="reveal"><div class="mod-lbl">섹션 02 · 현대의 탈</div><h2 class="mod-ttl">오픈채팅·에브리타임 =<br><span>현대판 탈춤</span></h2></div>
+      <div class="reveal"><div class="mod-lbl">섹션 01 · 현대의 탈</div><h2 class="mod-ttl">오픈채팅·에브리타임 =<br><span>현대판 탈춤</span></h2></div>
       <div class="cflow">
         <div class="ci rev-l d2"><span class="ci-ico">🎭</span><div class="ci-era">조선 1700년대</div><div class="ci-n">하회탈</div></div>
         <div class="carr reveal d3">→</div>
-        <div class="ci rev-r d2"><span class="ci-ico">📱</span><div class="ci-era">현대 디지털</div><div class="ci-n">익명 커뮤니티</div></div>
+        <div class="ci rev-r d2"><span class="ci-ico">📱</span><div class="ci-era">현대 2026년</div><div class="ci-n">익명 커뮤니티</div></div>
       </div>
       <div class="pg">
-        <div class="pc reveal d2"><div class="pc-ico">💬</div><div class="pc-lbl">KAKAOTALK</div><div class="pc-n">오픈채팅</div><div class="pc-d">닉네임과 프로필로 참여하는 채팅방. 실명 없이 깊은 공감을 나눈다. 주제 기반 대화, 감정 토로, 고민 상담.</div></div>
-        <div class="pc reveal d3"><div class="pc-ico">📚</div><div class="pc-lbl">EVERYTIME</div><div class="pc-n">에브리타임</div><div class="pc-d">대학생 익명 커뮤니티. 교수도 부모도 모르게 학교생활의 고민을 쏟아낸다. 매일 수만 건의 익명 고백.</div></div>
-        <div class="pc reveal d4"><div class="pc-ico">🔮</div><div class="pc-lbl">BLIND</div><div class="pc-n">블라인드</div><div class="pc-d">직장인 익명 커뮤니티. 동료에게도 못 하는 회사 불만과 고민. 회사명으로 인증하지만 개인은 완전 익명.</div></div>
+        <div class="pc oc reveal d2"><div class="pc-ico">💬</div><div class="pc-lbl">KAKAOTALK</div><div class="pc-n">오픈채팅</div><div class="pc-d">닉네임과 프로필로 참여하는 채팅방. 실명 없이 깊은 공감을 나눈다. 주제 기반 대화, 감정 토로, 고민 상담.</div></div>
+        <div class="pc et reveal d3"><div class="pc-ico">📚</div><div class="pc-lbl">EVERYTIME</div><div class="pc-n">에브리타임</div><div class="pc-d">대학생 익명 커뮤니티. 교수도 부모도 모르게 학교생활의 고민을 쏟아낸다. 매일 수만 건의 익명 고백.</div></div>
+        <div class="pc bl reveal d4"><div class="pc-ico">🔮</div><div class="pc-lbl">BLIND</div><div class="pc-n">블라인드</div><div class="pc-d">직장인 익명 커뮤니티. 동료에게도 못 하는 회사 불만과 고민. 회사명으로 인증하지만 개인은 완전 익명.</div></div>
       </div>
       <div class="mod-q reveal d3">형식은 달라졌지만,<br><em>인간의 욕구</em>는 300년째 똑같다.</div>
       <div class="clist reveal d3"><h3>탈춤과 익명 SNS의 공통점</h3><div class="ccols"><div>✓ 얼굴·신분이 가려진다<br>✓ 평소 못 할 말을 할 수 있다<br>✓ 공동체가 함께 참여한다</div><div>✓ 끝나면 다시 일상으로 돌아간다<br>✓ 사회 비판의 기능을 한다<br>✓ 일시적 해방감을 준다</div></div></div>
@@ -706,7 +677,7 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
         <div style="width:68px;height:76px;background:linear-gradient(135deg,#1B4A8A,#2D7A4F);border-radius:50% 50% 42% 42%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 0 22px rgba(27,74,138,.4);">💬</div>
       </div>
       <div class="conc-q reveal d2">익명성은 <strong>도피</strong>가 아니다.<br>진짜 자신을 찾아가는<br><strong>첫 번째 용기</strong>다.</div>
-      <div class="conc-b reveal d3">탈을 쓰고 춤을 추던 조선의 민중도,<br>오늘 새벽 익명 게시판에 고민을 올리는 당신도<br>같은 것을 원하고 있습니다.<br><br><strong>이해받고 싶다는 것.</strong><br>판단받지 않아도 되는 공간에서<br>진짜 나를 꺼내놓고 싶다는 것.</div>
+      <div class="conc-b reveal d3">탈을 쓰고 춤을 추던 조선의 민중도,<br>2026년 오늘 밤 익명 게시판에 고민을 올리는 당신도<br>같은 것을 원하고 있습니다.<br><br><strong>이해받고 싶다는 것.</strong><br>판단받지 않아도 되는 공간에서<br>진짜 나를 꺼내놓고 싶다는 것.</div>
       <div class="deco reveal d4" style="max-width:360px;margin:36px auto;"><div class="deco-d"></div></div>
       <div class="reveal d5" style="font-size:1.15rem;font-weight:600;line-height:1.8;color:rgba(26,20,14,.88);">하지만 진짜 관계는<br>탈을 벗는 순간부터 시작됩니다.</div>
       <div class="reveal d6"><button class="cta" onclick="location.reload()">처음으로 돌아가기</button></div>
@@ -797,7 +768,7 @@ function triggerFlight(){
 
   /* Year counter: 1724 → 2024 */
   const yearEl=document.getElementById('fl-year-num');
-  const START=1724,END=2024,DUR=3400;
+  const START=1724,END=2026,DUR=3400;
   const t0=performance.now()+500;
   function animYear(now){
     if(now<t0){requestAnimationFrame(animYear);return;}
@@ -835,7 +806,7 @@ const mcObs=new MutationObserver(()=>{
 mcObs.observe(document.getElementById('main-content'),{attributes:true,attributeFilter:['class']});
 
 /* ── PROGRESS + NAV ── */
-const SECS=['s-paradox','s-flight','s-modern','s-conclusion'];
+const SECS=['s-flight','s-modern','s-conclusion'];
 const bar=document.getElementById('bar');
 addEventListener('scroll',()=>{
   const st=scrollY,total=document.documentElement.scrollHeight-innerHeight;
