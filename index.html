@@ -128,21 +128,29 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 
 /* ── Gate scene ── */
 #s-gate{
-  background:
-    radial-gradient(ellipse 50% 35% at 75% 18%, rgba(255,220,80,.3) 0%, transparent 55%),
-    linear-gradient(180deg,
-      #0C0818 0%, #141028 18%, #1E1438 35%,
-      #2A1820 52%, #3C2010 68%, #2A1208 82%, #160C06 100%);
+  background:#0A0612;
   flex-direction:column; cursor:pointer;
   overflow:hidden;
 }
-/* 클릭 후 카메라 돌진 */
-#s-gate.rushing{animation:gateRush .7s cubic-bezier(.5,0,1,1) forwards;}
-@keyframes gateRush{
-  0%{transform:scale(1);opacity:1;filter:brightness(1);}
-  50%{transform:scale(3);filter:brightness(2.5);}
-  100%{transform:scale(12);filter:brightness(6)blur(12px);opacity:0;}
+/* 배경 이미지 */
+#gate-bg-img{
+  position:absolute;inset:0;z-index:0;
+  width:100%;height:100%;
+  object-fit:cover;object-position:center center;
 }
+/* 클릭 후 이미지 중앙(마을)으로 돌진 */
+#s-gate.rushing #gate-bg-img{
+  animation:gateRushImg .75s cubic-bezier(.5,0,1,1) forwards;
+}
+@keyframesgateRushImg{/* fallback */}
+@keyframes gateRushImg{
+  0%  {transform:scale(1);    filter:brightness(1);}
+  30% {transform:scale(2.2);  filter:brightness(1.6);}
+  65% {transform:scale(6) translateY(-4%); filter:brightness(3)blur(4px);}
+  100%{transform:scale(16) translateY(-6%);filter:brightness(7)blur(16px);opacity:0;}
+}
+/* 문짝 오버레이 완전 숨김 (이미지에 이미 포함) */
+#gate-doors-overlay,#gate-inner-light{display:none !important;}
 
 /* ── 대문 문짝 오버레이
      이미지 안의 나무 대문 위에 정확히 겹쳐서
@@ -249,8 +257,8 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 /* 대문 타이틀 */
 .gate-title{position:absolute;top:6vh;left:50%;transform:translateX(-50%);text-align:center;z-index:20;pointer-events:none;white-space:nowrap;}
 .gate-year{font-family:'Noto Sans KR',sans-serif;font-size:.78rem;letter-spacing:.5em;color:var(--gold);margin-bottom:12px;}
-.gate-main{font-size:clamp(1.8rem,4.5vw,3rem);font-weight:900;color:var(--hanji);text-shadow:0 2px 24px rgba(0,0,0,.9);}
-.gate-main em{color:var(--red);font-style:normal;}
+.gate-main{font-size:clamp(1.8rem,4.5vw,3rem);font-weight:900;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.95),0 0 30px rgba(0,0,0,.7);}
+.gate-main em{color:#FFD060;font-style:normal;text-shadow:0 2px 8px rgba(0,0,0,.9);}
 #gate-wrap{display:none;}/* SVG 대문 완전 숨김 */
 @keyframes rush{0%{transform:scale(1);filter:blur(0);opacity:1;}60%{transform:scale(4) translateY(-2%);filter:blur(1px);opacity:1;}100%{transform:scale(14) translateY(-5%);filter:blur(10px);opacity:0;}}
 #door-l{transform-origin:40px 300px;transition:transform .75s cubic-bezier(.6,0,.1,1);}
@@ -951,8 +959,10 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 
   <!-- § GATE -->
   <section id="s-gate" class="scene" onclick="handleGateClick()">
-    <!-- CSS 배경 씬: 달 + 소나무 실루엣 -->
-    <div id="gate-scene-bg">
+    <!-- 실사 배경 이미지 -->
+    <img id="gate-bg-img" src="gate-bg.png" alt=""/>
+    <!-- SVG 배경 씬 숨김 -->
+    <div id="gate-scene-bg" style="display:none;">
       <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice">
         <!-- 달 -->
         <circle cx="760" cy="130" r="68" fill="rgba(255,240,180,.18)"/>
@@ -1050,7 +1060,6 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 
     <canvas id="stars-c" style="display:none;"></canvas>
     <div class="gate-title">
-      <div class="gate-year">1700년경 · 경상북도 안동 하회마을</div>
       <div class="gate-main">탈 뒤에서 <em>진짜 얼굴</em>을 찾다</div>
     </div>
     <div id="gate-wrap">
@@ -3451,35 +3460,26 @@ function handleGateClick(){
   if(gateDone)return;
   gateDone=true;
 
-  /* 1. 힌트 숨기기 */
   document.getElementById('gate-hint').classList.add('hide');
-
-  const overlay=document.getElementById('gate-doors-overlay');
   const sec=document.getElementById('s-gate');
 
-  /* 2. 문 열리기 */
-  overlay.classList.add('gate-open');
-
-  /* 3. 플래시 + 문짝 오버레이 숨기기 */
+  /* 플래시 */
   setTimeout(()=>{
     const f=document.getElementById('flash');
     f.className='warm';
-    setTimeout(()=>{f.className='out';},160);
-    overlay.style.display='none';
-  },900);
+    setTimeout(()=>{f.className='out';},180);
+  },200);
 
-  /* 4. 씬 전체 zoom rush */
-  setTimeout(()=>{
-    sec.classList.add('rushing');
-  },1100);
+  /* 이미지 중앙(마을 방향)으로 돌진 */
+  setTimeout(()=>{ sec.classList.add('rushing'); },300);
 
-  /* 5. 마을로 전환 */
+  /* 마을로 전환 */
   setTimeout(()=>{
     sec.style.display='none';
     const sv=document.getElementById('s-village');
     sv.style.display='flex';
     sv.classList.add('active');
-  },1600);
+  },1000);
 }
 
 /* ── VILLAGE WALK (이미지 줌 + 걷기 느낌) ── */
