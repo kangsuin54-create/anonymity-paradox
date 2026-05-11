@@ -530,11 +530,11 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
   overflow:hidden;
 }
 #fl-ground-jos img{
+  position:absolute;inset:0;
   width:100%;height:100%;
-  object-fit:cover;object-position:center 40%;
+  object-fit:cover;object-position:center top;
   display:block;
-  /* 이미지가 짧을 경우 확대해서 채움 */
-  min-height:100%;transform:scale(1.08);transform-origin:50% 50%;
+  transform:scale(1.15);transform-origin:50% 0%;
 }
 #fl-ground-mod{
   position:absolute;inset:0;
@@ -543,10 +543,11 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
   overflow:hidden;
 }
 #fl-ground-mod img{
+  position:absolute;inset:0;
   width:100%;height:100%;
-  object-fit:cover;object-position:center 40%;
+  object-fit:cover;object-position:center top;
   display:block;
-  min-height:100%;transform:scale(1.08);transform-origin:50% 50%;
+  transform:scale(1.15);transform-origin:50% 0%;
 }
 /* 전환 */
 #s-flight.flying #fl-ground-jos{clip-path:inset(0 0 0 100%);}
@@ -2686,7 +2687,7 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
     <div id="fl-ground">
       <!-- 조선시대: 실사 이미지 -->
       <div id="fl-ground-jos">
-        <img src="joseon-bg.png" style="width:100%;height:auto;min-height:260px;object-fit:cover;object-position:center bottom;display:block;" alt=""/>
+        <img src="joseon-bg.png" alt=""/>
       </div>
       <div id="fl-ground-jos-svg" style="display:none;"><!-- SVG 숨김 -->
         <svg viewBox="0 0 1400 270" width="100%" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg" style="display:block;">
@@ -2931,7 +2932,7 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 
       <!-- 현대 서울: 실사 이미지 -->
       <div id="fl-ground-mod">
-        <img src="modern-bg.png" style="width:100%;height:auto;min-height:260px;object-fit:cover;object-position:center bottom;display:block;" alt=""/>
+        <img src="modern-bg.png" alt=""/>
       </div>
       <div id="fl-ground-mod-svg" style="display:none;"><!-- SVG 숨김 -->
         <svg viewBox="0 0 1400 270" width="100%" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg" style="display:block;">
