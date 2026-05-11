@@ -2272,142 +2272,468 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 
     <!-- Ground layer -->
     <div id="fl-ground">
-      <!-- 1700년대: 초가집 마을 -->
+      <!-- 조선시대: 초가집 마을 (상세) -->
       <div id="fl-ground-jos">
-        <svg viewBox="0 0 1400 260" width="100%" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg" style="display:block;">
-          <!-- 들판 언덕 -->
-          <path d="M0,160 Q200,110 400,140 Q600,100 800,135 Q1000,105 1200,130 Q1300,115 1400,128 L1400,260 L0,260 Z" fill="#88C050"/>
-          <path d="M0,185 Q180,155 360,175 Q520,152 700,170 Q880,152 1060,168 Q1200,155 1400,170 L1400,260 L0,260 Z" fill="#70A83C"/>
-          <!-- 논/밭 패턴 -->
-          <g stroke="#5A9030" stroke-width="1" opacity=".4" fill="none">
-            <rect x="50" y="195" width="80" height="40"/><rect x="140" y="195" width="80" height="40"/>
-            <rect x="50" y="195" width="170" height="20"/>
+        <svg viewBox="0 0 1400 270" width="100%" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+          <defs>
+            <linearGradient id="josGround" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#90CC58"/><stop offset="100%" stop-color="#68A038"/>
+            </linearGradient>
+          </defs>
+          <!-- 언덕 배경 -->
+          <path d="M0,145 Q220,98 440,128 Q620,88 820,118 Q1020,92 1200,115 Q1320,100 1400,112 L1400,270 L0,270 Z" fill="url(#josGround)"/>
+          <path d="M0,168 Q180,142 360,158 Q520,138 720,155 Q900,138 1100,152 Q1260,140 1400,152 L1400,270 L0,270 Z" fill="#70A840" opacity="0.7"/>
+          <!-- 잔디 질감 -->
+          <g stroke="#58902A" stroke-width="0.8" opacity="0.25">
+            <line x1="40" y1="185" x2="38" y2="175"/><line x1="50" y1="182" x2="52" y2="172"/>
+            <line x1="100" y1="188" x2="98" y2="178"/><line x1="110" y1="185" x2="112" y2="175"/>
+            <line x1="200" y1="190" x2="198" y2="180"/><line x1="210" y1="188" x2="212" y2="178"/>
+            <line x1="340" y1="184" x2="338" y2="174"/><line x1="350" y1="182" x2="352" y2="172"/>
+            <line x1="700" y1="186" x2="698" y2="176"/><line x1="710" y1="184" x2="712" y2="174"/>
+            <line x1="900" y1="188" x2="898" y2="178"/><line x1="910" y1="186" x2="912" y2="176"/>
+            <line x1="1100" y1="185" x2="1098" y2="175"/><line x1="1110" y1="183" x2="1112" y2="173"/>
+            <line x1="1300" y1="188" x2="1298" y2="178"/><line x1="1310" y1="186" x2="1312" y2="176"/>
           </g>
 
-          <!-- 초가집 1 (왼쪽) -->
-          <g transform="translate(180,195)">
-            <rect x="-30" y="-28" width="60" height="38" fill="#D4A860"/>
-            <path d="M-38,-28 Q0,-62 38,-28 Z" fill="#A87840" stroke="#8B6028" stroke-width="1.5"/>
-            <path d="M-38,-28 Q0,-56 38,-28" fill="none" stroke="#786030" stroke-width="1" opacity=".6"/>
-            <path d="M-38,-28 Q0,-50 38,-28" fill="none" stroke="#786030" stroke-width="1" opacity=".5"/>
-            <rect x="-8" y="-12" width="16" height="22" fill="#8B5A20"/>
-            <rect x="-20" y="-20" width="12" height="10" rx="1" fill="#C89050" stroke="#8B6028" stroke-width=".8"/>
+          <!-- 논 (왼쪽) — 상세 격자 -->
+          <rect x="30" y="200" width="260" height="55" fill="#88B860" opacity="0.65"/>
+          <g stroke="#5A9030" stroke-width="1" opacity="0.55" fill="none">
+            <rect x="32" y="202" width="60" height="24"/><rect x="96" y="202" width="60" height="24"/>
+            <rect x="160" y="202" width="60" height="24"/><rect x="224" y="202" width="62" height="24"/>
+            <rect x="32" y="228" width="60" height="24"/><rect x="96" y="228" width="60" height="24"/>
+            <rect x="160" y="228" width="60" height="24"/><rect x="224" y="228" width="62" height="24"/>
           </g>
-          <!-- 초가집 2 -->
-          <g transform="translate(320,200)">
-            <rect x="-24" y="-24" width="48" height="34" fill="#D4A860"/>
-            <path d="M-32,-24 Q0,-55 32,-24 Z" fill="#A87840" stroke="#8B6028" stroke-width="1.5"/>
-            <rect x="-6" y="-10" width="12" height="20" fill="#8B5A20"/>
+          <!-- 논두렁 -->
+          <g stroke="#4A8020" stroke-width="1.5" opacity="0.7">
+            <line x1="30" y1="214" x2="290" y2="214"/>
+            <line x1="30" y1="226" x2="290" y2="226"/>
           </g>
-          <!-- 기와집 (중간) -->
-          <g transform="translate(550,188)">
-            <rect x="-45" y="-32" width="90" height="45" fill="#E0C898"/>
-            <!-- 기와 지붕 -->
-            <path d="M-55,-32 Q0,-72 55,-32 Z" fill="#C06828" stroke="#8B4A18" stroke-width="1.5"/>
-            <path d="M-55,-32 Q0,-65 55,-32" fill="none" stroke="#A05820" stroke-width="1.5" opacity=".7"/>
-            <path d="M-55,-32 Q0,-58 55,-32" fill="none" stroke="#A05820" stroke-width="1" opacity=".5"/>
-            <!-- 처마 끝 장식 -->
-            <circle cx="-55" cy="-32" r="4" fill="#C06828"/>
-            <circle cx="55" cy="-32" r="4" fill="#C06828"/>
+          <!-- 모심기 점 -->
+          <g fill="#3A7020" opacity="0.6">
+            <circle cx="50"  cy="208" r="2"/><circle cx="68"  cy="208" r="2"/><circle cx="86"  cy="208" r="2"/>
+            <circle cx="50"  cy="220" r="2"/><circle cx="68"  cy="220" r="2"/><circle cx="86"  cy="220" r="2"/>
+          </g>
+
+          <!-- 초가집 1 (상세) -->
+          <g transform="translate(195,198)">
+            <ellipse cx="0" cy="22" rx="35" ry="8" fill="rgba(0,0,0,.1)"/>
+            <!-- 마당 -->
+            <rect x="-38" y="-2" width="76" height="24" fill="#C8B898" opacity="0.5"/>
+            <!-- 집 본체 -->
+            <rect x="-30" y="-30" width="60" height="42" fill="#D8B870"/>
+            <!-- 흙벽 질감 -->
+            <g stroke="#C0A058" stroke-width="0.8" opacity="0.4">
+              <line x1="-30" y1="-18" x2="30" y2="-18"/><line x1="-30" y1="-6" x2="30" y2="-6"/>
+              <line x1="-30" y1="6" x2="30" y2="6"/>
+            </g>
+            <!-- 초가 지붕 -->
+            <path d="M-40,-30 Q0,-72 40,-30 Z" fill="#B89848"/>
+            <!-- 짚 결 -->
+            <g stroke="#A08030" stroke-width="0.8" opacity="0.5" fill="none">
+              <path d="M-38,-32 Q0,-68 38,-32"/><path d="M-36,-34 Q0,-64 36,-34"/>
+              <path d="M-34,-36 Q0,-60 34,-36"/><path d="M-30,-30 Q0,-58 30,-30"/>
+              <path d="M-25,-30 Q0,-55 25,-30"/>
+            </g>
+            <!-- 처마 -->
+            <path d="M-42,-29 Q0,-60 42,-29 L42,-24 Q0,-54 -42,-24 Z" fill="#C8A840" opacity="0.7"/>
             <!-- 문 -->
-            <rect x="-10" y="-14" width="20" height="26" rx="1" fill="#8B4A18"/>
-            <!-- 창 -->
-            <rect x="-32" y="-22" width="16" height="14" rx="1" fill="#D4A860" stroke="#8B4A18" stroke-width="1"/>
-            <rect x="16" y="-22" width="16" height="14" rx="1" fill="#D4A860" stroke="#8B4A18" stroke-width="1"/>
+            <rect x="-8" y="-14" width="16" height="26" rx="1" fill="#8B5A20"/>
+            <!-- 문 틀 -->
+            <rect x="-8" y="-14" width="16" height="26" rx="1" fill="none" stroke="#6B3A10" stroke-width="1.5"/>
+            <!-- 창 (왼) -->
+            <rect x="-26" y="-22" width="14" height="12" rx="1" fill="#E8D890" stroke="#8B5A20" stroke-width="1"/>
+            <line x1="-19" y1="-22" x2="-19" y2="-10" stroke="#8B5A20" stroke-width="0.8"/>
+            <line x1="-26" y1="-16" x2="-12" y2="-16" stroke="#8B5A20" stroke-width="0.8"/>
+            <!-- 창 (오른) -->
+            <rect x="12" y="-22" width="14" height="12" rx="1" fill="#E8D890" stroke="#8B5A20" stroke-width="1"/>
+            <line x1="19" y1="-22" x2="19" y2="-10" stroke="#8B5A20" stroke-width="0.8"/>
+            <line x1="12" y1="-16" x2="26" y2="-16" stroke="#8B5A20" stroke-width="0.8"/>
+            <!-- 굴뚝 연기 -->
+            <rect x="22" y="-60" width="6" height="30" fill="#8B5A20"/>
+            <ellipse cx="25" cy="-65" rx="6" ry="8" fill="#E0D8C8" opacity="0.5"/>
+            <ellipse cx="23" cy="-75" rx="5" ry="7" fill="#E0D8C8" opacity="0.35"/>
           </g>
-          <!-- 초가집 3,4 -->
-          <g transform="translate(780,197)">
-            <rect x="-28" y="-26" width="56" height="36" fill="#D4A860"/>
-            <path d="M-36,-26 Q0,-58 36,-26 Z" fill="#A87840" stroke="#8B6028" stroke-width="1.5"/>
-            <rect x="-7" y="-11" width="14" height="21" fill="#8B5A20"/>
+
+          <!-- 초가집 2 -->
+          <g transform="translate(368,204)">
+            <ellipse cx="0" cy="18" rx="28" ry="6" fill="rgba(0,0,0,.1)"/>
+            <rect x="-24" y="-24" width="48" height="36" fill="#D4B268"/>
+            <g stroke="#B89850" stroke-width="0.7" opacity="0.4">
+              <line x1="-24" y1="-12" x2="24" y2="-12"/><line x1="-24" y1="0" x2="24" y2="0"/>
+            </g>
+            <path d="M-32,-24 Q0,-60 32,-24 Z" fill="#B49040"/>
+            <g stroke="#9A7828" stroke-width="0.7" opacity="0.5" fill="none">
+              <path d="M-30,-25 Q0,-56 30,-25"/><path d="M-27,-26 Q0,-52 27,-26"/><path d="M-23,-24 Q0,-48 23,-24"/>
+            </g>
+            <path d="M-34,-23 Q0,-52 34,-23 L34,-18 Q0,-47 -34,-18 Z" fill="#C8A038" opacity="0.6"/>
+            <rect x="-7" y="-10" width="14" height="24" rx="1" fill="#8B5A20" stroke="#6B3A10" stroke-width="1.2"/>
+            <rect x="-21" y="-18" width="11" height="10" rx="1" fill="#E8D890" stroke="#8B5A20" stroke-width="0.8"/>
+            <line x1="-15.5" y1="-18" x2="-15.5" y2="-8" stroke="#8B5A20" stroke-width="0.7"/>
           </g>
-          <g transform="translate(890,202)">
-            <rect x="-22" y="-22" width="44" height="32" fill="#D4A860"/>
-            <path d="M-30,-22 Q0,-50 30,-22 Z" fill="#A87840" stroke="#8B6028" stroke-width="1.5"/>
+
+          <!-- 기와집 (큰, 상세) -->
+          <g transform="translate(590,185)">
+            <ellipse cx="0" cy="40" rx="60" ry="12" fill="rgba(0,0,0,.12)"/>
+            <!-- 마당 -->
+            <rect x="-60" y="15" width="120" height="28" fill="#C8B888" opacity="0.45"/>
+            <!-- 집 본체 -->
+            <rect x="-52" y="-35" width="104" height="55" fill="#E0C898"/>
+            <!-- 벽 수평선 -->
+            <g stroke="#C8B078" stroke-width="1" opacity="0.4">
+              <line x1="-52" y1="-18" x2="52" y2="-18"/><line x1="-52" y1="-1" x2="52" y2="-1"/>
+              <line x1="-52" y1="16" x2="52" y2="16"/>
+            </g>
+            <!-- 기둥 -->
+            <g fill="#6B3C10" stroke="#4A2808" stroke-width="0.8">
+              <rect x="-50" y="-35" width="9" height="70"/><rect x="-28" y="-35" width="8" height="70"/>
+              <rect x="20" y="-35" width="8" height="70"/><rect x="42" y="-35" width="9" height="70"/>
+            </g>
+            <!-- 기와 지붕 (S곡선) -->
+            <path d="M-65,-35 Q0,-82 65,-35 L65,-26 Q0,-72 -65,-26 Z" fill="#3A3020"/>
+            <!-- 기와 결 -->
+            <g stroke="#2A2010" stroke-width="0.8" fill="none" opacity="0.35">
+              <path d="M-63,-37 Q0,-78 63,-37"/><path d="M-61,-39 Q0,-74 61,-39"/>
+              <path d="M-58,-41 Q0,-70 58,-41"/><path d="M-55,-33 Q0,-68 55,-33"/>
+              <path d="M-50,-30 Q0,-64 50,-30"/>
+            </g>
+            <!-- 단청 처마 끝 -->
+            <path d="M-65,-35 Q0,-82 65,-35 L65,-30 Q0,-77 -65,-30 Z" fill="#C86828" opacity="0.35"/>
+            <path d="M-65,-35 Q0,-82 65,-35 L65,-32 Q0,-79 -65,-32 Z" fill="#1B4A8A" opacity="0.25"/>
+            <!-- 용마루 -->
+            <path d="M-45,-56 Q0,-68 45,-56" stroke="#2A2010" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <ellipse cx="-45" cy="-56" rx="8" ry="5" fill="#2A2010"/>
+            <ellipse cx="45" cy="-56" rx="8" ry="5" fill="#2A2010"/>
+            <!-- 처마 끝 (뒤집힌 처마) -->
+            <path d="M-66,-34 Q-72,-30 -68,-24 Q-63,-22 -62,-30 Z" fill="#3A3020"/>
+            <path d="M66,-34 Q72,-30 68,-24 Q63,-22 62,-30 Z" fill="#3A3020"/>
+            <!-- 문 (창호) -->
+            <rect x="-12" y="-18" width="24" height="38" rx="1" fill="#EEE8C8" stroke="#8B5A20" stroke-width="1.5"/>
+            <line x1="0" y1="-18" x2="0" y2="20" stroke="#8B5A20" stroke-width="1.2"/>
+            <line x1="-12" y1="-4" x2="12" y2="-4" stroke="#8B5A20" stroke-width="1"/>
+            <line x1="-12" y1="8" x2="12" y2="8" stroke="#8B5A20" stroke-width="1"/>
+            <!-- 창 2개 -->
+            <rect x="-46" y="-26" width="16" height="20" rx="1" fill="#EEE8C8" stroke="#8B5A20" stroke-width="1"/>
+            <line x1="-38" y1="-26" x2="-38" y2="-6" stroke="#8B5A20" stroke-width="0.8"/>
+            <line x1="-46" y1="-16" x2="-30" y2="-16" stroke="#8B5A20" stroke-width="0.8"/>
+            <rect x="30" y="-26" width="16" height="20" rx="1" fill="#EEE8C8" stroke="#8B5A20" stroke-width="1"/>
+            <line x1="38" y1="-26" x2="38" y2="-6" stroke="#8B5A20" stroke-width="0.8"/>
+            <line x1="30" y1="-16" x2="46" y2="-16" stroke="#8B5A20" stroke-width="0.8"/>
+            <!-- 댓돌 -->
+            <rect x="-16" y="18" width="32" height="8" rx="2" fill="#C0B090"/>
           </g>
-          <!-- 소나무들 -->
-          <g transform="translate(420,185)">
-            <rect x="-3" y="-45" width="6" height="45" fill="#6B3C10"/>
-            <polygon points="0,-90 -18,-45 18,-45" fill="#2E7030"/>
-            <polygon points="0,-68 -22,-30 22,-30" fill="#3A8838"/>
-            <polygon points="0,-45 -26,-12 26,-12" fill="#2E7030"/>
+
+          <!-- 초가집 3 -->
+          <g transform="translate(820,200)">
+            <rect x="-26" y="-26" width="52" height="38" fill="#D8B868"/>
+            <g stroke="#C0A048" stroke-width="0.7" opacity="0.4">
+              <line x1="-26" y1="-14" x2="26" y2="-14"/><line x1="-26" y1="-2" x2="26" y2="-2"/>
+            </g>
+            <path d="M-34,-26 Q0,-62 34,-26 Z" fill="#B89040"/>
+            <g stroke="#A07828" stroke-width="0.7" opacity="0.5" fill="none">
+              <path d="M-32,-27 Q0,-58 32,-27"/><path d="M-29,-28 Q0,-54 29,-28"/><path d="M-25,-26 Q0,-50 25,-26"/>
+            </g>
+            <path d="M-36,-25 Q0,-54 36,-25 L36,-20 Q0,-49 -36,-20 Z" fill="#C8A838" opacity="0.6"/>
+            <rect x="-8" y="-12" width="16" height="26" rx="1" fill="#8B5A20" stroke="#6B3A10" stroke-width="1.2"/>
+            <rect x="-23" y="-20" width="12" height="11" rx="1" fill="#E8D890" stroke="#8B5A20" stroke-width="0.8"/>
+            <line x1="-17" y1="-20" x2="-17" y2="-9" stroke="#8B5A20" stroke-width="0.7"/>
+            <line x1="-23" y1="-14.5" x2="-11" y2="-14.5" stroke="#8B5A20" stroke-width="0.7"/>
           </g>
-          <g transform="translate(680,182)" opacity=".9">
-            <rect x="-3" y="-42" width="6" height="42" fill="#6B3C10"/>
-            <polygon points="0,-82 -16,-42 16,-42" fill="#3A8838"/>
-            <polygon points="0,-60 -20,-26 20,-26" fill="#2E7030"/>
-            <polygon points="0,-40 -24,-8 24,-8" fill="#3A8838"/>
+
+          <!-- 소나무들 (상세) -->
+          <g transform="translate(458,182)">
+            <rect x="-4" y="-55" width="8" height="55" fill="#5A2C08"/>
+            <line x1="-2" y1="-50" x2="-1" y2="-8" stroke="#4A2006" stroke-width="0.8" opacity="0.5"/>
+            <polygon points="0,-112 -22,-55 22,-55" fill="#1E6028"/>
+            <polygon points="2,-104 -21,-50 23,-50" fill="#2E8040" opacity="0.5"/>
+            <polygon points="0,-85 -28,-38 28,-38" fill="#2A7830"/>
+            <polygon points="2,-77 -27,-32 29,-32" fill="#226828" opacity="0.5"/>
+            <polygon points="0,-58 -34,-16 34,-16" fill="#1E6028"/>
           </g>
-          <!-- 우물 -->
-          <g transform="translate(460,210)" opacity=".7">
-            <rect x="-10" y="-8" width="20" height="10" rx="3" fill="#888"/><ellipse cx="0" cy="-8" rx="10" ry="4" fill="#AAA"/>
+          <g transform="translate(740,178)" opacity="0.9">
+            <rect x="-4" y="-52" width="8" height="52" fill="#5A2C08"/>
+            <polygon points="0,-105 -20,-52 20,-52" fill="#2E8040"/>
+            <polygon points="0,-80 -26,-36 26,-36" fill="#1E6028"/>
+            <polygon points="0,-55 -32,-14 32,-14" fill="#2A7830"/>
+          </g>
+          <!-- 대나무 숲 (오른쪽) -->
+          <g transform="translate(1050,175)" opacity="0.8">
+            <g stroke="#5A9028" stroke-width="6" stroke-linecap="round">
+              <line x1="-18" y1="0" x2="-20" y2="-90"/>
+              <line x1="-6"  y1="0" x2="-5"  y2="-100"/>
+              <line x1="6"   y1="0" x2="8"   y2="-95"/>
+              <line x1="18"  y1="0" x2="16"  y2="-88"/>
+            </g>
+            <!-- 대나무 마디 -->
+            <g stroke="#4A7820" stroke-width="1.5" opacity="0.7">
+              <line x1="-21" y1="-25" x2="-18" y2="-25"/><line x1="-21" y1="-50" x2="-18" y2="-50"/>
+              <line x1="-6"  y1="-28" x2="-3"  y2="-28"/><line x1="-6"  y1="-55" x2="-3"  y2="-55"/>
+              <line x1="7"   y1="-26" x2="10"  y2="-26"/><line x1="7"   y1="-52" x2="10"  y2="-52"/>
+            </g>
+            <!-- 대나무 잎 -->
+            <g fill="#4A8820" opacity="0.7">
+              <path d="M-20,-88 Q-30,-98 -18,-94 Z"/>
+              <path d="M-5,-98 Q0,-112 4,-102 Z"/>
+              <path d="M8,-93 Q18,-104 12,-98 Z"/>
+            </g>
+          </g>
+          <!-- 우물 (상세) -->
+          <g transform="translate(490,218)">
+            <ellipse cx="0" cy="0" rx="16" ry="10" fill="#7A9CB8" opacity="0.6"/>
+            <ellipse cx="0" cy="0" rx="16" ry="10" fill="none" stroke="#5A8CA8" stroke-width="1.5"/>
+            <rect x="-14" y="-12" width="28" height="12" rx="3" fill="#C8B898" stroke="#A89878" stroke-width="1.2"/>
+            <!-- 두레박 -->
+            <line x1="0" y1="-12" x2="-2" y2="-28" stroke="#8B5A20" stroke-width="1.5"/>
+            <ellipse cx="-2" cy="-30" rx="5" ry="4" fill="#C8B070" stroke="#8B6020" stroke-width="1"/>
+          </g>
+          <!-- 장독대 (항아리들) -->
+          <g transform="translate(270,215)">
+            <ellipse cx="-14" cy="-2" rx="10" ry="16" fill="#8B6020" stroke="#6B4810" stroke-width="1"/>
+            <ellipse cx="-14" cy="-16" rx="8" ry="4" fill="#7A5018"/>
+            <ellipse cx="4" cy="-4" rx="9" ry="14" fill="#9B7028" stroke="#6B4810" stroke-width="1"/>
+            <ellipse cx="4" cy="-16" rx="7" ry="3.5" fill="#8A6020"/>
+            <ellipse cx="20" cy="-1" rx="11" ry="17" fill="#8B6020" stroke="#6B4810" stroke-width="1"/>
+            <ellipse cx="20" cy="-16" rx="9" ry="4" fill="#7A5018"/>
+          </g>
+          <!-- 소 (먼거리) -->
+          <g transform="translate(930,205)" opacity="0.75">
+            <ellipse cx="0" cy="0" rx="22" ry="12" fill="#C8A860"/>
+            <ellipse cx="20" cy="-5" rx="10" ry="9" fill="#C8A860"/>
+            <!-- 소 머리 -->
+            <path d="M28,-10 Q36,-12 36,-6 Q30,-4 28,-10 Z" fill="#C8A860"/>
+            <!-- 뿔 -->
+            <path d="M32,-14 Q36,-20 34,-16" stroke="#8B6020" stroke-width="1.5" fill="none"/>
+            <path d="M36,-12 Q40,-18 38,-14" stroke="#8B6020" stroke-width="1.5" fill="none"/>
+            <!-- 다리 -->
+            <g stroke="#B09050" stroke-width="4" stroke-linecap="round">
+              <line x1="-14" y1="10" x2="-14" y2="22"/><line x1="-2" y1="11" x2="-2" y2="23"/>
+              <line x1="10" y1="10" x2="10" y2="22"/><line x1="18" y1="9" x2="18" y2="21"/>
+            </g>
+            <!-- 꼬리 -->
+            <path d="M-22,0 Q-30,5 -28,12" stroke="#B09050" stroke-width="2.5" fill="none" stroke-linecap="round"/>
           </g>
         </svg>
       </div>
 
-      <!-- 2026년: 아파트 단지 (낮, 밝은) -->
+      <!-- 2026년: 아파트 단지 (상세, 낮) -->
       <div id="fl-ground-mod">
-        <svg viewBox="0 0 1400 260" width="100%" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg" style="display:block;">
-          <!-- 도로 -->
-          <rect x="0" y="220" width="1400" height="40" fill="#C8C0B0"/>
-          <line x1="0" y1="240" x2="1400" y2="240" stroke="white" stroke-width="2" stroke-dasharray="40,30"/>
-          <!-- 인도 -->
-          <rect x="0" y="215" width="1400" height="8" fill="#D8D0C0"/>
+        <svg viewBox="0 0 1400 270" width="100%" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+          <defs>
+            <linearGradient id="roadGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#B8B0A4"/><stop offset="100%" stop-color="#A8A098"/>
+            </linearGradient>
+          </defs>
 
-          <!-- 아파트 단지 A (왼쪽) -->
+          <!-- 지면 기반 -->
+          <rect x="0" y="225" width="1400" height="45" fill="url(#roadGrad)"/>
+          <!-- 인도 (보행로) -->
+          <rect x="0" y="218" width="1400" height="10" fill="#C8C0B0"/>
+          <!-- 인도 타일 줄눈 -->
+          <g stroke="#B8B0A0" stroke-width="0.6" opacity="0.5">
+            <line x1="0" y1="222" x2="1400" y2="222"/>
+            <line x1="0" y1="226" x2="1400" y2="226"/>
+          </g>
+          <!-- 도로 차선 -->
+          <line x1="0" y1="248" x2="1400" y2="248" stroke="white" stroke-width="2.5" stroke-dasharray="50,35" opacity="0.8"/>
+          <!-- 도로 갓길 선 -->
+          <line x1="0" y1="228" x2="1400" y2="228" stroke="#FFFF00" stroke-width="1.5" opacity="0.6"/>
+          <line x1="0" y1="268" x2="1400" y2="268" stroke="white" stroke-width="1.5" opacity="0.5"/>
+
+          <!-- 아파트 단지 A (왼쪽, 상세) -->
           <g>
-            <rect x="20"  y="80"  width="55" height="140" fill="#E8E0D0" stroke="#C8C0B0" stroke-width="1"/>
-            <rect x="80"  y="60"  width="55" height="160" fill="#E0D8C8" stroke="#C8C0B0" stroke-width="1"/>
-            <rect x="140" y="45"  width="55" height="175" fill="#E8E0D0" stroke="#C8C0B0" stroke-width="1"/>
-            <rect x="200" y="70"  width="55" height="150" fill="#D8D0C0" stroke="#C8C0B0" stroke-width="1"/>
-            <!-- 창문 격자 -->
-            <g fill="#A8C8E8" stroke="#B0B8C0" stroke-width=".5">
-              <rect x="28" y="90" width="8" height="6" rx="1"/><rect x="42" y="90" width="8" height="6" rx="1"/><rect x="56" y="90" width="8" height="6" rx="1"/>
-              <rect x="28" y="102" width="8" height="6" rx="1"/><rect x="42" y="102" width="8" height="6" rx="1"/><rect x="56" y="102" width="8" height="6" rx="1"/>
-              <rect x="28" y="114" width="8" height="6" rx="1"/><rect x="42" y="114" width="8" height="6" rx="1"/><rect x="56" y="114" width="8" height="6" rx="1"/>
-              <rect x="88" y="70" width="8" height="6" rx="1"/><rect x="102" y="70" width="8" height="6" rx="1"/><rect x="116" y="70" width="8" height="6" rx="1"/>
-              <rect x="88" y="82" width="8" height="6" rx="1"/><rect x="102" y="82" width="8" height="6" rx="1"/><rect x="116" y="82" width="8" height="6" rx="1"/>
-              <rect x="88" y="94" width="8" height="6" rx="1"/><rect x="102" y="94" width="8" height="6" rx="1"/><rect x="116" y="94" width="8" height="6" rx="1"/>
+            <!-- 건물 1 -->
+            <rect x="15" y="72" width="58" height="150" fill="#E8E2D8" stroke="#C8C0B4" stroke-width="1.2"/>
+            <!-- 발코니 라인 (수평 돌출) -->
+            <g fill="#D8D0C4" stroke="#C0B8AC" stroke-width="0.8">
+              <rect x="13" y="86" width="62" height="5" rx="1"/><rect x="13" y="100" width="62" height="5" rx="1"/>
+              <rect x="13" y="114" width="62" height="5" rx="1"/><rect x="13" y="128" width="62" height="5" rx="1"/>
+              <rect x="13" y="142" width="62" height="5" rx="1"/><rect x="13" y="156" width="62" height="5" rx="1"/>
+              <rect x="13" y="170" width="62" height="5" rx="1"/><rect x="13" y="184" width="62" height="5" rx="1"/>
+            </g>
+            <!-- 창문 격자 (상세) -->
+            <g fill="#A8C8E8" stroke="#90B0D0" stroke-width="0.7">
+              <rect x="20" y="77" width="10" height="7" rx="1"/><rect x="34" y="77" width="10" height="7" rx="1"/><rect x="48" y="77" width="10" height="7" rx="1"/><rect x="62" y="77" width="7" height="7" rx="1"/>
+              <rect x="20" y="91" width="10" height="7" rx="1"/><rect x="34" y="91" width="10" height="7" rx="1"/><rect x="48" y="91" width="10" height="7" rx="1"/>
+              <rect x="20" y="105" width="10" height="7" rx="1"/><rect x="34" y="105" width="10" height="7" rx="1"/><rect x="48" y="105" width="10" height="7" rx="1"/>
+              <rect x="20" y="119" width="10" height="7" rx="1"/><rect x="34" y="119" width="10" height="7" rx="1"/><rect x="48" y="119" width="10" height="7" rx="1"/>
+              <rect x="20" y="133" width="10" height="7" rx="1"/><rect x="34" y="133" width="10" height="7" rx="1"/><rect x="48" y="133" width="10" height="7" rx="1"/>
+              <rect x="20" y="147" width="10" height="7" rx="1"/><rect x="34" y="147" width="10" height="7" rx="1"/><rect x="48" y="147" width="10" height="7" rx="1"/>
+              <rect x="20" y="161" width="10" height="7" rx="1"/><rect x="34" y="161" width="10" height="7" rx="1"/><rect x="48" y="161" width="10" height="7" rx="1"/>
+              <rect x="20" y="175" width="10" height="7" rx="1"/><rect x="34" y="175" width="10" height="7" rx="1"/><rect x="48" y="175" width="10" height="7" rx="1"/>
+            </g>
+            <!-- 건물 2 (더 높음) -->
+            <rect x="78" y="52" width="58" height="170" fill="#E0DAD0" stroke="#C8C0B4" stroke-width="1.2"/>
+            <g fill="#D0C8BE" stroke="#C0B8AC" stroke-width="0.8">
+              <rect x="76" y="65" width="62" height="5" rx="1"/><rect x="76" y="79" width="62" height="5" rx="1"/>
+              <rect x="76" y="93" width="62" height="5" rx="1"/><rect x="76" y="107" width="62" height="5" rx="1"/>
+              <rect x="76" y="121" width="62" height="5" rx="1"/><rect x="76" y="135" width="62" height="5" rx="1"/>
+              <rect x="76" y="149" width="62" height="5" rx="1"/><rect x="76" y="163" width="62" height="5" rx="1"/>
+              <rect x="76" y="177" width="62" height="5" rx="1"/><rect x="76" y="191" width="62" height="5" rx="1"/>
+            </g>
+            <g fill="#A8C8E8" stroke="#90B0D0" stroke-width="0.7">
+              <rect x="83" y="57" width="10" height="7" rx="1"/><rect x="97" y="57" width="10" height="7" rx="1"/><rect x="111" y="57" width="10" height="7" rx="1"/><rect x="125" y="57" width="7" height="7" rx="1"/>
+              <rect x="83" y="71" width="10" height="7" rx="1"/><rect x="97" y="71" width="10" height="7" rx="1"/><rect x="111" y="71" width="10" height="7" rx="1"/>
+              <rect x="83" y="85" width="10" height="7" rx="1"/><rect x="97" y="85" width="10" height="7" rx="1"/><rect x="111" y="85" width="10" height="7" rx="1"/>
+              <rect x="83" y="99" width="10" height="7" rx="1"/><rect x="97" y="99" width="10" height="7" rx="1"/><rect x="111" y="99" width="10" height="7" rx="1"/>
+              <rect x="83" y="113" width="10" height="7" rx="1"/><rect x="97" y="113" width="10" height="7" rx="1"/><rect x="111" y="113" width="10" height="7" rx="1"/>
+              <rect x="83" y="127" width="10" height="7" rx="1"/><rect x="97" y="127" width="10" height="7" rx="1"/><rect x="111" y="127" width="10" height="7" rx="1"/>
+              <rect x="83" y="141" width="10" height="7" rx="1"/><rect x="97" y="141" width="10" height="7" rx="1"/><rect x="111" y="141" width="10" height="7" rx="1"/>
+              <rect x="83" y="155" width="10" height="7" rx="1"/><rect x="97" y="155" width="10" height="7" rx="1"/><rect x="111" y="155" width="10" height="7" rx="1"/>
+            </g>
+            <!-- 건물 3 -->
+            <rect x="142" y="40" width="58" height="182" fill="#E8E2D8" stroke="#C8C0B4" stroke-width="1.2"/>
+            <g fill="#D8D0C4" stroke="#C0B8AC" stroke-width="0.8">
+              <rect x="140" y="52" width="62" height="5" rx="1"/><rect x="140" y="66" width="62" height="5" rx="1"/>
+              <rect x="140" y="80" width="62" height="5" rx="1"/><rect x="140" y="94" width="62" height="5" rx="1"/>
+              <rect x="140" y="108" width="62" height="5" rx="1"/><rect x="140" y="122" width="62" height="5" rx="1"/>
+              <rect x="140" y="136" width="62" height="5" rx="1"/><rect x="140" y="150" width="62" height="5" rx="1"/>
+              <rect x="140" y="164" width="62" height="5" rx="1"/><rect x="140" y="178" width="62" height="5" rx="1"/>
+              <rect x="140" y="192" width="62" height="5" rx="1"/>
             </g>
           </g>
 
-          <!-- 아파트 단지 B (중간) -->
+          <!-- 아파트 단지 B (중간, 상세) -->
           <g>
-            <rect x="380" y="30"  width="65" height="190" fill="#D8E0E8" stroke="#C0C8D0" stroke-width="1"/>
-            <rect x="450" y="50"  width="65" height="170" fill="#E0D8D0" stroke="#C8C0B8" stroke-width="1"/>
-            <rect x="520" y="20"  width="65" height="200" fill="#D8E0E8" stroke="#C0C8D0" stroke-width="1"/>
-            <rect x="590" y="55"  width="65" height="165" fill="#E8E0D8" stroke="#C8C0B0" stroke-width="1"/>
-            <rect x="660" y="35"  width="65" height="185" fill="#D8E0E8" stroke="#C0C8D0" stroke-width="1"/>
-            <g fill="#A8C8E8" stroke="#B0B8C0" stroke-width=".5">
-              <rect x="390" y="40" width="9" height="7" rx="1"/><rect x="406" y="40" width="9" height="7" rx="1"/><rect x="422" y="40" width="9" height="7" rx="1"/>
-              <rect x="390" y="54" width="9" height="7" rx="1"/><rect x="406" y="54" width="9" height="7" rx="1"/><rect x="422" y="54" width="9" height="7" rx="1"/>
-              <rect x="390" y="68" width="9" height="7" rx="1"/><rect x="406" y="68" width="9" height="7" rx="1"/><rect x="422" y="68" width="9" height="7" rx="1"/>
-              <rect x="530" y="30" width="9" height="7" rx="1"/><rect x="546" y="30" width="9" height="7" rx="1"/><rect x="562" y="30" width="9" height="7" rx="1"/>
-              <rect x="530" y="44" width="9" height="7" rx="1"/><rect x="546" y="44" width="9" height="7" rx="1"/><rect x="562" y="44" width="9" height="7" rx="1"/>
-              <rect x="530" y="58" width="9" height="7" rx="1"/><rect x="546" y="58" width="9" height="7" rx="1"/><rect x="562" y="58" width="9" height="7" rx="1"/>
+            <rect x="380" y="22" width="68" height="200" fill="#DAEAF0" stroke="#BAD0DC" stroke-width="1.2"/>
+            <g fill="#CAD8E4" stroke="#BACCDA" stroke-width="0.8">
+              <rect x="378" y="34" width="72" height="5" rx="1"/><rect x="378" y="48" width="72" height="5" rx="1"/>
+              <rect x="378" y="62" width="72" height="5" rx="1"/><rect x="378" y="76" width="72" height="5" rx="1"/>
+              <rect x="378" y="90" width="72" height="5" rx="1"/><rect x="378" y="104" width="72" height="5" rx="1"/>
+              <rect x="378" y="118" width="72" height="5" rx="1"/><rect x="378" y="132" width="72" height="5" rx="1"/>
+              <rect x="378" y="146" width="72" height="5" rx="1"/><rect x="378" y="160" width="72" height="5" rx="1"/>
+              <rect x="378" y="174" width="72" height="5" rx="1"/><rect x="378" y="188" width="72" height="5" rx="1"/>
+            </g>
+            <g fill="#A0C0DE" stroke="#88A8C8" stroke-width="0.8">
+              <rect x="387" y="27" width="11" height="8" rx="1"/><rect x="402" y="27" width="11" height="8" rx="1"/><rect x="417" y="27" width="11" height="8" rx="1"/><rect x="432" y="27" width="11" height="8" rx="1"/>
+              <rect x="387" y="41" width="11" height="8" rx="1"/><rect x="402" y="41" width="11" height="8" rx="1"/><rect x="417" y="41" width="11" height="8" rx="1"/><rect x="432" y="41" width="11" height="8" rx="1"/>
+              <rect x="387" y="55" width="11" height="8" rx="1"/><rect x="402" y="55" width="11" height="8" rx="1"/><rect x="417" y="55" width="11" height="8" rx="1"/>
+              <rect x="387" y="69" width="11" height="8" rx="1"/><rect x="402" y="69" width="11" height="8" rx="1"/><rect x="417" y="69" width="11" height="8" rx="1"/>
+              <rect x="387" y="83" width="11" height="8" rx="1"/><rect x="402" y="83" width="11" height="8" rx="1"/><rect x="417" y="83" width="11" height="8" rx="1"/>
+              <rect x="387" y="97" width="11" height="8" rx="1"/><rect x="402" y="97" width="11" height="8" rx="1"/><rect x="417" y="97" width="11" height="8" rx="1"/>
+            </g>
+            <rect x="455" y="42" width="68" height="180" fill="#E8E0D4" stroke="#C8C0B4" stroke-width="1.2"/>
+            <g fill="#D8D0C4" stroke="#C0B8AC" stroke-width="0.8">
+              <rect x="453" y="54" width="72" height="5" rx="1"/><rect x="453" y="68" width="72" height="5" rx="1"/>
+              <rect x="453" y="82" width="72" height="5" rx="1"/><rect x="453" y="96" width="72" height="5" rx="1"/>
+              <rect x="453" y="110" width="72" height="5" rx="1"/><rect x="453" y="124" width="72" height="5" rx="1"/>
+              <rect x="453" y="138" width="72" height="5" rx="1"/><rect x="453" y="152" width="72" height="5" rx="1"/>
+              <rect x="453" y="166" width="72" height="5" rx="1"/><rect x="453" y="180" width="72" height="5" rx="1"/>
+              <rect x="453" y="194" width="72" height="5" rx="1"/>
+            </g>
+            <g fill="#A8C8E8" stroke="#90B0D0" stroke-width="0.8">
+              <rect x="462" y="47" width="11" height="8" rx="1"/><rect x="477" y="47" width="11" height="8" rx="1"/><rect x="492" y="47" width="11" height="8" rx="1"/><rect x="507" y="47" width="8" height="8" rx="1"/>
+              <rect x="462" y="61" width="11" height="8" rx="1"/><rect x="477" y="61" width="11" height="8" rx="1"/><rect x="492" y="61" width="11" height="8" rx="1"/>
+              <rect x="462" y="75" width="11" height="8" rx="1"/><rect x="477" y="75" width="11" height="8" rx="1"/><rect x="492" y="75" width="11" height="8" rx="1"/>
+              <rect x="462" y="89" width="11" height="8" rx="1"/><rect x="477" y="89" width="11" height="8" rx="1"/><rect x="492" y="89" width="11" height="8" rx="1"/>
+              <rect x="462" y="103" width="11" height="8" rx="1"/><rect x="477" y="103" width="11" height="8" rx="1"/><rect x="492" y="103" width="11" height="8" rx="1"/>
+              <rect x="462" y="117" width="11" height="8" rx="1"/><rect x="477" y="117" width="11" height="8" rx="1"/>
+              <rect x="462" y="131" width="11" height="8" rx="1"/><rect x="477" y="131" width="11" height="8" rx="1"/>
+            </g>
+            <rect x="530" y="18" width="68" height="204" fill="#DAEAF0" stroke="#BAD0DC" stroke-width="1.2"/>
+            <g fill="#CAD8E4" stroke="#BACCDA" stroke-width="0.8">
+              <rect x="528" y="30" width="72" height="5" rx="1"/><rect x="528" y="44" width="72" height="5" rx="1"/>
+              <rect x="528" y="58" width="72" height="5" rx="1"/><rect x="528" y="72" width="72" height="5" rx="1"/>
+              <rect x="528" y="86" width="72" height="5" rx="1"/><rect x="528" y="100" width="72" height="5" rx="1"/>
+              <rect x="528" y="114" width="72" height="5" rx="1"/><rect x="528" y="128" width="72" height="5" rx="1"/>
+              <rect x="528" y="142" width="72" height="5" rx="1"/><rect x="528" y="156" width="72" height="5" rx="1"/>
+              <rect x="528" y="170" width="72" height="5" rx="1"/><rect x="528" y="184" width="72" height="5" rx="1"/>
+              <rect x="528" y="198" width="72" height="5" rx="1"/>
             </g>
           </g>
 
           <!-- 아파트 단지 C (오른쪽) -->
           <g>
-            <rect x="950"  y="55"  width="60" height="165" fill="#E0D8D0" stroke="#C8C0B8" stroke-width="1"/>
-            <rect x="1015" y="35"  width="60" height="185" fill="#D8E0E8" stroke="#C0C8D0" stroke-width="1"/>
-            <rect x="1080" y="20"  width="60" height="200" fill="#E8E0D8" stroke="#C8C0B0" stroke-width="1"/>
-            <rect x="1145" y="45"  width="60" height="175" fill="#D8E0E8" stroke="#C0C8D0" stroke-width="1"/>
-            <rect x="1210" y="65"  width="60" height="155" fill="#E0D8D0" stroke="#C8C0B8" stroke-width="1"/>
-            <rect x="1275" y="40"  width="60" height="180" fill="#D8E0E8" stroke="#C0C8D0" stroke-width="1"/>
-            <g fill="#A8C8E8" stroke="#B0B8C0" stroke-width=".5">
-              <rect x="960" y="65" width="9" height="7" rx="1"/><rect x="976" y="65" width="9" height="7" rx="1"/><rect x="992" y="65" width="9" height="7" rx="1"/>
-              <rect x="960" y="79" width="9" height="7" rx="1"/><rect x="976" y="79" width="9" height="7" rx="1"/><rect x="992" y="79" width="9" height="7" rx="1"/>
-              <rect x="1090" y="30" width="9" height="7" rx="1"/><rect x="1106" y="30" width="9" height="7" rx="1"/><rect x="1122" y="30" width="9" height="7" rx="1"/>
-              <rect x="1090" y="44" width="9" height="7" rx="1"/><rect x="1106" y="44" width="9" height="7" rx="1"/><rect x="1122" y="44" width="9" height="7" rx="1"/>
+            <rect x="940"  y="48"  width="62" height="174" fill="#E8E0D4" stroke="#C8C0B4" stroke-width="1.2"/>
+            <g fill="#D8D0C4" stroke="#C0B8AC" stroke-width="0.8">
+              <rect x="938" y="60" width="66" height="5" rx="1"/><rect x="938" y="74" width="66" height="5" rx="1"/>
+              <rect x="938" y="88" width="66" height="5" rx="1"/><rect x="938" y="102" width="66" height="5" rx="1"/>
+              <rect x="938" y="116" width="66" height="5" rx="1"/><rect x="938" y="130" width="66" height="5" rx="1"/>
+              <rect x="938" y="144" width="66" height="5" rx="1"/><rect x="938" y="158" width="66" height="5" rx="1"/>
+              <rect x="938" y="172" width="66" height="5" rx="1"/><rect x="938" y="186" width="66" height="5" rx="1"/>
+              <rect x="938" y="200" width="66" height="5" rx="1"/>
+            </g>
+            <g fill="#A8C8E8" stroke="#90B0D0" stroke-width="0.7">
+              <rect x="948" y="53" width="10" height="7" rx="1"/><rect x="962" y="53" width="10" height="7" rx="1"/><rect x="976" y="53" width="10" height="7" rx="1"/>
+              <rect x="948" y="67" width="10" height="7" rx="1"/><rect x="962" y="67" width="10" height="7" rx="1"/><rect x="976" y="67" width="10" height="7" rx="1"/>
+              <rect x="948" y="81" width="10" height="7" rx="1"/><rect x="962" y="81" width="10" height="7" rx="1"/><rect x="976" y="81" width="10" height="7" rx="1"/>
+              <rect x="948" y="95" width="10" height="7" rx="1"/><rect x="962" y="95" width="10" height="7" rx="1"/>
+              <rect x="948" y="109" width="10" height="7" rx="1"/><rect x="962" y="109" width="10" height="7" rx="1"/>
+              <rect x="948" y="123" width="10" height="7" rx="1"/><rect x="962" y="123" width="10" height="7" rx="1"/>
+              <rect x="948" y="137" width="10" height="7" rx="1"/><rect x="962" y="137" width="10" height="7" rx="1"/>
+            </g>
+            <rect x="1008" y="28" width="62" height="194" fill="#E0DAD0" stroke="#C8C0B4" stroke-width="1.2"/>
+            <g fill="#D0C8BE" stroke="#C0B8AC" stroke-width="0.8">
+              <rect x="1006" y="40" width="66" height="5" rx="1"/><rect x="1006" y="54" width="66" height="5" rx="1"/>
+              <rect x="1006" y="68" width="66" height="5" rx="1"/><rect x="1006" y="82" width="66" height="5" rx="1"/>
+              <rect x="1006" y="96" width="66" height="5" rx="1"/><rect x="1006" y="110" width="66" height="5" rx="1"/>
+              <rect x="1006" y="124" width="66" height="5" rx="1"/><rect x="1006" y="138" width="66" height="5" rx="1"/>
+              <rect x="1006" y="152" width="66" height="5" rx="1"/><rect x="1006" y="166" width="66" height="5" rx="1"/>
+              <rect x="1006" y="180" width="66" height="5" rx="1"/><rect x="1006" y="194" width="66" height="5" rx="1"/>
+            </g>
+            <g fill="#A8C8E8" stroke="#90B0D0" stroke-width="0.7">
+              <rect x="1018" y="33" width="10" height="7" rx="1"/><rect x="1032" y="33" width="10" height="7" rx="1"/><rect x="1046" y="33" width="10" height="7" rx="1"/><rect x="1060" y="33" width="8" height="7" rx="1"/>
+              <rect x="1018" y="47" width="10" height="7" rx="1"/><rect x="1032" y="47" width="10" height="7" rx="1"/><rect x="1046" y="47" width="10" height="7" rx="1"/>
+              <rect x="1018" y="61" width="10" height="7" rx="1"/><rect x="1032" y="61" width="10" height="7" rx="1"/><rect x="1046" y="61" width="10" height="7" rx="1"/>
+              <rect x="1018" y="75" width="10" height="7" rx="1"/><rect x="1032" y="75" width="10" height="7" rx="1"/><rect x="1046" y="75" width="10" height="7" rx="1"/>
+              <rect x="1018" y="89" width="10" height="7" rx="1"/><rect x="1032" y="89" width="10" height="7" rx="1"/><rect x="1046" y="89" width="10" height="7" rx="1"/>
+              <rect x="1018" y="103" width="10" height="7" rx="1"/><rect x="1032" y="103" width="10" height="7" rx="1"/>
+              <rect x="1018" y="117" width="10" height="7" rx="1"/><rect x="1032" y="117" width="10" height="7" rx="1"/>
+              <rect x="1018" y="131" width="10" height="7" rx="1"/><rect x="1032" y="131" width="10" height="7" rx="1"/>
+            </g>
+            <rect x="1076" y="12" width="62" height="210" fill="#DAEAF0" stroke="#BAD0DC" stroke-width="1.2"/>
+            <g fill="#CAD8E4" stroke="#BACCDA" stroke-width="0.8">
+              <rect x="1074" y="24" width="66" height="5" rx="1"/><rect x="1074" y="38" width="66" height="5" rx="1"/>
+              <rect x="1074" y="52" width="66" height="5" rx="1"/><rect x="1074" y="66" width="66" height="5" rx="1"/>
+              <rect x="1074" y="80" width="66" height="5" rx="1"/><rect x="1074" y="94" width="66" height="5" rx="1"/>
+              <rect x="1074" y="108" width="66" height="5" rx="1"/><rect x="1074" y="122" width="66" height="5" rx="1"/>
+              <rect x="1074" y="136" width="66" height="5" rx="1"/><rect x="1074" y="150" width="66" height="5" rx="1"/>
+              <rect x="1074" y="164" width="66" height="5" rx="1"/><rect x="1074" y="178" width="66" height="5" rx="1"/>
+              <rect x="1074" y="192" width="66" height="5" rx="1"/><rect x="1074" y="206" width="66" height="5" rx="1"/>
             </g>
           </g>
 
-          <!-- 나무 (도시 나무) -->
-          <g transform="translate(355,205)"><rect x="-3" y="-30" width="6" height="30" fill="#8B6030"/><circle cx="0" cy="-38" r="18" fill="#4A9830"/></g>
-          <g transform="translate(740,208)"><rect x="-3" y="-28" width="6" height="28" fill="#8B6030"/><circle cx="0" cy="-35" r="16" fill="#5AAA40"/></g>
-          <g transform="translate(920,206)"><rect x="-3" y="-30" width="6" height="30" fill="#8B6030"/><circle cx="0" cy="-38" r="18" fill="#4A9830"/></g>
+          <!-- 가로수 (상세, 도시 나무) -->
+          <g transform="translate(358,212)">
+            <rect x="-4" y="-36" width="8" height="36" fill="#6B4818"/>
+            <!-- 나무껍질 결 -->
+            <line x1="-2" y1="-32" x2="-1" y2="-5" stroke="#5A3810" stroke-width="1" opacity="0.5"/>
+            <circle cx="0" cy="-46" r="22" fill="#3A9828"/>
+            <circle cx="-10" cy="-38" r="16" fill="#4AAA34" opacity="0.7"/>
+            <circle cx="12" cy="-42" r="18" fill="#3A9828" opacity="0.8"/>
+            <circle cx="2" cy="-52" r="14" fill="#50B840" opacity="0.7"/>
+          </g>
+          <g transform="translate(748,210)">
+            <rect x="-4" y="-34" width="8" height="34" fill="#6B4818"/>
+            <circle cx="0" cy="-44" r="20" fill="#4AAA34"/>
+            <circle cx="-9" cy="-36" r="14" fill="#50B840" opacity="0.7"/>
+            <circle cx="10" cy="-40" r="16" fill="#3A9828" opacity="0.8"/>
+          </g>
+          <g transform="translate(928,210)">
+            <rect x="-4" y="-34" width="8" height="34" fill="#6B4818"/>
+            <circle cx="0" cy="-44" r="21" fill="#3A9828"/>
+            <circle cx="-10" cy="-38" r="15" fill="#4AAA34" opacity="0.7"/>
+            <circle cx="11" cy="-41" r="17" fill="#50B840" opacity="0.8"/>
+          </g>
+
+          <!-- 주차장 (아파트 1 앞) -->
+          <rect x="15" y="218" width="265" height="14" fill="#C0B8A8" opacity="0.6"/>
+          <g stroke="#D8D0C0" stroke-width="1" opacity="0.8">
+            <line x1="60" y1="218" x2="60" y2="232"/><line x1="106" y1="218" x2="106" y2="232"/>
+            <line x1="152" y1="218" x2="152" y2="232"/><line x1="198" y1="218" x2="198" y2="232"/>
+            <line x1="244" y1="218" x2="244" y2="232"/>
+          </g>
+          <!-- 주차된 차들 (단순화) -->
+          <g fill="#88A0C0" stroke="#6888A8" stroke-width="0.8">
+            <rect x="18" y="220" width="38" height="10" rx="2"/>
+            <rect x="64" y="220" width="38" height="10" rx="2"/>
+            <rect x="110" y="220" width="38" height="10" rx="2"/>
+          </g>
+          <g fill="#C07830" stroke="#A06020" stroke-width="0.8">
+            <rect x="156" y="220" width="38" height="10" rx="2"/>
+          </g>
+          <!-- 편의점 간판 느낌 -->
+          <rect x="310" y="195" width="60" height="28" fill="#E8E0D0" stroke="#C0B8A8" stroke-width="1"/>
+          <rect x="310" y="195" width="60" height="10" fill="#1B8A4A"/>
+          <rect x="312" y="197" width="56" height="6" fill="#1B8A4A"/>
         </svg>
       </div>
     </div>
