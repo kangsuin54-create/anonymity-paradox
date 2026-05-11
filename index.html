@@ -3624,6 +3624,7 @@ function handleGateClick(){
 let walkStep=0;
 function walkForward(){
   walkStep++;
+  playFootstep();
   const img=document.getElementById('village-img');
   const hint=document.getElementById('walk-hint');
 
@@ -3669,6 +3670,7 @@ const flightObs=new IntersectionObserver(entries=>{
 function triggerFlight(){
   const sec=document.getElementById('s-flight');
   sec.classList.add('flying');
+  playPlaneWhoosh();
 
   /* Year counter: 1724 → 2024 */
   const yearEl=document.getElementById('fl-year-num');
@@ -3690,64 +3692,143 @@ function triggerFlight(){
 let _ac=null;
 function getAC(){if(!_ac)_ac=new(window.AudioContext||window.webkitAudioContext)();return _ac;}
 
-/* ── 대문 끼익 소리 ── */
+/* ── 대문 끼익 소리 (나무문 삐걱) ── */
 function playDoorCreak(){
   try{
-    const ac=getAC();
+    const ac=getAC(); if(ac.state==='suspended')ac.resume();
     const t=ac.currentTime;
-
-    /* 끼익 본체: sawtooth + FM 변조로 삐걱임 */
-    function makeLayer(base,start,dur,vol){
-      const osc=ac.createOscillator();
-      const lfo=ac.createOscillator();
-      const lfoG=ac.createGain();
-      const filt=ac.createBiquadFilter();
-      const g=ac.createGain();
-
-      osc.type='sawtooth';
-      osc.frequency.setValueAtTime(base,         t+start);
-      osc.frequency.linearRampToValueAtTime(base*2.4, t+start+dur*.35);
-      osc.frequency.linearRampToValueAtTime(base*1.6, t+start+dur*.65);
-      osc.frequency.linearRampToValueAtTime(base*2.0, t+start+dur*.85);
-      osc.frequency.linearRampToValueAtTime(base*1.2, t+start+dur);
-
-      lfo.type='sine'; lfo.frequency.value=14;
-      lfoG.gain.value=base*.35;
-      lfo.connect(lfoG); lfoG.connect(osc.frequency);
-
-      filt.type='bandpass';
-      filt.frequency.setValueAtTime(base*2,t+start);
-      filt.frequency.linearRampToValueAtTime(base*3,t+start+dur*.5);
-      filt.Q.value=2.8;
-
-      g.gain.setValueAtTime(0,          t+start);
-      g.gain.linearRampToValueAtTime(vol,t+start+.07);
-      g.gain.setValueAtTime(vol*.9,      t+start+dur-.18);
-      g.gain.linearRampToValueAtTime(0,  t+start+dur);
-
-      osc.connect(filt); filt.connect(g); g.connect(ac.destination);
-      lfo.start(t+start); lfo.stop(t+start+dur+.05);
-      osc.start(t+start); osc.stop(t+start+dur+.05);
-    }
-
-    makeLayer(160, 0,   1.5, .18); /* 저음 레이어 */
-    makeLayer(210, .08, 1.3, .13); /* 고음 레이어 */
-
-    /* 마찰 노이즈 (나무 긁히는 질감) */
-    const blen=Math.ceil(ac.sampleRate*1.7);
+    const dur=1.8;
+    /* 노이즈 → 고Q 밴드패스 필터 = 삐걱 질감 */
+    const blen=Math.ceil(ac.sampleRate*dur);
     const buf=ac.createBuffer(1,blen,ac.sampleRate);
     const d=buf.getChannelData(0);
     for(let i=0;i<blen;i++) d[i]=(Math.random()*2-1);
     const ns=ac.createBufferSource(); ns.buffer=buf;
-    const nf=ac.createBiquadFilter(); nf.type='bandpass';
-    nf.frequency.setValueAtTime(350,t); nf.frequency.linearRampToValueAtTime(600,t+.8); nf.Q.value=1.8;
-    const ng=ac.createGain();
-    ng.gain.setValueAtTime(0,t);
-    ng.gain.linearRampToValueAtTime(.09,t+.12);
-    ng.gain.setValueAtTime(.07,t+1.1);
-    ng.gain.linearRampToValueAtTime(0,t+1.6);
-    ns.connect(nf); nf.connect(ng); ng.connect(ac.destination);
-    ns.start(t); ns.stop(t+1.7);
+    const f1=ac.createBiquadFilter(); f1.type='bandpass'; f1.Q.value=22;
+    f1.frequency.setValueAtTime(280,t);
+    f1.frequency.exponentialRampToValueAtTime(680,t+.5);
+    f1.frequency.exponentialRampToValueAtTime(420,t+.9);
+    f1.frequency.exponentialRampToValueAtTime(560,t+1.3);
+    f1.frequency.exponentialRampToValueAtTime(320,t+dur);
+    const f2=ac.createBiquadFilter(); f2.type='bandpass'; f2.Q.value=18;
+    f2.frequency.setValueAtTime(560,t);
+    f2.frequency.exponentialRampToValueAtTime(1100,t+.4);
+    f2.frequency.exponentialRampToValueAtTime(700,t+.8);
+    f2.frequency.exponentialRampToValueAtTime(900,t+1.2);
+    f2.frequency.exponentialRampToValueAtTime(500,t+dur);
+    const g=ac.createGain();
+    g.gain.setValueAtTime(0,t);
+    g.gain.linearRampToValueAtTime(.7,t+.08);
+    g.gain.setValueAtTime(.65,t+dur-.2);
+    g.gain.linearRampToValueAtTime(0,t+dur);
+    const g2=ac.createGain(); g2.gain.value=.4;
+    ns.connect(f1); f1.connect(g); g.connect(ac.destination);
+    ns.connect(f2); f2.connect(g2); g2.connect(ac.destination);
+    ns.start(t); ns.stop(t+dur+.1);
+  }catch(e){}
+}
+
+/* ── 발자국 소리 ── */
+function playFootstep(){
+  try{
+    const ac=getAC(); if(ac.state==='suspended')ac.resume();
+    const t=ac.currentTime;
+    /* 저음 쿵 */
+    const o=ac.createOscillator(); const g=ac.createGain();
+    o.type='sine'; o.frequency.setValueAtTime(110,t); o.frequency.exponentialRampToValueAtTime(45,t+.12);
+    g.gain.setValueAtTime(.45,t); g.gain.exponentialRampToValueAtTime(.001,t+.18);
+    o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t+.2);
+    /* 고음 탁 (흙/나무 마찰) */
+    const blen=Math.ceil(ac.sampleRate*.06);
+    const buf=ac.createBuffer(1,blen,ac.sampleRate);
+    const bd=buf.getChannelData(0);
+    for(let i=0;i<blen;i++) bd[i]=(Math.random()*2-1)*(1-i/blen);
+    const ns=ac.createBufferSource(); ns.buffer=buf;
+    const nf=ac.createBiquadFilter(); nf.type='highpass'; nf.frequency.value=900;
+    const ng=ac.createGain(); ng.gain.value=.18;
+    ns.connect(nf); nf.connect(ng); ng.connect(ac.destination); ns.start(t); ns.stop(t+.07);
+  }catch(e){}
+}
+
+/* ── 비행기 휘잉 소리 ── */
+function playPlaneWhoosh(){
+  try{
+    const ac=getAC(); if(ac.state==='suspended')ac.resume();
+    const t=ac.currentTime; const dur=4.2;
+    /* 엔진 허밍 */
+    const osc=ac.createOscillator(); const og=ac.createGain();
+    osc.type='sawtooth';
+    osc.frequency.setValueAtTime(55,t); osc.frequency.linearRampToValueAtTime(95,t+dur*.35);
+    osc.frequency.linearRampToValueAtTime(70,t+dur*.8); osc.frequency.linearRampToValueAtTime(45,t+dur);
+    og.gain.setValueAtTime(0,t); og.gain.linearRampToValueAtTime(.06,t+.4);
+    og.gain.setValueAtTime(.05,t+dur*.7); og.gain.linearRampToValueAtTime(0,t+dur);
+    osc.connect(og); og.connect(ac.destination); osc.start(t); osc.stop(t+dur+.1);
+    /* 바람 휘잉 */
+    const blen=Math.ceil(ac.sampleRate*dur);
+    const buf=ac.createBuffer(1,blen,ac.sampleRate);
+    const d=buf.getChannelData(0); for(let i=0;i<blen;i++) d[i]=(Math.random()*2-1);
+    const ns=ac.createBufferSource(); ns.buffer=buf;
+    const wf=ac.createBiquadFilter(); wf.type='bandpass'; wf.Q.value=.7;
+    wf.frequency.setValueAtTime(150,t); wf.frequency.exponentialRampToValueAtTime(2200,t+dur*.38);
+    wf.frequency.exponentialRampToValueAtTime(600,t+dur*.75); wf.frequency.exponentialRampToValueAtTime(180,t+dur);
+    const wg=ac.createGain();
+    wg.gain.setValueAtTime(0,t); wg.gain.linearRampToValueAtTime(.28,t+.3);
+    wg.gain.setValueAtTime(.22,t+dur*.65); wg.gain.linearRampToValueAtTime(0,t+dur);
+    ns.connect(wf); wf.connect(wg); wg.connect(ac.destination); ns.start(t); ns.stop(t+dur+.1);
+  }catch(e){}
+}
+
+/* ── 댓글 등록 소리 ── */
+function playCommentPost(){
+  try{
+    const ac=getAC(); if(ac.state==='suspended')ac.resume();
+    const t=ac.currentTime;
+    [[440,.0],[554,.1],[659,.2]].forEach(([freq,del])=>{
+      const o=ac.createOscillator(); const g=ac.createGain();
+      o.type='sine'; o.frequency.value=freq;
+      g.gain.setValueAtTime(0,t+del); g.gain.linearRampToValueAtTime(.15,t+del+.02);
+      g.gain.exponentialRampToValueAtTime(.001,t+del+.18);
+      o.connect(g); g.connect(ac.destination); o.start(t+del); o.stop(t+del+.2);
+    });
+  }catch(e){}
+}
+
+/* ── 전화 끊는 소리 ── */
+function playHangupSound(){
+  try{
+    const ac=getAC(); if(ac.state==='suspended')ac.resume();
+    const t=ac.currentTime;
+    [480,420,360].forEach((freq,i)=>{
+      const o=ac.createOscillator(); const g=ac.createGain();
+      o.type='sine'; o.frequency.value=freq;
+      const s=t+i*.13;
+      g.gain.setValueAtTime(.12,s); g.gain.exponentialRampToValueAtTime(.001,s+.12);
+      o.connect(g); g.connect(ac.destination); o.start(s); o.stop(s+.15);
+    });
+  }catch(e){}
+}
+
+/* ── 안겨 빠밤 소리 ── */
+function playFanfare(){
+  try{
+    const ac=getAC(); if(ac.state==='suspended')ac.resume();
+    const t=ac.currentTime;
+    /* 화음 상행: C5-E5-G5-C6 */
+    [[523,0,.35],[659,.12,.3],[784,.24,.4],[1047,.38,.6]].forEach(([freq,del,dur])=>{
+      const o=ac.createOscillator(); const g=ac.createGain();
+      o.type='triangle'; o.frequency.value=freq;
+      g.gain.setValueAtTime(0,t+del); g.gain.linearRampToValueAtTime(.22,t+del+.04);
+      g.gain.setValueAtTime(.18,t+del+dur-.1); g.gain.linearRampToValueAtTime(0,t+del+dur);
+      o.connect(g); g.connect(ac.destination); o.start(t+del); o.stop(t+del+dur+.05);
+    });
+    /* 반짝 노이즈 */
+    const blen=Math.ceil(ac.sampleRate*.12);
+    const buf=ac.createBuffer(1,blen,ac.sampleRate);
+    const bd=buf.getChannelData(0); for(let i=0;i<blen;i++) bd[i]=(Math.random()*2-1)*(1-i/blen);
+    const ns=ac.createBufferSource(); ns.buffer=buf;
+    const nf=ac.createBiquadFilter(); nf.type='highpass'; nf.frequency.value=3000;
+    const ng=ac.createGain(); ng.gain.value=.08;
+    ns.connect(nf); nf.connect(ng); ng.connect(ac.destination); ns.start(t+.36); ns.stop(t+.5);
   }catch(e){}
 }
 
@@ -3846,6 +3927,7 @@ function onMaskTap(){
         setTimeout(()=>{
           const fs=document.getElementById('friends-screen');
           fs.classList.add('show');
+          playFanfare();
         },120);
       },650);
     },250);
@@ -3928,6 +4010,7 @@ function declineCall(){
 
 function hangupCall(){
   clearInterval(_callTimer);
+  playHangupSound();
   document.getElementById('call-screen').classList.remove('show');
   /* 0.6초 후 탈 깨기 화면 */
   setTimeout(showMaskScreen, 600);
@@ -3976,6 +4059,7 @@ function submitComment(){
   const text  = input.value.trim();
   if (!text) return;
   input.value = '';
+  playCommentPost();
 
   const id  = 'c-' + Date.now() + '-' + Math.random().toString(36).slice(2,6);
   const ts  = Date.now();
