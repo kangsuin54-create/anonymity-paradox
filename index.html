@@ -442,6 +442,12 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
   width:34px;height:34px;border-radius:50%;border:none;
   background:#E53935;color:#fff;font-size:1rem;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
+  transition:background .2s;
+}
+.et-send:hover{background:#C62828;}
+@keyframes commentIn{
+  from{opacity:0;transform:translateY(8px);}
+  to{opacity:1;transform:translateY(0);}
 }
 
 /* vibrate animation for icon when notification arrives */
@@ -943,8 +949,9 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 
   <!-- Input -->
   <div class="et-input-bar">
-    <input class="et-input" placeholder="익명으로 댓글 달기..." />
-    <button class="et-send">↑</button>
+    <input class="et-input" id="et-input" placeholder="익명으로 댓글 달기..." maxlength="200"
+      onkeydown="if(event.key==='Enter')submitComment()"/>
+    <button class="et-send" onclick="submitComment()">↑</button>
   </div>
 </div>
 
@@ -1095,6 +1102,38 @@ function closeET(){
   document.getElementById('et-modal').classList.remove('open');
   document.body.style.overflow='';
 }
+function submitComment(){
+  const input=document.getElementById('et-input');
+  const text=input.value.trim();
+  if(!text)return;
+
+  // 댓글 수 업데이트
+  const cntEl=document.querySelector('.et-btn:nth-child(2) span');
+  const newCnt=parseInt(cntEl.textContent)+1;
+  cntEl.textContent=newCnt;
+  document.querySelector('.et-comments-header').textContent=`댓글 ${newCnt}개`;
+
+  // 새 댓글 DOM 생성
+  const div=document.createElement('div');
+  div.className='et-comment';
+  div.style.animation='commentIn .3s ease';
+  div.innerHTML=`
+    <div class="et-c-avatar" style="background:#C8E6C9;color:#2E7D32;">나</div>
+    <div class="et-c-body">
+      <div class="et-c-user" style="color:#2E7D32;">익명(나)</div>
+      <div class="et-c-text">${text.replace(/</g,'&lt;')}</div>
+      <div class="et-c-time">방금</div>
+    </div>`;
+
+  // input bar 바로 위에 삽입
+  const inputBar=document.querySelector('.et-input-bar');
+  inputBar.parentNode.insertBefore(div,inputBar);
+  input.value='';
+
+  // 새 댓글로 스크롤
+  div.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
 function toggleLike(e){
   e.stopPropagation();
   const btn=document.getElementById('et-like-btn');
