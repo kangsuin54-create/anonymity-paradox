@@ -962,57 +962,572 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
   <!-- § VILLAGE -->
   <section id="s-village" class="scene" onclick="walkForward()">
     <div id="village-parallax">
+
+      <!-- ══ LAYER 0: 맑은 하늘 ══ -->
       <div class="vl" id="vl0" style="z-index:1;">
         <svg viewBox="0 0 1000 700" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
-          <defs><radialGradient id="moonGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FFF8E0" stop-opacity="1"/><stop offset="60%" stop-color="#FFE890" stop-opacity="0.4"/><stop offset="100%" stop-color="#FF9020" stop-opacity="0"/></radialGradient><linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#04021A"/><stop offset="30%" stop-color="#0C0828"/><stop offset="60%" stop-color="#1C0A20"/><stop offset="85%" stop-color="#3A1208"/><stop offset="100%" stop-color="#1A0806"/></linearGradient></defs>
-          <rect width="1000" height="700" fill="url(#skyG)"/>
-          <circle cx="80" cy="60" r="1.5" fill="white" opacity="0.9"/><circle cx="150" cy="40" r="1" fill="white" opacity="0.7"/><circle cx="220" cy="80" r="1.5" fill="white" opacity="0.8"/><circle cx="320" cy="30" r="1" fill="white" opacity="0.6"/><circle cx="450" cy="55" r="2" fill="white" opacity="0.5"/><circle cx="600" cy="25" r="1" fill="white" opacity="0.8"/><circle cx="720" cy="70" r="1.5" fill="white" opacity="0.9"/><circle cx="850" cy="35" r="1" fill="white" opacity="0.7"/><circle cx="950" cy="60" r="1.5" fill="white" opacity="0.6"/><circle cx="550" cy="100" r="1" fill="white" opacity="0.6"/><circle cx="800" cy="110" r="1.5" fill="white" opacity="0.7"/>
-          <circle cx="820" cy="90" r="55" fill="url(#moonGlow)"/><circle cx="820" cy="90" r="38" fill="#FFF5D0" opacity="0.9"/>
+          <defs>
+            <linearGradient id="skyDay" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4A9EE0"/>
+              <stop offset="45%" stop-color="#80C4F0"/>
+              <stop offset="100%" stop-color="#B8DCF8"/>
+            </linearGradient>
+            <radialGradient id="sunGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#FFFAD0"/>
+              <stop offset="60%" stop-color="#FFE840"/>
+              <stop offset="100%" stop-color="#FFB820" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect width="1000" height="700" fill="url(#skyDay)"/>
+          <!-- 태양 -->
+          <circle cx="870" cy="85" r="70" fill="url(#sunGrad)" opacity="0.6"/>
+          <circle cx="870" cy="85" r="42" fill="#FFE840" opacity="0.9"/>
+          <!-- 구름 1 (큰) -->
+          <g opacity="0.95">
+            <ellipse cx="180" cy="110" rx="88" ry="34" fill="white"/>
+            <ellipse cx="135" cy="118" rx="52" ry="30" fill="white"/>
+            <ellipse cx="228" cy="116" rx="58" ry="28" fill="white"/>
+            <ellipse cx="180" cy="128" rx="75" ry="22" fill="#F0F4FF"/>
+          </g>
+          <!-- 구름 2 -->
+          <g opacity="0.9">
+            <ellipse cx="540" cy="75" rx="68" ry="26" fill="white"/>
+            <ellipse cx="498" cy="82" rx="40" ry="22" fill="white"/>
+            <ellipse cx="582" cy="80" rx="45" ry="20" fill="white"/>
+          </g>
+          <!-- 구름 3 (오른쪽) -->
+          <g opacity="0.88">
+            <ellipse cx="760" cy="140" rx="75" ry="28" fill="white"/>
+            <ellipse cx="718" cy="148" rx="44" ry="24" fill="white"/>
+            <ellipse cx="800" cy="146" rx="50" ry="22" fill="white"/>
+          </g>
+          <!-- 작은 구름들 -->
+          <ellipse cx="380" cy="52" rx="42" ry="16" fill="white" opacity="0.8"/>
+          <ellipse cx="358" cy="58" rx="26" ry="14" fill="white" opacity="0.75"/>
+          <ellipse cx="402" cy="57" rx="30" ry="13" fill="white" opacity="0.75"/>
         </svg>
       </div>
+
+      <!-- ══ LAYER 1: 먼 산과 소나무 ══ -->
       <div class="vl" id="vl1" style="z-index:2;">
         <svg viewBox="0 0 1000 700" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
-          <path d="M0,420 Q80,340 180,370 Q260,310 380,355 Q440,295 520,335 Q590,305 680,340 Q760,300 860,330 Q920,310 1000,340 L1000,700 L0,700 Z" fill="#1A0C06" opacity="0.9"/>
-          <path d="M0,460 Q120,400 240,435 Q320,410 400,440 Q480,415 560,445 Q640,418 720,448 Q820,420 940,445 L1000,450 L1000,700 L0,700 Z" fill="#140A04" opacity="0.95"/>
-          <path d="M0,455 Q20,445 35,455 Q55,440 70,455 Q90,442 105,455 Q120,440 135,455 Q150,442 160,455 Q180,443 195,455 Q210,441 225,455 Q235,443 250,455 L250,700 L0,700 Z" fill="#0E0804"/>
-          <path d="M750,450 Q770,440 785,450 Q805,438 820,450 Q840,440 855,450 Q870,438 885,450 Q900,440 915,450 Q930,438 945,450 Q960,440 975,450 L1000,452 L1000,700 L750,700 Z" fill="#0E0804"/>
+          <!-- 먼 산 (3겹) -->
+          <path d="M0,380 Q80,295 210,330 Q320,268 450,308 Q530,262 630,298 Q720,265 850,290 Q930,270 1000,285 L1000,480 L0,480 Z" fill="#8ABCAA" opacity="0.55"/>
+          <path d="M0,400 Q120,345 270,372 Q390,328 520,358 Q640,320 760,350 Q880,322 1000,345 L1000,500 L0,500 Z" fill="#6A9E80" opacity="0.7"/>
+          <path d="M0,425 Q160,385 320,408 Q460,375 600,398 Q740,372 900,392 Q960,380 1000,388 L1000,520 L0,520 Z" fill="#4E8A5C" opacity="0.85"/>
+
+          <!-- 소나무 그룹 (왼쪽) -->
+          <g transform="translate(38,418)">
+            <rect x="-5" y="-95" width="10" height="95" fill="#5A2C08"/>
+            <polygon points="0,-188 -32,-95 32,-95" fill="#1E6228"/>
+            <polygon points="0,-148 -40,-72 40,-72" fill="#257530"/>
+            <polygon points="0,-110 -48,-45 48,-45" fill="#1E6228"/>
+            <polygon points="0,-72" fill="#1E6228"/>
+          </g>
+          <g transform="translate(85,428)" opacity="0.9">
+            <rect x="-4" y="-78" width="8" height="78" fill="#5A2C08"/>
+            <polygon points="0,-155 -26,-78 26,-78" fill="#257530"/>
+            <polygon points="0,-120 -33,-58 33,-58" fill="#1E6228"/>
+            <polygon points="0,-85 -40,-30 40,-30" fill="#257530"/>
+          </g>
+          <g transform="translate(128,422)">
+            <rect x="-4" y="-88" width="8" height="88" fill="#5A2C08"/>
+            <polygon points="0,-175 -29,-88 29,-88" fill="#1E6228"/>
+            <polygon points="0,-138 -36,-65 36,-65" fill="#257530"/>
+            <polygon points="0,-98 -44,-38 44,-38" fill="#1E6228"/>
+          </g>
+
+          <!-- 소나무 그룹 (오른쪽) -->
+          <g transform="translate(965,415)">
+            <rect x="-5" y="-92" width="10" height="92" fill="#5A2C08"/>
+            <polygon points="0,-184 -32,-92 32,-92" fill="#1E6228"/>
+            <polygon points="0,-145 -40,-70 40,-70" fill="#257530"/>
+            <polygon points="0,-108 -48,-42 48,-42" fill="#1E6228"/>
+          </g>
+          <g transform="translate(920,425)" opacity="0.9">
+            <rect x="-4" y="-80" width="8" height="80" fill="#5A2C08"/>
+            <polygon points="0,-158 -27,-80 27,-80" fill="#257530"/>
+            <polygon points="0,-122 -34,-60 34,-60" fill="#1E6228"/>
+            <polygon points="0,-88 -41,-32 41,-32" fill="#257530"/>
+          </g>
+          <g transform="translate(878,430)">
+            <rect x="-4" y="-72" width="8" height="72" fill="#5A2C08"/>
+            <polygon points="0,-144 -24,-72 24,-72" fill="#1E6228"/>
+            <polygon points="0,-110 -30,-52 30,-52" fill="#257530"/>
+            <polygon points="0,-78 -38,-28 38,-28" fill="#1E6228"/>
+          </g>
+
+          <!-- 중간 배경 나무들 -->
+          <g transform="translate(480,435)" opacity="0.7">
+            <rect x="-3" y="-65" width="6" height="65" fill="#5A2C08"/>
+            <polygon points="0,-130 -22,-65 22,-65" fill="#257530"/>
+            <polygon points="0,-100 -28,-48 28,-48" fill="#1E6228"/>
+            <polygon points="0,-70 -34,-22 34,-22" fill="#257530"/>
+          </g>
         </svg>
       </div>
+
+      <!-- ══ LAYER 2: 한옥 건물 (메인) ══ -->
       <div class="vl" id="vl2" style="z-index:3;">
         <svg viewBox="0 0 1000 700" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
-          <rect x="-10" y="440" width="260" height="260" fill="#221208"/>
-          <path d="M-20,440 Q30,395 120,415 Q180,395 270,425 L270,445 L-20,445 Z" fill="#180E06"/>
-          <path d="M-20,433 Q30,387 120,408 Q180,388 270,418 L270,433 Z" fill="#120806"/>
-          <rect x="30" y="480" width="40" height="50" rx="2" fill="#0A0604"/><rect x="90" y="480" width="40" height="50" rx="2" fill="#0A0604"/><rect x="150" y="480" width="40" height="50" rx="2" fill="#0A0604"/>
-          <rect x="31" y="481" width="38" height="48" rx="1" fill="#C84810" opacity="0.25"/><rect x="91" y="481" width="38" height="48" rx="1" fill="#C84810" opacity="0.3"/><rect x="151" y="481" width="38" height="48" rx="1" fill="#C84810" opacity="0.2"/>
-          <rect x="22" y="444" width="10" height="256" fill="#2A1408" opacity="0.8"/><rect x="82" y="444" width="10" height="256" fill="#2A1408" opacity="0.8"/><rect x="142" y="444" width="10" height="256" fill="#2A1408" opacity="0.8"/><rect x="202" y="444" width="10" height="256" fill="#2A1408" opacity="0.8"/>
-          <rect x="740" y="440" width="270" height="260" fill="#221208"/>
-          <path d="M730,440 Q780,395 880,415 Q940,395 1020,425 L1020,445 L730,445 Z" fill="#180E06"/>
-          <path d="M730,433 Q780,387 880,408 Q940,388 1020,418 L1020,433 Z" fill="#120806"/>
-          <rect x="760" y="480" width="40" height="50" rx="2" fill="#0A0604"/><rect x="820" y="480" width="40" height="50" rx="2" fill="#0A0604"/><rect x="880" y="480" width="40" height="50" rx="2" fill="#0A0604"/>
-          <rect x="761" y="481" width="38" height="48" rx="1" fill="#C84810" opacity="0.3"/><rect x="821" y="481" width="38" height="48" rx="1" fill="#C84810" opacity="0.25"/><rect x="881" y="481" width="38" height="48" rx="1" fill="#C84810" opacity="0.28"/>
-          <rect x="752" y="444" width="10" height="256" fill="#2A1408" opacity="0.8"/><rect x="812" y="444" width="10" height="256" fill="#2A1408" opacity="0.8"/><rect x="872" y="444" width="10" height="256" fill="#2A1408" opacity="0.8"/><rect x="932" y="444" width="10" height="256" fill="#2A1408" opacity="0.8"/>
-          <path d="M280,700 L720,700 L620,480 L380,480 Z" fill="#2A1408"/>
-          <path d="M300,700 L700,700 L610,490 L390,490 Z" fill="#3A1C0A" opacity="0.5"/>
-          <rect x="270" y="470" width="8" height="140" fill="#1A0C04"/><rect x="722" y="470" width="8" height="140" fill="#1A0C04"/>
-          <ellipse cx="274" cy="465" rx="10" ry="15" fill="#FF8020" opacity="0.9"/><ellipse cx="274" cy="460" rx="6" ry="10" fill="#FFD040" opacity="0.8"/>
-          <ellipse cx="726" cy="465" rx="10" ry="15" fill="#FF8020" opacity="0.9"/><ellipse cx="726" cy="460" rx="6" ry="10" fill="#FFD040" opacity="0.8"/>
-          <circle cx="274" cy="465" r="30" fill="#FF6010" opacity="0.12"/><circle cx="726" cy="465" r="30" fill="#FF6010" opacity="0.12"/>
+          <defs>
+            <linearGradient id="wallG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#D8CC9A"/>
+              <stop offset="100%" stop-color="#C0B480"/>
+            </linearGradient>
+            <linearGradient id="roofG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4A4638"/>
+              <stop offset="100%" stop-color="#2E2C22"/>
+            </linearGradient>
+            <linearGradient id="stoneG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#B8B0A0"/>
+              <stop offset="100%" stop-color="#968E80"/>
+            </linearGradient>
+          </defs>
+
+          <!-- ── 석축 기단 (stone foundation) ── -->
+          <path d="M15,458 L985,458 L988,478 Q500,465 12,478 Z" fill="url(#stoneG)"/>
+          <!-- 돌 줄눈 -->
+          <g stroke="#8A8278" stroke-width="0.8" opacity="0.7">
+            <line x1="15" y1="464" x2="985" y2="464"/>
+            <line x1="15" y1="470" x2="985" y2="470"/>
+            <line x1="80" y1="458" x2="78" y2="478"/><line x1="160" y1="458" x2="158" y2="478"/>
+            <line x1="240" y1="458" x2="238" y2="478"/><line x1="320" y1="458" x2="318" y2="478"/>
+            <line x1="400" y1="458" x2="398" y2="478"/><line x1="480" y1="458" x2="478" y2="478"/>
+            <line x1="560" y1="458" x2="558" y2="478"/><line x1="640" y1="458" x2="638" y2="478"/>
+            <line x1="720" y1="458" x2="718" y2="478"/><line x1="800" y1="458" x2="798" y2="478"/>
+            <line x1="880" y1="458" x2="878" y2="478"/>
+          </g>
+
+          <!-- ── 건물 벽체 ── -->
+          <rect x="22" y="282" width="956" height="178" fill="url(#wallG)"/>
+          <!-- 수평 목재 줄무늬 -->
+          <g stroke="#B0A870" stroke-width="1.2" opacity="0.6">
+            <line x1="22" y1="298" x2="978" y2="298"/>
+            <line x1="22" y1="315" x2="978" y2="315"/>
+            <line x1="22" y1="332" x2="978" y2="332"/>
+            <line x1="22" y1="349" x2="978" y2="349"/>
+            <line x1="22" y1="366" x2="978" y2="366"/>
+            <line x1="22" y1="383" x2="978" y2="383"/>
+            <line x1="22" y1="400" x2="978" y2="400"/>
+            <line x1="22" y1="418" x2="978" y2="418"/>
+            <line x1="22" y1="436" x2="978" y2="436"/>
+          </g>
+
+          <!-- ── 기둥 (pillars) ── -->
+          <g fill="#5A2C08" stroke="#3A1C04" stroke-width="1">
+            <rect x="22"  y="228" width="22" height="230"/>
+            <rect x="118" y="248" width="20" height="210"/>
+            <rect x="214" y="248" width="20" height="210"/>
+            <rect x="310" y="248" width="20" height="210"/>
+            <rect x="406" y="245" width="20" height="213"/>
+            <rect x="492" y="242" width="22" height="216"/><!-- 중앙 -->
+            <rect x="578" y="245" width="20" height="213"/>
+            <rect x="674" y="248" width="20" height="210"/>
+            <rect x="770" y="248" width="20" height="210"/>
+            <rect x="866" y="248" width="20" height="210"/>
+            <rect x="958" y="228" width="22" height="230"/>
+          </g>
+          <!-- 기둥 단청 장식 (위) -->
+          <g opacity="0.85">
+            <rect x="22"  y="228" width="22" height="10" fill="#C1272D"/>
+            <rect x="22"  y="238" width="22" height="8"  fill="#1B4A8A"/>
+            <rect x="118" y="248" width="20" height="9" fill="#C1272D"/>
+            <rect x="118" y="257" width="20" height="7" fill="#2D7A4F"/>
+            <rect x="214" y="248" width="20" height="9" fill="#1B4A8A"/>
+            <rect x="214" y="257" width="20" height="7" fill="#E8A427"/>
+            <rect x="310" y="248" width="20" height="9" fill="#C1272D"/>
+            <rect x="310" y="257" width="20" height="7" fill="#1B4A8A"/>
+            <rect x="492" y="242" width="22" height="10" fill="#C1272D"/>
+            <rect x="492" y="252" width="22" height="8"  fill="#E8A427"/>
+            <rect x="674" y="248" width="20" height="9" fill="#2D7A4F"/>
+            <rect x="770" y="248" width="20" height="9" fill="#C1272D"/>
+            <rect x="866" y="248" width="20" height="9" fill="#1B4A8A"/>
+            <rect x="958" y="228" width="22" height="10" fill="#C1272D"/>
+            <rect x="958" y="238" width="22" height="8"  fill="#2D7A4F"/>
+          </g>
+
+          <!-- ── 창호 (Korean lattice windows) ── -->
+          <!-- 왼쪽 방 -->
+          <g fill="#EEE4C0" stroke="#6B3C10" stroke-width="1.5">
+            <rect x="48"  y="292" width="60" height="90"/>
+            <rect x="128" y="292" width="72" height="90"/>
+            <rect x="218" y="292" width="72" height="90"/>
+          </g>
+          <!-- 창살 패턴 -->
+          <g stroke="#8B5A20" stroke-width="1.2" opacity="0.8">
+            <!-- 첫 창 -->
+            <line x1="78"  y1="292" x2="78"  y2="382"/><line x1="48"  y1="322" x2="108" y2="322"/>
+            <line x1="48"  y1="350" x2="108" y2="350"/><line x1="48"  y1="368" x2="108" y2="368"/>
+            <!-- 두번째 창 -->
+            <line x1="164" y1="292" x2="164" y2="382"/><line x1="128" y1="322" x2="200" y2="322"/>
+            <line x1="128" y1="350" x2="200" y2="350"/><line x1="128" y1="368" x2="200" y2="368"/>
+            <!-- 세번째 창 -->
+            <line x1="254" y1="292" x2="254" y2="382"/><line x1="218" y1="322" x2="290" y2="322"/>
+            <line x1="218" y1="350" x2="290" y2="350"/><line x1="218" y1="368" x2="290" y2="368"/>
+          </g>
+
+          <!-- 중앙 대문 (솟을대문 형태) -->
+          <rect x="418" y="275" width="166" height="185" fill="#7A3C10" stroke="#4A1C04" stroke-width="2"/>
+          <rect x="432" y="285" width="68" height="165" fill="#5A2808"/><!-- 왼쪽 문짝 -->
+          <rect x="502" y="285" width="68" height="165" fill="#5A2808"/><!-- 오른쪽 문짝 -->
+          <!-- 문 경첩과 장식 -->
+          <rect x="432" y="295" width="68" height="8" fill="#2A1810"/><rect x="432" y="360" width="68" height="8" fill="#2A1810"/>
+          <rect x="502" y="295" width="68" height="8" fill="#2A1810"/><rect x="502" y="360" width="68" height="8" fill="#2A1810"/>
+          <!-- 문 고리 -->
+          <circle cx="498" cy="370" r="8" fill="#C8A020"/><circle cx="504" cy="370" r="8" fill="#C8A020"/>
+          <circle cx="498" cy="370" r="4" fill="#8B6010"/><circle cx="504" cy="370" r="4" fill="#8B6010"/>
+          <!-- 문 위 현판 -->
+          <rect x="430" y="268" width="142" height="22" rx="2" fill="#C8A040" stroke="#8B6020" stroke-width="1.5"/>
+          <text x="501" y="283" text-anchor="middle" font-size="12" fill="#3A1A00" font-family="serif" font-weight="bold">婚　禮</text>
+
+          <!-- 오른쪽 창들 -->
+          <g fill="#EEE4C0" stroke="#6B3C10" stroke-width="1.5">
+            <rect x="600" y="292" width="72" height="90"/>
+            <rect x="694" y="292" width="72" height="90"/>
+            <rect x="788" y="292" width="72" height="90"/>
+            <rect x="882" y="292" width="60" height="90"/>
+          </g>
+          <g stroke="#8B5A20" stroke-width="1.2" opacity="0.8">
+            <line x1="636" y1="292" x2="636" y2="382"/><line x1="600" y1="322" x2="672" y2="322"/>
+            <line x1="600" y1="350" x2="672" y2="350"/><line x1="600" y1="368" x2="672" y2="368"/>
+            <line x1="730" y1="292" x2="730" y2="382"/><line x1="694" y1="322" x2="766" y2="322"/>
+            <line x1="694" y1="350" x2="766" y2="350"/><line x1="694" y1="368" x2="766" y2="368"/>
+            <line x1="824" y1="292" x2="824" y2="382"/><line x1="788" y1="322" x2="860" y2="322"/>
+            <line x1="788" y1="350" x2="860" y2="350"/><line x1="788" y1="368" x2="860" y2="368"/>
+            <line x1="912" y1="292" x2="912" y2="382"/><line x1="882" y1="322" x2="942" y2="322"/>
+            <line x1="882" y1="350" x2="942" y2="350"/><line x1="882" y1="368" x2="942" y2="368"/>
+          </g>
+
+          <!-- ── 기와지붕 (tile roof) ── -->
+          <!-- 지붕 본체 (어두운 회색) -->
+          <path d="M5,222 Q60,190 200,175 Q380,162 500,158 Q620,162 800,175 Q940,190 995,222 L995,268 Q940,248 800,235 Q620,222 500,218 Q380,222 200,235 Q60,248 5,268 Z" fill="url(#roofG)"/>
+
+          <!-- 기와 골 (수직 홈 줄무늬) -->
+          <g stroke="#1A1810" stroke-width="0.8" opacity="0.35">
+            <path d="M100,175 Q100,180 98,268"/><path d="M150,170 Q150,175 148,265"/>
+            <path d="M200,175 Q200,180 198,268"/><path d="M250,170 Q250,175 248,263"/>
+            <path d="M300,167 Q300,172 298,260"/><path d="M350,165 Q350,170 348,258"/>
+            <path d="M400,163 Q400,168 398,256"/><path d="M450,161 Q450,166 448,254"/>
+            <path d="M500,160 Q500,165 498,253"/><path d="M550,161 Q550,166 548,254"/>
+            <path d="M600,163 Q600,168 598,256"/><path d="M650,165 Q650,170 648,258"/>
+            <path d="M700,167 Q700,172 698,260"/><path d="M750,170 Q750,175 748,263"/>
+            <path d="M800,175 Q800,180 798,268"/><path d="M850,170 Q850,175 848,265"/>
+            <path d="M900,175 Q900,180 898,268"/>
+          </g>
+          <!-- 기와 열 (수평 선) -->
+          <g stroke="#1A1810" stroke-width="0.7" opacity="0.3" fill="none">
+            <path d="M8,228 Q500,200 992,228"/><path d="M8,236 Q500,208 992,236"/>
+            <path d="M8,244 Q500,216 992,244"/><path d="M8,252 Q500,224 992,252"/>
+            <path d="M8,260 Q500,232 992,260"/>
+          </g>
+          <!-- 처마 끝 부분 (단청 색) -->
+          <path d="M5,222 Q60,190 200,175 Q380,162 500,158 Q620,162 800,175 Q940,190 995,222 L995,235 Q940,203 800,188 Q620,175 500,171 Q380,175 200,188 Q60,203 5,235 Z" fill="#C86828" opacity="0.4"/>
+          <path d="M5,222 Q60,190 200,175 Q380,162 500,158 Q620,162 800,175 Q940,190 995,222 L995,228 Q940,196 800,181 Q620,168 500,164 Q380,168 200,181 Q60,196 5,228 Z" fill="#1B4A8A" opacity="0.35"/>
+
+          <!-- 처마 곡선 끝 (좌우 들림) -->
+          <path d="M5,222 Q-8,210 -5,196 Q0,184 14,188 Q24,192 22,208 Q20,220 5,222 Z" fill="url(#roofG)"/>
+          <path d="M995,222 Q1008,210 1005,196 Q1000,184 986,188 Q976,192 978,208 Q980,220 995,222 Z" fill="url(#roofG)"/>
+
+          <!-- 용마루 (ridge) -->
+          <path d="M80,152 Q280,143 500,140 Q720,143 920,152" stroke="#1A1810" stroke-width="9" fill="none" stroke-linecap="round"/>
+          <path d="M82,155 Q280,146 500,143 Q720,146 918,155" stroke="#3A3828" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <!-- 치미 장식 (ridge ornaments) -->
+          <ellipse cx="80"  cy="152" rx="16" ry="11" fill="#2A2820" stroke="#1A1810" stroke-width="1.5"/>
+          <ellipse cx="920" cy="152" rx="16" ry="11" fill="#2A2820" stroke="#1A1810" stroke-width="1.5"/>
+          <path d="M72,148 Q80,135 88,148" stroke="#C86828" stroke-width="2.5" fill="none"/>
+          <path d="M912,148 Q920,135 928,148" stroke="#C86828" stroke-width="2.5" fill="none"/>
+
+          <!-- 마당 바닥 (courtyard) -->
+          <path d="M0,458 L1000,458 L1000,700 L0,700 Z" fill="#8CC840"/>
+          <!-- 마당 돌길 -->
+          <path d="M380,458 L380,700 L620,700 L620,458 Z" fill="#D4C8A8" opacity="0.5"/>
+          <g stroke="#B8B0A0" stroke-width="0.8" opacity="0.5">
+            <line x1="380" y1="480" x2="620" y2="480"/><line x1="380" y1="500" x2="620" y2="500"/>
+            <line x1="380" y1="520" x2="620" y2="520"/><line x1="380" y1="540" x2="620" y2="540"/>
+            <line x1="390" y1="458" x2="390" y2="700"/><line x1="420" y1="458" x2="420" y2="700"/>
+            <line x1="450" y1="458" x2="450" y2="700"/><line x1="480" y1="458" x2="480" y2="700"/>
+            <line x1="510" y1="458" x2="510" y2="700"/><line x1="540" y1="458" x2="540" y2="700"/>
+            <line x1="570" y1="458" x2="570" y2="700"/><line x1="600" y1="458" x2="600" y2="700"/>
+          </g>
+          <!-- 잔디 -->
+          <ellipse cx="200" cy="500" rx="80" ry="30" fill="#78B840" opacity="0.5"/>
+          <ellipse cx="800" cy="520" rx="90" ry="32" fill="#78B840" opacity="0.45"/>
+          <!-- 왼쪽 정원 나무 -->
+          <g transform="translate(62,460)">
+            <rect x="-6" y="-55" width="12" height="55" fill="#5A2C08"/>
+            <circle cx="0" cy="-70" r="32" fill="#3A8C28"/>
+            <circle cx="-14" cy="-58" r="22" fill="#4AAA34"/>
+            <circle cx="16" cy="-62" r="24" fill="#3A8C28"/>
+          </g>
+          <!-- 오른쪽 정원 나무 -->
+          <g transform="translate(942,455)">
+            <rect x="-6" y="-52" width="12" height="52" fill="#5A2C08"/>
+            <circle cx="0" cy="-66" r="30" fill="#3A8C28"/>
+            <circle cx="-12" cy="-55" r="20" fill="#4AAA34"/>
+            <circle cx="14" cy="-58" r="22" fill="#3A8C28"/>
+          </g>
+          <!-- 석등 (stone lantern) 양쪽 -->
+          <g transform="translate(160,460)">
+            <rect x="-5" y="-35" width="10" height="35" fill="#A09080"/>
+            <rect x="-10" y="-45" width="20" height="12" rx="1" fill="#B8A890"/>
+            <rect x="-8" y="-57" width="16" height="14" rx="1" fill="#C8B8A0"/>
+            <polygon points="0,-72 -14,-57 14,-57" fill="#8A7A68"/>
+            <ellipse cx="0" cy="-65" rx="6" ry="5" fill="#FFD880" opacity="0.6"/>
+          </g>
+          <g transform="translate(840,462)">
+            <rect x="-5" y="-33" width="10" height="33" fill="#A09080"/>
+            <rect x="-10" y="-43" width="20" height="12" rx="1" fill="#B8A890"/>
+            <rect x="-8" y="-55" width="16" height="14" rx="1" fill="#C8B8A0"/>
+            <polygon points="0,-70 -14,-55 14,-55" fill="#8A7A68"/>
+            <ellipse cx="0" cy="-63" rx="6" ry="5" fill="#FFD880" opacity="0.6"/>
+          </g>
         </svg>
       </div>
+
+      <!-- ══ LAYER 3: 잔칫날 군중과 장식 ══ -->
       <div class="vl" id="vl3" style="z-index:4;">
         <svg viewBox="0 0 1000 700" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
-          <defs><radialGradient id="lantG" cx="50%" cy="40%" r="50%"><stop offset="0%" stop-color="#FF4820"/><stop offset="60%" stop-color="#C82010"/><stop offset="100%" stop-color="#8B0A08"/></radialGradient></defs>
-          <path d="M260,300 Q350,310 500,295 Q650,310 740,300" stroke="#3A2010" stroke-width="2.5" fill="none"/>
-          <g style="animation:lanternSwing 3s ease-in-out infinite;transform-origin:350px 310px;"><ellipse cx="350" cy="322" rx="16" ry="22" fill="url(#lantG)"/><rect x="346" y="300" width="8" height="6" rx="2" fill="#3A2010"/><rect x="346" y="343" width="8" height="5" rx="1" fill="#3A2010"/></g>
-          <g style="animation:lanternSwing 3.5s ease-in-out infinite .5s;transform-origin:420px 306px;"><ellipse cx="420" cy="318" rx="16" ry="22" fill="url(#lantG)"/><rect x="416" y="296" width="8" height="6" rx="2" fill="#3A2010"/><rect x="416" y="339" width="8" height="5" rx="1" fill="#3A2010"/></g>
-          <g style="animation:lanternSwing 2.8s ease-in-out infinite 1s;transform-origin:490px 297px;"><ellipse cx="490" cy="309" rx="16" ry="22" fill="url(#lantG)"/><rect x="486" y="287" width="8" height="6" rx="2" fill="#3A2010"/><rect x="486" y="330" width="8" height="5" rx="1" fill="#3A2010"/></g>
-          <g style="animation:lanternSwing 3.2s ease-in-out infinite 1.5s;transform-origin:560px 306px;"><ellipse cx="560" cy="318" rx="16" ry="22" fill="url(#lantG)"/><rect x="556" y="296" width="8" height="6" rx="2" fill="#3A2010"/><rect x="556" y="339" width="8" height="5" rx="1" fill="#3A2010"/></g>
-          <g style="animation:lanternSwing 3.8s ease-in-out infinite 0.3s;transform-origin:630px 310px;"><ellipse cx="630" cy="322" rx="16" ry="22" fill="url(#lantG)"/><rect x="626" y="300" width="8" height="6" rx="2" fill="#3A2010"/><rect x="626" y="343" width="8" height="5" rx="1" fill="#3A2010"/></g>
-          <g fill="#0A0604" opacity="0.85"><ellipse cx="360" cy="475" rx="10" ry="14"/><rect x="354" y="488" width="12" height="25"/><ellipse cx="395" cy="478" rx="10" ry="13"/><rect x="389" y="490" width="12" height="22"/><ellipse cx="430" cy="475" rx="11" ry="14"/><rect x="424" y="488" width="13" height="25"/><ellipse cx="500" cy="475" rx="11" ry="14"/><rect x="494" y="488" width="13" height="25"/><ellipse cx="570" cy="475" rx="11" ry="14"/><rect x="564" y="488" width="13" height="25"/><ellipse cx="605" cy="477" rx="10" ry="13"/><rect x="599" y="489" width="12" height="23"/><ellipse cx="640" cy="475" rx="11" ry="14"/><rect x="634" y="488" width="13" height="25"/></g>
-          <g opacity="0.9"><ellipse cx="370" cy="510" rx="11" ry="14" fill="#0A0604"/><path d="M359,522 Q355,560 365,575 L375,575 Q380,560 381,522 Z" fill="#1A3A7A"/><ellipse cx="420" cy="508" rx="12" ry="15" fill="#0A0604"/><path d="M408,520 Q403,565 415,578 L425,578 Q432,565 432,520 Z" fill="#8B1A18"/><ellipse cx="470" cy="510" rx="11" ry="14" fill="#0A0604"/><path d="M459,522 Q455,560 465,575 L475,575 Q480,560 481,522 Z" fill="#1A5A28"/><ellipse cx="530" cy="508" rx="12" ry="15" fill="#0A0604"/><path d="M518,520 Q514,563 525,576 L535,576 Q541,563 542,520 Z" fill="#8B6A08"/><ellipse cx="580" cy="510" rx="11" ry="14" fill="#0A0604"/><path d="M569,522 Q565,558 575,574 L585,574 Q590,558 591,522 Z" fill="#4A1A6A"/><ellipse cx="630" cy="508" rx="12" ry="15" fill="#0A0604"/><path d="M618,520 Q614,563 625,576 L635,576 Q641,563 642,520 Z" fill="#0A4A5A"/></g>
+          <defs>
+            <radialGradient id="lantRed" cx="50%" cy="40%" r="55%">
+              <stop offset="0%" stop-color="#FF5828"/><stop offset="60%" stop-color="#CC1E08"/><stop offset="100%" stop-color="#8B0A06"/>
+            </radialGradient>
+            <radialGradient id="lantBlue" cx="50%" cy="40%" r="55%">
+              <stop offset="0%" stop-color="#5080FF"/><stop offset="60%" stop-color="#1840CC"/><stop offset="100%" stop-color="#081080"/>
+            </radialGradient>
+            <radialGradient id="lantYellow" cx="50%" cy="40%" r="55%">
+              <stop offset="0%" stop-color="#FFE040"/><stop offset="60%" stop-color="#E8A010"/><stop offset="100%" stop-color="#A06000"/>
+            </radialGradient>
+          </defs>
+
+          <!-- ── 오방색 줄장식 ── -->
+          <path d="M40,295 Q250,285 500,280 Q750,285 960,295" stroke="#A08878" stroke-width="1.5" fill="none" opacity="0.6"/>
+          <!-- 줄장식 색띠들 -->
+          <g>
+            <rect x="80"  y="282" width="18" height="28" rx="2" fill="#C82020" opacity="0.8"/>
+            <rect x="108" y="280" width="18" height="32" rx="2" fill="#1B4A8A" opacity="0.8"/>
+            <rect x="136" y="283" width="18" height="26" rx="2" fill="#E8A020" opacity="0.8"/>
+            <rect x="164" y="280" width="18" height="30" rx="2" fill="#2D7A4F" opacity="0.8"/>
+            <rect x="192" y="282" width="18" height="28" rx="2" fill="#8B20A0" opacity="0.8"/>
+            <rect x="220" y="280" width="18" height="32" rx="2" fill="#C82020" opacity="0.8"/>
+            <rect x="248" y="283" width="18" height="26" rx="2" fill="#E8A020" opacity="0.8"/>
+            <rect x="276" y="280" width="18" height="30" rx="2" fill="#1B4A8A" opacity="0.8"/>
+            <rect x="304" y="282" width="18" height="28" rx="2" fill="#2D7A4F" opacity="0.8"/>
+            <rect x="332" y="280" width="18" height="32" rx="2" fill="#C82020" opacity="0.8"/>
+            <rect x="644" y="280" width="18" height="32" rx="2" fill="#C82020" opacity="0.8"/>
+            <rect x="672" y="282" width="18" height="28" rx="2" fill="#1B4A8A" opacity="0.8"/>
+            <rect x="700" y="280" width="18" height="32" rx="2" fill="#E8A020" opacity="0.8"/>
+            <rect x="728" y="283" width="18" height="26" rx="2" fill="#2D7A4F" opacity="0.8"/>
+            <rect x="756" y="280" width="18" height="30" rx="2" fill="#8B20A0" opacity="0.8"/>
+            <rect x="784" y="282" width="18" height="28" rx="2" fill="#C82020" opacity="0.8"/>
+            <rect x="812" y="280" width="18" height="32" rx="2" fill="#E8A020" opacity="0.8"/>
+            <rect x="840" y="282" width="18" height="28" rx="2" fill="#1B4A8A" opacity="0.8"/>
+            <rect x="868" y="280" width="18" height="30" rx="2" fill="#C82020" opacity="0.8"/>
+            <rect x="896" y="282" width="18" height="26" rx="2" fill="#2D7A4F" opacity="0.8"/>
+          </g>
+
+          <!-- ── 홍등 (hanging lanterns) ── -->
+          <!-- 왼쪽 구역 홍등 줄 -->
+          <path d="M40,320 Q180,312 320,316" stroke="#7A5030" stroke-width="1.5" fill="none"/>
+          <g style="animation:lanternSwing 3s ease-in-out infinite;transform-origin:90px 332px;">
+            <line x1="90" y1="320" x2="90" y2="328" stroke="#7A5030" stroke-width="1"/>
+            <ellipse cx="90" cy="342" rx="12" ry="18" fill="url(#lantRed)"/>
+            <rect x="86" y="323" width="8" height="5" rx="1" fill="#5A3010"/>
+            <line x1="87" y1="360" x2="85" y2="368" stroke="#CC1E08" stroke-width="1.2"/>
+            <line x1="93" y1="360" x2="95" y2="368" stroke="#CC1E08" stroke-width="1.2"/>
+          </g>
+          <g style="animation:lanternSwing 3.6s ease-in-out infinite .4s;transform-origin:150px 330px;">
+            <line x1="150" y1="316" x2="150" y2="324" stroke="#7A5030" stroke-width="1"/>
+            <ellipse cx="150" cy="338" rx="12" ry="18" fill="url(#lantYellow)"/>
+            <rect x="146" y="319" width="8" height="5" rx="1" fill="#5A3010"/>
+            <line x1="147" y1="356" x2="145" y2="364" stroke="#E8A010" stroke-width="1.2"/>
+            <line x1="153" y1="356" x2="155" y2="364" stroke="#E8A010" stroke-width="1.2"/>
+          </g>
+          <g style="animation:lanternSwing 2.8s ease-in-out infinite .8s;transform-origin:210px 334px;">
+            <line x1="210" y1="314" x2="210" y2="322" stroke="#7A5030" stroke-width="1"/>
+            <ellipse cx="210" cy="336" rx="12" ry="18" fill="url(#lantRed)"/>
+            <rect x="206" y="317" width="8" height="5" rx="1" fill="#5A3010"/>
+          </g>
+          <g style="animation:lanternSwing 3.2s ease-in-out infinite .2s;transform-origin:272px 332px;">
+            <line x1="272" y1="316" x2="272" y2="324" stroke="#7A5030" stroke-width="1"/>
+            <ellipse cx="272" cy="338" rx="12" ry="18" fill="url(#lantBlue)"/>
+            <rect x="268" y="319" width="8" height="5" rx="1" fill="#5A3010"/>
+          </g>
+
+          <!-- 오른쪽 구역 홍등 줄 -->
+          <path d="M680,316 Q820,312 960,320" stroke="#7A5030" stroke-width="1.5" fill="none"/>
+          <g style="animation:lanternSwing 3.4s ease-in-out infinite .6s;transform-origin:720px 334px;">
+            <line x1="720" y1="316" x2="720" y2="324" stroke="#7A5030" stroke-width="1"/>
+            <ellipse cx="720" cy="338" rx="12" ry="18" fill="url(#lantRed)"/>
+            <rect x="716" y="319" width="8" height="5" rx="1" fill="#5A3010"/>
+            <line x1="717" y1="356" x2="715" y2="364" stroke="#CC1E08" stroke-width="1.2"/>
+            <line x1="723" y1="356" x2="725" y2="364" stroke="#CC1E08" stroke-width="1.2"/>
+          </g>
+          <g style="animation:lanternSwing 2.9s ease-in-out infinite 1s;transform-origin:790px 330px;">
+            <line x1="790" y1="314" x2="790" y2="322" stroke="#7A5030" stroke-width="1"/>
+            <ellipse cx="790" cy="336" rx="12" ry="18" fill="url(#lantYellow)"/>
+            <rect x="786" y="317" width="8" height="5" rx="1" fill="#5A3010"/>
+          </g>
+          <g style="animation:lanternSwing 3.7s ease-in-out infinite .3s;transform-origin:860px 334px;">
+            <line x1="860" y1="316" x2="860" y2="324" stroke="#7A5030" stroke-width="1"/>
+            <ellipse cx="860" cy="338" rx="12" ry="18" fill="url(#lantRed)"/>
+            <rect x="856" y="319" width="8" height="5" rx="1" fill="#5A3010"/>
+          </g>
+          <g style="animation:lanternSwing 3.1s ease-in-out infinite .7s;transform-origin:925px 332px;">
+            <line x1="925" y1="318" x2="925" y2="326" stroke="#7A5030" stroke-width="1"/>
+            <ellipse cx="925" cy="340" rx="12" ry="18" fill="url(#lantBlue)"/>
+            <rect x="921" y="321" width="8" height="5" rx="1" fill="#5A3010"/>
+          </g>
+
+          <!-- ── 혼례상 (ceremony table, center) ── -->
+          <rect x="430" y="488" width="140" height="10" rx="2" fill="#C82020" stroke="#8B1010" stroke-width="1"/><!-- 상 덮개 -->
+          <rect x="440" y="496" width="120" height="35" fill="#E8D0A0" stroke="#C0A060" stroke-width="1"/><!-- 상판 -->
+          <rect x="434" y="530" width="8" height="25" fill="#8B4A18"/><!-- 다리 -->
+          <rect x="558" y="530" width="8" height="25" fill="#8B4A18"/>
+          <!-- 제기 음식들 -->
+          <circle cx="470" cy="488" r="12" fill="#E8A020" stroke="#C07810" stroke-width="1"/><!-- 떡 -->
+          <ellipse cx="500" cy="486" rx="15" ry="10" fill="#F8E0A0" stroke="#D0B060" stroke-width="1"/><!-- 전 -->
+          <circle cx="530" cy="488" r="11" fill="#C82020" stroke="#8B1010" stroke-width="1"/><!-- 과실 -->
+          <ellipse cx="470" cy="493" rx="10" ry="6" fill="#FFD870"/>
+          <ellipse cx="500" cy="490" rx="12" ry="5" fill="#F0C870"/>
+          <ellipse cx="530" cy="493" rx="9" ry="5" fill="#E88820"/>
+
+          <!-- ── 하객들 (wedding guests) - 여러 색 한복 ── -->
+
+          <!-- 왼쪽 하객 그룹 -->
+          <!-- 인물 1: 빨간 치마 여성 (박수) -->
+          <g transform="translate(90,520)">
+            <circle cy="-62" r="14" fill="#C89060"/>
+            <path d="M-12,-48 Q-14,0 -10,32 L10,32 Q14,0 12,-48 Z" fill="#C82020"/><!-- 치마 -->
+            <rect x="-10" y="-65" width="20" height="20" rx="3" fill="#F5E0D0"/><!-- 얼굴 -->
+            <path d="M-10,-48 Q-25,-38 -32,-25 M10,-48 Q25,-35 28,-18" stroke="#C82020" stroke-width="10" stroke-linecap="round" fill="none"/><!-- 팔 -->
+            <ellipse cx="-32" cy="-22" rx="7" ry="5" fill="#E8C8A0"/><!-- 손 -->
+            <ellipse cx="28" cy="-16" rx="7" ry="5" fill="#E8C8A0"/>
+          </g>
+
+          <!-- 인물 2: 파란 도포 남성 (박수) -->
+          <g transform="translate(148,515)">
+            <circle cy="-68" r="14" fill="#C89060"/>
+            <path d="M-12,-52 Q-15,-8 -12,35 L12,35 Q15,-8 12,-52 Z" fill="#1B4A8A"/>
+            <rect x="-10" y="-72" width="20" height="20" rx="3" fill="#F0DCC0"/>
+            <path d="M-12,-50 Q-28,-42 -38,-32 M12,-50 Q28,-40 38,-28" stroke="#1B4A8A" stroke-width="11" stroke-linecap="round" fill="none"/>
+            <ellipse cx="-38" cy="-30" rx="7" ry="5" fill="#E8C8A0"/>
+            <ellipse cx="38" cy="-26" rx="7" ry="5" fill="#E8C8A0"/>
+            <!-- 갓 모자 -->
+            <ellipse cx="0" cy="-80" rx="20" ry="4" fill="#1A1410"/>
+            <rect x="-5" y="-88" width="10" height="10" rx="1" fill="#1A1410"/>
+          </g>
+
+          <!-- 인물 3: 초록 저고리 여성 (박수, 몸 살짝 앞으로) -->
+          <g transform="translate(205,522)">
+            <circle cy="-60" r="13" fill="#C89060"/>
+            <path d="M-11,-46 Q-13,2 -10,30 L10,30 Q13,2 11,-46 Z" fill="#2D7A4F"/>
+            <rect x="-9" y="-63" width="18" height="18" rx="3" fill="#F5E0D0"/>
+            <path d="M-11,-44 Q-24,-34 -30,-22 M11,-44 Q24,-32 32,-20" stroke="#2D7A4F" stroke-width="10" stroke-linecap="round" fill="none"/>
+            <ellipse cx="-30" cy="-20" rx="6" ry="4.5" fill="#E8C8A0"/>
+            <ellipse cx="32" cy="-18" rx="6" ry="4.5" fill="#E8C8A0"/>
+          </g>
+
+          <!-- 인물 4: 노란 저고리 어린이 -->
+          <g transform="translate(258,535)">
+            <circle cy="-48" r="11" fill="#C89060"/>
+            <path d="M-9,-38 Q-10,5 -8,22 L8,22 Q10,5 9,-38 Z" fill="#E8C020"/>
+            <rect x="-7" y="-51" width="14" height="15" rx="3" fill="#F5E0D0"/>
+            <path d="M-9,-36 Q-18,-28 -22,-18 M9,-36 Q18,-26 22,-16" stroke="#E8C020" stroke-width="8" stroke-linecap="round" fill="none"/>
+          </g>
+
+          <!-- 인물 5: 분홍 한복 여성 -->
+          <g transform="translate(305,518)">
+            <circle cy="-64" r="13" fill="#C89060"/>
+            <path d="M-11,-50 Q-13,-2 -10,32 L10,32 Q13,-2 11,-50 Z" fill="#E85090"/>
+            <rect x="-9" y="-67" width="18" height="18" rx="3" fill="#F5E0D0"/>
+            <path d="M-11,-48 Q-26,-40 -34,-28 M11,-48 Q26,-38 35,-26" stroke="#E85090" stroke-width="10" stroke-linecap="round" fill="none"/>
+            <ellipse cx="-34" cy="-26" rx="6" ry="4.5" fill="#E8C8A0"/>
+            <ellipse cx="35" cy="-24" rx="6" ry="4.5" fill="#E8C8A0"/>
+          </g>
+
+          <!-- 오른쪽 하객 그룹 -->
+          <!-- 인물 6: 흰 도포 어른 -->
+          <g transform="translate(660,516)">
+            <circle cy="-66" r="14" fill="#C08058"/>
+            <path d="M-12,-52 Q-14,-4 -11,36 L11,36 Q14,-4 12,-52 Z" fill="#E8E0D0"/>
+            <rect x="-10" y="-70" width="20" height="20" rx="3" fill="#F0DCC0"/>
+            <path d="M-12,-50 Q-26,-42 -36,-30 M12,-50 Q26,-40 38,-28" stroke="#E8E0D0" stroke-width="11" stroke-linecap="round" fill="none"/>
+            <ellipse cx="-36" cy="-28" rx="7" ry="5" fill="#E8C8A0"/>
+            <ellipse cx="38" cy="-26" rx="7" ry="5" fill="#E8C8A0"/>
+            <ellipse cx="0" cy="-80" rx="19" ry="4" fill="#1A1410"/><rect x="-5" y="-88" width="10" height="10" rx="1" fill="#1A1410"/>
+          </g>
+
+          <!-- 인물 7: 보라 한복 여성 (박수) -->
+          <g transform="translate(720,520)">
+            <circle cy="-62" r="13" fill="#C89060"/>
+            <path d="M-11,-48 Q-13,0 -10,30 L10,30 Q13,0 11,-48 Z" fill="#8B20C0"/>
+            <rect x="-9" y="-65" width="18" height="18" rx="3" fill="#F5E0D0"/>
+            <path d="M-11,-46 Q-24,-36 -32,-24 M11,-46 Q24,-34 34,-22" stroke="#8B20C0" stroke-width="10" stroke-linecap="round" fill="none"/>
+            <ellipse cx="-32" cy="-22" rx="6" ry="4.5" fill="#E8C8A0"/>
+            <ellipse cx="34" cy="-20" rx="6" ry="4.5" fill="#E8C8A0"/>
+          </g>
+
+          <!-- 인물 8: 하늘색 남성 -->
+          <g transform="translate(778,514)">
+            <circle cy="-68" r="14" fill="#C89060"/>
+            <path d="M-12,-54 Q-14,-6 -12,36 L12,36 Q14,-6 12,-54 Z" fill="#5AB8E8"/>
+            <rect x="-10" y="-72" width="20" height="20" rx="3" fill="#F0DCC0"/>
+            <path d="M-12,-52 Q-26,-42 -36,-30 M12,-52 Q26,-40 38,-28" stroke="#5AB8E8" stroke-width="11" stroke-linecap="round" fill="none"/>
+            <ellipse cx="-36" cy="-28" rx="7" ry="5" fill="#E8C8A0"/>
+            <ellipse cx="38" cy="-26" rx="7" ry="5" fill="#E8C8A0"/>
+          </g>
+
+          <!-- 인물 9: 빨간 한복 어른 여성 -->
+          <g transform="translate(835,518)">
+            <circle cy="-64" r="13" fill="#C08058"/>
+            <path d="M-11,-50 Q-13,-2 -10,32 L10,32 Q13,-2 11,-50 Z" fill="#CC2020"/>
+            <rect x="-9" y="-67" width="18" height="18" rx="3" fill="#F0DCC0"/>
+            <path d="M-11,-48 Q-25,-40 -34,-28 M11,-48 Q25,-38 35,-26" stroke="#CC2020" stroke-width="10" stroke-linecap="round" fill="none"/>
+            <ellipse cx="-34" cy="-26" rx="6" ry="4.5" fill="#E8C8A0"/>
+            <ellipse cx="35" cy="-24" rx="6" ry="4.5" fill="#E8C8A0"/>
+          </g>
+
+          <!-- 인물 10: 초록 남성 (어른) -->
+          <g transform="translate(892,515)">
+            <circle cy="-68" r="14" fill="#C08058"/>
+            <path d="M-12,-54 Q-14,-5 -12,36 L12,36 Q14,-5 12,-54 Z" fill="#2D6A3F"/>
+            <rect x="-10" y="-72" width="20" height="20" rx="3" fill="#F0DCC0"/>
+            <path d="M-12,-52 Q-27,-44 -38,-32 M12,-52 Q27,-42 40,-30" stroke="#2D6A3F" stroke-width="11" stroke-linecap="round" fill="none"/>
+            <ellipse cx="-38" cy="-30" rx="7" ry="5" fill="#E8C8A0"/>
+            <ellipse cx="40" cy="-28" rx="7" ry="5" fill="#E8C8A0"/>
+          </g>
+
+          <!-- 중앙 신랑신부 (혼례) -->
+          <!-- 신부 (빨간 활옷) -->
+          <g transform="translate(458,490)">
+            <circle cy="-75" r="16" fill="#C8A080"/>
+            <path d="M-14,-58 Q-16,-4 -14,42 L14,42 Q16,-4 14,-58 Z" fill="#CC2030"/>
+            <rect x="-12" y="-80" width="24" height="22" rx="4" fill="#F5E0D0"/>
+            <!-- 족두리 -->
+            <path d="M-16,-80 Q0,-102 16,-80" fill="#1A1410" stroke="#C8A020" stroke-width="1.5"/>
+            <circle cx="0" cy="-102" r="8" fill="#C8A020"/>
+            <circle cx="0" cy="-102" r="4" fill="#C82020"/>
+            <!-- 팔 -->
+            <path d="M-14,-55 Q-24,-40 -28,-22" stroke="#E8E0D0" stroke-width="13" stroke-linecap="round" fill="none"/>
+            <path d="M14,-55 Q24,-40 28,-22" stroke="#E8E0D0" stroke-width="13" stroke-linecap="round" fill="none"/>
+          </g>
+          <!-- 신랑 (파란 곤룡포 스타일) -->
+          <g transform="translate(542,490)">
+            <circle cy="-75" r="16" fill="#C8A080"/>
+            <path d="M-14,-58 Q-16,-4 -14,42 L14,42 Q16,-4 14,-58 Z" fill="#1B3A8A"/>
+            <rect x="-12" y="-80" width="24" height="22" rx="4" fill="#F0DCC0"/>
+            <!-- 사모 모자 -->
+            <rect x="-14" y="-90" width="28" height="14" rx="2" fill="#1A1410"/>
+            <rect x="-8" y="-96" width="16" height="8" rx="1" fill="#1A1410"/>
+            <!-- 팔 -->
+            <path d="M-14,-55 Q-22,-38 -25,-20" stroke="#1B3A8A" stroke-width="13" stroke-linecap="round" fill="none"/>
+            <path d="M14,-55 Q22,-36 25,-18" stroke="#1B3A8A" stroke-width="13" stroke-linecap="round" fill="none"/>
+          </g>
         </svg>
       </div>
+
+      <!-- ══ LAYER 4: 탈춤 공연자들 (전경) ══ -->
       <div class="vl" id="vl4" style="z-index:5;">
         <svg viewBox="0 0 1000 700" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
           <!-- ══ 탈춤꾼 1: 왼쪽, 덩실덩실 ══ -->
