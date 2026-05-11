@@ -540,37 +540,37 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
   align-items:center;justify-content:center;
   opacity:0;pointer-events:none;
 }
-#friends-screen.show{animation:fsBg 3s ease forwards;pointer-events:auto;}
+#friends-screen.show{animation:fsBg 2.8s ease forwards;pointer-events:auto;}
 @keyframes fsBg{
   0%  {opacity:0;background:#000;}
-  15% {opacity:1;background:#111;}
-  50% {background:#888;}
+  12% {opacity:1;background:#111;}
+  45% {background:#aaa;}
   100%{background:#fff;}
 }
 #fs-burst{
   position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(circle at 50% 52%,#fff 0%,rgba(255,255,255,.95) 18%,rgba(255,255,255,.5) 45%,transparent 68%);
+  background:radial-gradient(circle at 50% 50%,#fff 0%,rgba(255,255,255,.98) 25%,rgba(255,255,255,.6) 55%,transparent 75%);
   opacity:0;
 }
-#friends-screen.show #fs-burst{animation:fsBurst 2s ease .1s forwards;}
+#friends-screen.show #fs-burst{animation:fsBurst 1.8s ease .08s forwards;}
 @keyframes fsBurst{
   0%  {opacity:0;transform:scale(0);}
-  20% {opacity:1;transform:scale(.8);}
-  55% {opacity:1;transform:scale(1.1);}
-  100%{opacity:.5;transform:scale(1);}
+  18% {opacity:1;transform:scale(.6);}
+  50% {opacity:1;transform:scale(1.05);}
+  100%{opacity:0;transform:scale(1);}
 }
 #fs-figures{
   position:relative;z-index:2;
-  opacity:0;transform:scale(.18);
+  opacity:0;transform:scale(.15);
 }
 #friends-screen.show #fs-figures{
-  animation:fsRush 2.4s cubic-bezier(.2,0,.1,1) .2s forwards;
+  animation:fsRush 2.2s cubic-bezier(.18,0,.08,1) .25s forwards;
 }
 @keyframes fsRush{
-  0%  {opacity:0;transform:scale(.18);}
-  12% {opacity:1;transform:scale(.4);}
-  55% {transform:scale(1.2);}
-  100%{transform:scale(3.5);opacity:0;}
+  0%  {opacity:0;transform:scale(.15);}
+  10% {opacity:1;transform:scale(.35);}
+  50% {transform:scale(1.0);}
+  100%{transform:scale(3.8);opacity:0;}
 }
 #fs-txt{display:none;}
 
@@ -1089,7 +1089,8 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
   <div id="fs-burst"></div>
 
   <div id="fs-figures">
-    <svg viewBox="0 0 900 540" width="min(900px,100vw)" height="auto" xmlns="http://www.w3.org/2000/svg">
+    <img src="friends.png" alt="안겨" style="width:min(700px,92vw);height:auto;display:block;"/>
+    <svg viewBox="0 0 900 540" width="0" height="0" xmlns="http://www.w3.org/2000/svg" style="display:none;">
       <defs>
         <radialGradient id="sceneGlow" cx="50%" cy="55%" r="55%">
           <stop offset="0%"   stop-color="rgba(255,255,255,.55)"/>
