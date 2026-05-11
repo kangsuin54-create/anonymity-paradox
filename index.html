@@ -3692,58 +3692,59 @@ function triggerFlight(){
 let _ac=null;
 function getAC(){if(!_ac)_ac=new(window.AudioContext||window.webkitAudioContext)();return _ac;}
 
-/* ── 대문 끼익 (쇠 경첩 긁히는 소리) ── */
+/* ── 대문: 철컥 + 끼익 ── */
 function playDoorCreak(){
   try{
     const ac=getAC(); if(ac.state==='suspended')ac.resume();
     const t=ac.currentTime;
-    const dur=2.6;
 
-    /* 노이즈 소스 하나 */
-    const blen=Math.ceil(ac.sampleRate*(dur+.2));
-    const buf=ac.createBuffer(1,blen,ac.sampleRate);
-    const d=buf.getChannelData(0);
-    for(let i=0;i<blen;i++) d[i]=(Math.random()*2-1);
-    const ns=ac.createBufferSource(); ns.buffer=buf;
+    /* ① 철컥 — 잠금장치 열리는 금속 클릭 두 번 */
+    function clack(delay, freq, vol){
+      const o=ac.createOscillator(); const og=ac.createGain();
+      o.type='square'; o.frequency.value=freq;
+      og.gain.setValueAtTime(vol,t+delay);
+      og.gain.exponentialRampToValueAtTime(0.001,t+delay+.045);
+      o.connect(og); og.connect(ac.destination);
+      o.start(t+delay); o.stop(t+delay+.05);
+      /* 충격 노이즈 (아주 짧음) */
+      const bl=Math.ceil(ac.sampleRate*.04);
+      const bf=ac.createBuffer(1,bl,ac.sampleRate);
+      const dd=bf.getChannelData(0);
+      for(let i=0;i<bl;i++) dd[i]=(Math.random()*2-1)*Math.exp(-i/(bl*.08));
+      const ns=ac.createBufferSource(); ns.buffer=bf;
+      const nf=ac.createBiquadFilter(); nf.type='highpass'; nf.frequency.value=2000;
+      const ng=ac.createGain(); ng.gain.value=vol*.6;
+      ns.connect(nf); nf.connect(ng); ng.connect(ac.destination);
+      ns.start(t+delay); ns.stop(t+delay+.05);
+    }
+    clack(0,   1900, .5);
+    clack(.07, 1300, .32);
 
-    /* Q=65 — 노이즈를 명확한 피치 끼익으로 변환 (낮은 기음) */
-    const f1=ac.createBiquadFilter(); f1.type='bandpass'; f1.Q.value=65;
-    f1.frequency.setValueAtTime(170,t);
-    f1.frequency.exponentialRampToValueAtTime(420,t+.75);
-    f1.frequency.exponentialRampToValueAtTime(280,t+1.2);
-    f1.frequency.exponentialRampToValueAtTime(500,t+1.8);
-    f1.frequency.exponentialRampToValueAtTime(340,t+dur);
-
-    /* Q=48 — 경첩 금속 배음 (~2.5배음) */
-    const f2=ac.createBiquadFilter(); f2.type='bandpass'; f2.Q.value=48;
-    f2.frequency.setValueAtTime(430,t);
-    f2.frequency.exponentialRampToValueAtTime(980,t+.7);
-    f2.frequency.exponentialRampToValueAtTime(660,t+1.2);
-    f2.frequency.exponentialRampToValueAtTime(1100,t+1.75);
-    f2.frequency.exponentialRampToValueAtTime(780,t+dur);
-
-    /* 마스터 게인 — 문 속도 변화처럼 중간중간 살짝 흔들림 */
+    /* ② 끼익 — 오실레이터 기반 (노이즈 없음 = 바람소리 없음) */
+    /* sawtooth → lowpass → 금속 긁히는 배음 유지, 바람느낌 제거 */
+    const osc=ac.createOscillator();
+    const lp=ac.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=1100; lp.Q.value=.7;
     const g=ac.createGain();
-    g.gain.setValueAtTime(0,t);
-    g.gain.linearRampToValueAtTime(.85,t+.1);
-    g.gain.linearRampToValueAtTime(.5,t+.55);   /* 잠깐 느려짐 */
-    g.gain.linearRampToValueAtTime(.82,t+.9);
-    g.gain.linearRampToValueAtTime(.52,t+1.35); /* 또 느려짐 */
-    g.gain.linearRampToValueAtTime(.78,t+1.9);
-    g.gain.linearRampToValueAtTime(0,t+dur);
 
-    const g2=ac.createGain(); g2.gain.value=.42;
+    osc.type='sawtooth';
+    osc.frequency.setValueAtTime(110,  t+.12);
+    osc.frequency.linearRampToValueAtTime(260,  t+.6);
+    osc.frequency.linearRampToValueAtTime(180,  t+1.0);
+    osc.frequency.linearRampToValueAtTime(340,  t+1.5);
+    osc.frequency.linearRampToValueAtTime(230,  t+1.95);
+    osc.frequency.linearRampToValueAtTime(170,  t+2.4);
 
-    ns.connect(f1); f1.connect(g);  g.connect(ac.destination);
-    ns.connect(f2); f2.connect(g2); g2.connect(ac.destination);
-    ns.start(t); ns.stop(t+dur+.1);
+    /* 게인 웨이빙 — 문 속도가 일정하지 않은 느낌 */
+    g.gain.setValueAtTime(0,    t+.1);
+    g.gain.linearRampToValueAtTime(.13, t+.22);
+    g.gain.linearRampToValueAtTime(.07, t+.55);
+    g.gain.linearRampToValueAtTime(.13, t+.9);
+    g.gain.linearRampToValueAtTime(.06, t+1.35);
+    g.gain.linearRampToValueAtTime(.11, t+1.75);
+    g.gain.linearRampToValueAtTime(0,   t+2.4);
 
-    /* 문 잠금 풀리는 첫 쿵 */
-    const thud=ac.createOscillator(); const thudG=ac.createGain();
-    thud.type='sine';
-    thud.frequency.setValueAtTime(85,t); thud.frequency.exponentialRampToValueAtTime(32,t+.3);
-    thudG.gain.setValueAtTime(.6,t); thudG.gain.exponentialRampToValueAtTime(.001,t+.32);
-    thud.connect(thudG); thudG.connect(ac.destination); thud.start(t); thud.stop(t+.35);
+    osc.connect(lp); lp.connect(g); g.connect(ac.destination);
+    osc.start(t+.1); osc.stop(t+2.5);
   }catch(e){}
 }
 
