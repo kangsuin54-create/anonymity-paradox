@@ -27,7 +27,14 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 .scene.active{display:flex;}
 
 /* ── Gate scene ── */
-#s-gate{background:radial-gradient(ellipse 70% 50% at 50% 80%,rgba(180,80,20,.2) 0%,transparent 60%),linear-gradient(180deg,#04030A 0%,#0C0818 25%,#1A0E28 50%,#2A1008 75%,#0E0806 100%);flex-direction:column;cursor:pointer;}
+#s-gate{
+  background:
+    radial-gradient(ellipse 80% 55% at 50% 90%, rgba(220,130,30,.35) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 30% 20%, rgba(120,80,180,.2) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 70% 15%, rgba(80,60,160,.2) 0%, transparent 50%),
+    linear-gradient(180deg,#14102A 0%,#221438 18%,#2E1840 35%,#3C2018 58%,#2A1410 78%,#160C08 100%);
+  flex-direction:column;cursor:pointer;
+}
 #stars-c{position:absolute;inset:0;z-index:0;pointer-events:none;}
 .gate-title{position:absolute;top:6vh;left:50%;transform:translateX(-50%);text-align:center;z-index:20;pointer-events:none;white-space:nowrap;}
 .gate-year{font-family:'Noto Sans KR',sans-serif;font-size:.76rem;letter-spacing:.5em;color:var(--gold);margin-bottom:12px;}
@@ -49,7 +56,7 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 @keyframes hpulse{0%,100%{opacity:.5;transform:translateX(-50%) translateY(0);}50%{opacity:1;transform:translateX(-50%) translateY(-5px);}}
 
 /* ── Village scene ── */
-#s-village{background:#0A0618;flex-direction:column;overflow:hidden;cursor:pointer;}
+#s-village{background:#100820;flex-direction:column;overflow:hidden;cursor:pointer;}
 #village-parallax{position:absolute;inset:0;transform-style:preserve-3d;transition:none;}
 .vl{position:absolute;inset:0;transform-origin:50% 100%;transition:transform .9s cubic-bezier(.25,0,.1,1);}
 #walk-hint{position:absolute;bottom:5vh;left:50%;transform:translateX(-50%);z-index:50;pointer-events:none;text-align:center;animation:hpulse2 2.2s ease-in-out infinite;}
@@ -262,6 +269,58 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 .cta{display:inline-block;margin-top:32px;padding:15px 42px;background:var(--ink);color:var(--hanji);font-family:'Noto Serif KR',serif;font-size:.95rem;font-weight:600;letter-spacing:.14em;border:none;cursor:pointer;transition:background .3s,transform .2s;}
 .cta:hover{background:var(--red);transform:translateY(-3px);}
 .fnote{margin-top:70px;padding-top:32px;border-top:1px solid rgba(26,20,14,.12);font-family:'Noto Sans KR',sans-serif;font-size:.76rem;color:rgba(26,20,14,.35);line-height:2;}
+
+/* ══ PHONE NOTIFICATION ══ */
+#phone-notif{
+  position:fixed;
+  top:-130px; left:50%; transform:translateX(-50%);
+  z-index:9000;
+  width:min(400px,92vw);
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-radius:18px;
+  padding:14px 16px;
+  display:flex;align-items:flex-start;gap:12px;
+  box-shadow:0 12px 48px rgba(0,0,0,.22),0 2px 8px rgba(0,0,0,.12);
+  transition:top .55s cubic-bezier(.34,1.56,.64,1);
+  pointer-events:none;
+}
+#phone-notif.show{ top:18px; }
+#phone-notif.dismiss{ top:-130px; transition:top .4s ease-in; }
+
+.pn-icon{
+  width:40px;height:40px;border-radius:10px;flex-shrink:0;
+  background:linear-gradient(135deg,#FFD400,#FFA800);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;box-shadow:0 2px 8px rgba(255,180,0,.35);
+}
+.pn-body{ flex:1; min-width:0; }
+.pn-app{
+  font-family:'Noto Sans KR',sans-serif;
+  font-size:.68rem;color:rgba(0,0,0,.45);
+  letter-spacing:.05em;margin-bottom:3px;
+  display:flex;align-items:center;gap:6px;
+}
+.pn-app::after{content:'·';color:rgba(0,0,0,.25);}
+.pn-time{font-family:'Noto Sans KR',sans-serif;font-size:.68rem;color:rgba(0,0,0,.4);}
+.pn-msg{
+  font-family:'Noto Sans KR',sans-serif;
+  font-size:.88rem;color:#1A1A1A;line-height:1.45;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.pn-sender{ font-weight:700;color:#1A1A1A; }
+
+/* vibrate animation for icon when notification arrives */
+@keyframes notifVibrate{
+  0%,100%{transform:rotate(0deg);}
+  15%{transform:rotate(-12deg);}
+  30%{transform:rotate(12deg);}
+  45%{transform:rotate(-8deg);}
+  60%{transform:rotate(8deg);}
+  75%{transform:rotate(-4deg);}
+  90%{transform:rotate(4deg);}
+}
+.pn-icon.ring{ animation:notifVibrate .5s ease .2s; }
 
 @media(max-width:720px){
   .split2,.pg,.ccols{grid-template-columns:1fr;}
@@ -687,6 +746,15 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 
 </div><!-- /main-content -->
 
+<!-- ══ PHONE NOTIFICATION (fixed, above everything) ══ -->
+<div id="phone-notif">
+  <div class="pn-icon" id="pn-icon">💬</div>
+  <div class="pn-body">
+    <div class="pn-app">카카오톡 오픈채팅 <span class="pn-time">방금</span></div>
+    <div class="pn-msg"><span class="pn-sender">익명의 누군가</span>&nbsp; 사실 저도 많이 외로워요 ㅎ</div>
+  </div>
+</div>
+
 <script>
 /* ── STARS (gate bg) ── */
 (function(){
@@ -782,8 +850,46 @@ function triggerFlight(){
   requestAnimationFrame(animYear);
 }
 
+/* ── 띠롱 sound (Web Audio API) ── */
+let _ac=null;
+function getAC(){if(!_ac)_ac=new(window.AudioContext||window.webkitAudioContext)();return _ac;}
+
+function playTirong(){
+  try{
+    const ac=getAC();
+    if(ac.state==='suspended')ac.resume();
+    function tone(freq,t0,dur,vol){
+      const o=ac.createOscillator(),g=ac.createGain();
+      const o2=ac.createOscillator(),g2=ac.createGain();
+      o.type='sine';o.frequency.value=freq;
+      o2.type='sine';o2.frequency.value=freq*2;
+      g.gain.setValueAtTime(0,ac.currentTime+t0);
+      g.gain.linearRampToValueAtTime(vol,ac.currentTime+t0+.018);
+      g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+t0+dur);
+      g2.gain.setValueAtTime(0,ac.currentTime+t0);
+      g2.gain.linearRampToValueAtTime(vol*.12,ac.currentTime+t0+.018);
+      g2.gain.exponentialRampToValueAtTime(.001,ac.currentTime+t0+dur*.6);
+      o.connect(g);g.connect(ac.destination);
+      o2.connect(g2);g2.connect(ac.destination);
+      o.start(ac.currentTime+t0);o.stop(ac.currentTime+t0+dur);
+      o2.start(ac.currentTime+t0);o2.stop(ac.currentTime+t0+dur*.6);
+    }
+    tone(1174.66,0,.22,.38);   /* 띠 — D6, 높고 짧게 */
+    tone(880,.08,.42,.30);     /* 롱 — A5, 낮고 길게 */
+  }catch(e){}
+}
+document.addEventListener('click',()=>{try{getAC();}catch(e){}},{once:true});
+
 function showArrival(){
   document.getElementById('fl-arrival').classList.add('show');
+  setTimeout(()=>{
+    playTirong();
+    const notif=document.getElementById('phone-notif');
+    const icon=document.getElementById('pn-icon');
+    notif.classList.add('show');
+    icon.classList.add('ring');
+    setTimeout(()=>{notif.classList.remove('show');notif.classList.add('dismiss');},4500);
+  },500);
 }
 
 /* ── SCROLL REVEAL ── */
