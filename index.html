@@ -166,6 +166,28 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 #walk-hint .wico{font-size:1.3rem;display:block;margin-bottom:5px;}
 @keyframes hpulse2{0%,100%{opacity:.5;}50%{opacity:1;}}
 #walk-hint.hide{opacity:0;transition:opacity .3s;}
+/* 덩실덩실 탈춤 애니메이션 */
+@keyframes dance1{
+  0%  {transform:translateY(0) rotate(-4deg);}
+  25% {transform:translateY(-14px) rotate(3deg);}
+  50% {transform:translateY(-6px) rotate(-2deg);}
+  75% {transform:translateY(-18px) rotate(5deg);}
+  100%{transform:translateY(0) rotate(-4deg);}
+}
+@keyframes dance2{
+  0%  {transform:translateY(0) rotate(2deg);}
+  20% {transform:translateY(-20px) rotate(-4deg);}
+  45% {transform:translateY(-10px) rotate(3deg);}
+  70% {transform:translateY(-22px) rotate(-5deg);}
+  100%{transform:translateY(0) rotate(2deg);}
+}
+@keyframes dance3{
+  0%  {transform:translateY(0) rotate(-3deg);}
+  30% {transform:translateY(-16px) rotate(4deg);}
+  60% {transform:translateY(-8px) rotate(-2deg);}
+  80% {transform:translateY(-20px) rotate(5deg);}
+  100%{transform:translateY(0) rotate(-3deg);}
+}
 @keyframes sway{0%,100%{transform:rotate(-4deg);}50%{transform:rotate(4deg);}}
 @keyframes sway2{0%,100%{transform:rotate(3deg);}50%{transform:rotate(-5deg);}}
 @keyframes sway3{0%,100%{transform:rotate(-2deg);}50%{transform:rotate(6deg);}}
@@ -241,12 +263,18 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 
 /* Ground landscapes */
 #fl-ground{position:absolute;bottom:0;left:0;right:0;z-index:4;}
-#fl-ground-jos{position:absolute;bottom:0;left:0;right:0;}
+#fl-ground-jos{
+  position:absolute;bottom:0;left:0;right:0;
+  clip-path:inset(0 0 0 0);
+  transition:clip-path 3.8s cubic-bezier(.4,0,.2,1) .1s;
+}
 #fl-ground-mod{
   position:absolute;bottom:0;left:0;right:0;
   clip-path:inset(0 100% 0 0);
   transition:clip-path 3.8s cubic-bezier(.4,0,.2,1) .1s;
 }
+/* 동시에 초가집은 왼→오 사라지고, 아파트는 왼→오 나타남 */
+#s-flight.flying #fl-ground-jos{clip-path:inset(0 0 0 100%);}
 #s-flight.flying #fl-ground-mod{clip-path:inset(0 0% 0 0);}
 
 /* Airplane */
@@ -987,10 +1015,118 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
       </div>
       <div class="vl" id="vl4" style="z-index:5;">
         <svg viewBox="0 0 1000 700" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
-          <g style="animation:sway2 2.8s ease-in-out infinite;transform-origin:320px 580px;" opacity="0.95"><rect x="302" y="540" width="36" height="55" rx="5" fill="#8B1A18"/><ellipse cx="320" cy="530" rx="18" ry="20" fill="#1A0E08"/><ellipse cx="320" cy="509" rx="22" ry="4" fill="#1A1410"/><rect x="315" y="505" width="10" height="7" fill="#1A1410"/><path d="M302,555 L265,540 Q258,535 260,528" stroke="#8B1A18" stroke-width="12" stroke-linecap="round" fill="none"/><path d="M338,555 L360,538 Q366,530 362,522" stroke="#8B1A18" stroke-width="12" stroke-linecap="round" fill="none"/><line x1="260" y1="528" x2="250" y2="515" stroke="#3A2010" stroke-width="4"/><line x1="362" y1="522" x2="372" y2="510" stroke="#3A2010" stroke-width="4"/><ellipse cx="320" cy="620" rx="28" ry="16" fill="#6B3A08"/><rect x="294" y="614" width="52" height="12" rx="3" fill="#8B4A10"/><ellipse cx="294" cy="620" rx="10" ry="14" fill="#C87828"/><ellipse cx="346" cy="620" rx="10" ry="14" fill="#C87828"/><rect x="308" y="592" width="10" height="28" fill="#2A1808"/><rect x="322" y="592" width="10" height="28" fill="#2A1808"/></g>
-          <g style="animation:sway 2.4s ease-in-out infinite;transform-origin:500px 560px;" opacity="0.95"><path d="M465,575 Q450,640 440,700 L480,700 L500,620 L520,700 L560,700 Q550,640 535,575 Z" fill="#E8DCC8"/><rect x="472" y="510" width="56" height="75" rx="6" fill="#E8DCC8"/><rect x="478" y="525" width="44" height="55" rx="4" fill="#2A4888"/><ellipse cx="500" cy="500" rx="26" ry="30" fill="#E8C860"/><path d="M486,493 Q492,488 499,491 Q492,497 486,493 Z" fill="#1A0A00"/><path d="M501,491 Q508,488 514,493 Q508,497 501,491 Z" fill="#1A0A00"/><path d="M483,485 Q492,479 500,482 Q508,479 517,485" stroke="#3A1A00" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M497,498 Q494,507 490,509 Q500,513 510,509 Q506,507 503,498 Z" fill="#D4A040" opacity="0.7"/><path d="M483,515 Q500,534 517,515" stroke="#1A0A00" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M487,518 Q500,528 513,518" fill="#C1272D" opacity="0.5"/><path d="M480,473 Q500,460 520,473" stroke="#3A2010" stroke-width="3" fill="none"/><ellipse cx="500" cy="470" rx="6" ry="8" fill="#1A0E08"/><ellipse cx="500" cy="466" rx="30" ry="6" fill="#1A1410"/><rect x="494" y="458" width="12" height="10" fill="#1A1410"/><path d="M472,535 Q440,510 408,495 Q390,485 378,480" stroke="#E8DCC8" stroke-width="16" stroke-linecap="round" fill="none"/><path d="M378,480 Q358,474 340,480 Q330,488 338,498" stroke="#D0C8B8" stroke-width="14" stroke-linecap="round" fill="none"/><path d="M528,535 Q560,510 592,495 Q610,485 622,480" stroke="#E8DCC8" stroke-width="16" stroke-linecap="round" fill="none"/><path d="M622,480 Q642,474 660,480 Q670,488 662,498" stroke="#D0C8B8" stroke-width="14" stroke-linecap="round" fill="none"/><rect x="486" y="582" width="12" height="40" fill="#C8A848"/><rect x="502" y="582" width="12" height="40" fill="#C8A848"/></g>
-          <g style="animation:sway3 3s ease-in-out infinite .6s;transform-origin:700px 570px;" opacity="0.9"><path d="M668,578 Q655,640 645,700 L685,700 L700,628 L715,700 L755,700 Q745,640 732,578 Z" fill="#C82A5A"/><rect x="674" y="518" width="52" height="68" rx="5" fill="#C82A5A"/><ellipse cx="700" cy="508" rx="24" ry="28" fill="#F0E0C0"/><ellipse cx="691" cy="500" rx="5" ry="3.5" fill="#1A0A00"/><ellipse cx="709" cy="500" rx="5" ry="3.5" fill="#1A0A00"/><path d="M692,516 Q700,522 708,516" stroke="#C82020" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M678,482 Q700,468 722,482" stroke="#1A0E08" stroke-width="4" fill="none"/><circle cx="700" cy="474" r="5" fill="#C82A5A"/><circle cx="700" cy="474" r="2.5" fill="#FFB040"/><path d="M674,535 Q645,515 620,520 Q608,524 606,534" stroke="#C82A5A" stroke-width="14" stroke-linecap="round" fill="none"/><path d="M726,530 Q752,508 768,500 Q782,493 790,498" stroke="#C82A5A" stroke-width="14" stroke-linecap="round" fill="none"/><rect x="686" y="584" width="11" height="38" fill="#8B1A40"/><rect x="703" y="584" width="11" height="38" fill="#8B1A40"/></g>
-          <ellipse cx="500" cy="695" rx="280" ry="30" fill="#FF6010" opacity="0.08"/>
+          <!-- ══ 탈춤꾼 1: 왼쪽, 덩실덩실 ══ -->
+          <g style="animation:dance1 1.6s ease-in-out infinite;transform-origin:300px 560px;">
+            <!-- 흰 바지 -->
+            <path d="M285,560 Q280,610 275,650 L295,650 L300,600 L305,650 L325,650 Q320,610 315,560 Z" fill="#F0ECE0" stroke="#C8C0A8" stroke-width="1.5"/>
+            <!-- 파란 저고리 몸통 -->
+            <path d="M278,510 Q275,535 280,560 L320,560 Q325,535 322,510 Z" fill="#4A6ACC"/>
+            <!-- 오른팔 위로 (한삼 들기) -->
+            <path d="M320,520 Q345,500 358,480" stroke="#4A6ACC" stroke-width="14" stroke-linecap="round" fill="none"/>
+            <!-- 알록달록 소매 줄무늬 -->
+            <path d="M322,525 Q342,508 354,490" stroke="#E84030" stroke-width="4.5" fill="none"/>
+            <path d="M319,531 Q338,514 350,496" stroke="#3AAA40" stroke-width="4.5" fill="none"/>
+            <path d="M316,537 Q334,521 345,503" stroke="#E8C020" stroke-width="4.5" fill="none"/>
+            <!-- 한삼 (흰 리본) -->
+            <path d="M358,478 Q380,460 400,470 Q420,480 415,500 Q410,520 430,515" stroke="rgba(240,235,220,.95)" stroke-width="7" fill="none" stroke-linecap="round"/>
+            <!-- 왼팔 내리기 -->
+            <path d="M280,520 Q262,540 255,558" stroke="#4A6ACC" stroke-width="14" stroke-linecap="round" fill="none"/>
+            <path d="M278,527 Q262,544 256,560" stroke="#E84030" stroke-width="4" fill="none"/>
+            <path d="M275,533 Q260,549 254,564" stroke="#3AAA40" stroke-width="4" fill="none"/>
+            <!-- 머리/탈 -->
+            <circle cx="300" cy="493" r="22" fill="#CC3830"/>
+            <!-- 탈 눈 -->
+            <ellipse cx="292" cy="489" rx="5" ry="4.5" fill="#1A0A00"/>
+            <ellipse cx="308" cy="489" rx="5" ry="4.5" fill="#1A0A00"/>
+            <!-- 눈 노란 점 -->
+            <circle cx="292" cy="489" r="2" fill="#F0D020"/>
+            <circle cx="308" cy="489" r="2" fill="#F0D020"/>
+            <!-- 이마 줄무늬 -->
+            <path d="M285,483 L315,483" stroke="#1A0A00" stroke-width="1.5" opacity=".6"/>
+            <path d="M284,479 L316,479" stroke="#1A0A00" stroke-width="1.5" opacity=".5"/>
+            <!-- 코 -->
+            <ellipse cx="300" cy="496" rx="6" ry="5" fill="#D04040" stroke="#1A0A00" stroke-width="1"/>
+            <!-- 입 -->
+            <path d="M290,504 Q300,512 310,504" stroke="#1A0A00" stroke-width="1.5" fill="rgba(180,50,30,.3)"/>
+            <!-- 머리 장식 -->
+            <path d="M280,476 Q290,464 300,460 Q310,464 320,476" stroke="#4A6ACC" stroke-width="3" fill="#2A40A0" opacity=".8"/>
+            <!-- 발 (한쪽 들기) -->
+            <path d="M312,650 Q318,660 325,658" stroke="#C8B888" stroke-width="10" stroke-linecap="round" fill="none"/>
+            <path d="M280,650 Q272,655 268,650" stroke="#C8B888" stroke-width="10" stroke-linecap="round" fill="none"/>
+          </g>
+
+          <!-- ══ 탈춤꾼 2: 중앙 주인공, 덩실 ══ -->
+          <g style="animation:dance2 1.4s ease-in-out infinite;transform-origin:500px 550px;">
+            <!-- 흰 바지 -->
+            <path d="M480,570 Q474,625 470,670 L492,670 L500,615 L508,670 L530,670 Q526,625 520,570 Z" fill="#EEE8D8" stroke="#C8C0A8" stroke-width="1.5"/>
+            <!-- 하늘색 저고리 -->
+            <path d="M475,512 Q472,540 478,570 L522,570 Q528,540 525,512 Z" fill="#7AB8D8"/>
+            <!-- 왼팔 크게 올림 (한삼) -->
+            <path d="M478,520 Q450,495 430,468" stroke="#7AB8D8" stroke-width="16" stroke-linecap="round" fill="none"/>
+            <path d="M478,526 Q452,501 433,475" stroke="#E84030" stroke-width="5" fill="none"/>
+            <path d="M477,533 Q452,509 434,483" stroke="#3AAA40" stroke-width="5" fill="none"/>
+            <path d="M476,540 Q453,516 436,490" stroke="#E8C020" stroke-width="5" fill="none"/>
+            <!-- 한삼 크게 펄럭 -->
+            <path d="M428,466 Q408,445 415,420 Q422,398 445,405 Q465,412 460,435 Q455,455 475,448" stroke="rgba(240,235,220,.95)" stroke-width="9" fill="none" stroke-linecap="round"/>
+            <!-- 오른팔 옆으로 -->
+            <path d="M522,520 Q548,505 565,518" stroke="#7AB8D8" stroke-width="16" stroke-linecap="round" fill="none"/>
+            <path d="M523,526 Q546,512 562,523" stroke="#E84030" stroke-width="5" fill="none"/>
+            <path d="M524,533 Q546,519 561,529" stroke="#3AAA40" stroke-width="5" fill="none"/>
+            <!-- 머리/탈 (크고 선명) -->
+            <circle cx="500" cy="493" r="26" fill="#CC3830"/>
+            <ellipse cx="490" cy="488" rx="6" ry="5.5" fill="#1A0A00"/>
+            <ellipse cx="510" cy="488" rx="6" ry="5.5" fill="#1A0A00"/>
+            <circle cx="490" cy="488" r="2.5" fill="#F0D020"/>
+            <circle cx="510" cy="488" r="2.5" fill="#F0D020"/>
+            <path d="M484,482 L516,482" stroke="#1A0A00" stroke-width="2" opacity=".6"/>
+            <path d="M483,477 L517,477" stroke="#1A0A00" stroke-width="2" opacity=".5"/>
+            <ellipse cx="500" cy="497" rx="7" ry="6" fill="#D04040" stroke="#1A0A00" stroke-width="1.5"/>
+            <path d="M488,508 Q500,518 512,508" stroke="#1A0A00" stroke-width="2" fill="rgba(180,50,30,.3)"/>
+            <!-- 머리 화려한 장식 -->
+            <path d="M476,470 Q490,455 500,450 Q510,455 524,470" fill="#CC3830" stroke="#1A0A00" stroke-width="1.5"/>
+            <rect x="490" y="448" width="20" height="8" rx="2" fill="#2A40A0"/>
+            <circle cx="500" cy="444" r="5" fill="#E8C020"/>
+            <!-- 다리 (한 발 들기) -->
+            <path d="M510,570 Q520,595 525,610 Q532,620 528,628" stroke="#C8B888" stroke-width="14" stroke-linecap="round" fill="none"/>
+            <path d="M490,570 Q484,595 480,610" stroke="#C8B888" stroke-width="14" stroke-linecap="round" fill="none"/>
+            <!-- 신발 -->
+            <ellipse cx="527" cy="630" rx="14" ry="7" fill="#E8B840" transform="rotate(15,527,630)"/>
+            <ellipse cx="478" cy="612" rx="13" ry="6" fill="#E8B840"/>
+          </g>
+
+          <!-- ══ 탈춤꾼 3: 오른쪽, 작은 figure ══ -->
+          <g style="animation:dance3 1.8s ease-in-out infinite .4s;transform-origin:700px 565px;">
+            <!-- 흰 바지 -->
+            <path d="M685,565 Q680,610 677,648 L695,648 L700,600 L705,648 L723,648 Q720,610 715,565 Z" fill="#F0ECE0" stroke="#C8C0A8" stroke-width="1.5"/>
+            <!-- 초록 저고리 -->
+            <path d="M678,518 Q676,542 680,565 L720,565 Q724,542 722,518 Z" fill="#4AA858"/>
+            <!-- 오른팔 크게 위로 -->
+            <path d="M720,525 Q740,508 755,488" stroke="#4AA858" stroke-width="13" stroke-linecap="round" fill="none"/>
+            <path d="M720,531 Q739,515 753,496" stroke="#E84030" stroke-width="4" fill="none"/>
+            <path d="M719,537 Q737,521 750,502" stroke="#2A5ACC" stroke-width="4" fill="none"/>
+            <path d="M718,543 Q735,528 748,508" stroke="#E8C020" stroke-width="4" fill="none"/>
+            <!-- 한삼 -->
+            <path d="M755,486 Q775,468 778,448 Q780,430 765,428 Q750,428 748,445 Q746,460 762,462" stroke="rgba(240,235,220,.9)" stroke-width="7" fill="none" stroke-linecap="round"/>
+            <!-- 왼팔 내림 -->
+            <path d="M680,525 Q664,545 658,562" stroke="#4AA858" stroke-width="13" stroke-linecap="round" fill="none"/>
+            <path d="M679,531 Q664,549 659,565" stroke="#E84030" stroke-width="4" fill="none"/>
+            <!-- 머리/탈 -->
+            <circle cx="700" cy="500" r="20" fill="#CC3830"/>
+            <ellipse cx="693" cy="496" rx="4.5" ry="4" fill="#1A0A00"/>
+            <ellipse cx="707" cy="496" rx="4.5" ry="4" fill="#1A0A00"/>
+            <circle cx="693" cy="496" r="1.8" fill="#F0D020"/>
+            <circle cx="707" cy="496" r="1.8" fill="#F0D020"/>
+            <path d="M686,490 L714,490" stroke="#1A0A00" stroke-width="1.5" opacity=".6"/>
+            <ellipse cx="700" cy="503" rx="5.5" ry="5" fill="#D04040" stroke="#1A0A00" stroke-width="1"/>
+            <path d="M691,512 Q700,518 709,512" stroke="#1A0A00" stroke-width="1.5" fill="rgba(180,50,30,.3)"/>
+            <!-- 장식 -->
+            <path d="M683,483 Q692,472 700,469 Q708,472 717,483" fill="#4AA858" stroke="#1A0A00" stroke-width="1.5"/>
+            <!-- 다리 -->
+            <path d="M692,565 Q686,595 684,625" stroke="#C8B888" stroke-width="12" stroke-linecap="round" fill="none"/>
+            <path d="M708,565 Q716,590 720,618 Q724,628 718,635" stroke="#C8B888" stroke-width="12" stroke-linecap="round" fill="none"/>
+            <ellipse cx="717" cy="637" rx="12" ry="6" fill="#E8B840" transform="rotate(12,717,637)"/>
+          </g>
+          <ellipse cx="500" cy="695" rx="280" ry="24" fill="rgba(200,160,80,.15)"/>
         </svg>
       </div>
       <div class="vl" id="vl5" style="z-index:6;pointer-events:none;">
@@ -1379,7 +1515,7 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
   <div id="fs-burst"></div>
 
   <div id="fs-figures">
-    <img src="friends.png" alt="안겨" style="width:min(700px,92vw);height:auto;display:block;"/>
+    <img src="friends.png" alt="안겨" style="width:min(960px,98vw);height:auto;display:block;"/>
     <svg viewBox="0 0 900 540" width="0" height="0" xmlns="http://www.w3.org/2000/svg" style="display:none;">
       <defs>
         <radialGradient id="sceneGlow" cx="50%" cy="55%" r="55%">
