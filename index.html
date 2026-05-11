@@ -498,6 +498,88 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 @keyframes acceptPulse{0%,100%{box-shadow:0 0 0 0 rgba(52,199,89,.6);}50%{box-shadow:0 0 0 14px rgba(52,199,89,0);}}
 .cr-btn-lbl{font-family:'Noto Sans KR',sans-serif;font-size:.78rem;color:rgba(255,255,255,.65);}
 
+/* ══ MASK BREAKING SCREEN ══ */
+#mask-screen{
+  position:fixed;inset:0;z-index:9900;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:#140E08;
+  opacity:0;pointer-events:none;transition:opacity .4s;
+}
+#mask-screen.show{opacity:1;pointer-events:auto;}
+.mask-hint-txt{
+  font-family:'Noto Sans KR',sans-serif;font-size:.95rem;
+  color:rgba(242,224,181,.65);letter-spacing:.2em;
+  margin-bottom:28px;animation:hpulse2 1.6s ease-in-out infinite;
+}
+#mask-svg-wrap{cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;}
+#mask-svg-wrap.crk{animation:crkShake .12s ease;}
+@keyframes crkShake{
+  0%,100%{transform:translate(0)rotate(0);}
+  20%{transform:translate(-6px,4px)rotate(-1.5deg);}
+  50%{transform:translate(6px,-4px)rotate(1.5deg);}
+  80%{transform:translate(-4px,2px)rotate(-1deg);}
+}
+#mask-svg-wrap.smash{animation:smashOut .65s cubic-bezier(.4,0,1,1) forwards;}
+@keyframes smashOut{
+  0%{transform:scale(1);opacity:1;filter:brightness(1);}
+  25%{transform:scale(1.06);filter:brightness(2.5);}
+  60%{transform:scale(1.4);filter:brightness(5) blur(4px);opacity:.6;}
+  100%{transform:scale(3);filter:brightness(8) blur(16px);opacity:0;}
+}
+#mask-prog{
+  margin-top:22px;font-family:'Noto Sans KR',sans-serif;
+  font-size:.78rem;color:rgba(242,224,181,.4);letter-spacing:.15em;
+}
+.mcrk{stroke:#1A0A04;stroke-linecap:round;fill:none;opacity:0;transition:opacity .08s;}
+.mcrk.on{opacity:1;}
+
+/* ══ FRIENDS SCREEN ══ */
+#friends-screen{
+  position:fixed;inset:0;z-index:9901;
+  background:#000;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+}
+#friends-screen.show{animation:fsBg 4.5s ease forwards;pointer-events:auto;}
+@keyframes fsBg{
+  0%{opacity:0;background:#000;}
+  18%{opacity:1;background:#000;}
+  45%{background:#1A0804;}
+  75%{background:#8B4010;}
+  100%{background:linear-gradient(180deg,#C87820,#F0B840);}
+}
+#fs-burst{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 50% 52%,#fff 0%,rgba(255,220,100,.9) 12%,rgba(255,150,40,.4) 35%,transparent 60%);
+  opacity:0;
+}
+#friends-screen.show #fs-burst{animation:fsBurst 2.5s ease .15s forwards;}
+@keyframes fsBurst{
+  0%{opacity:0;transform:scale(0);}
+  18%{opacity:1;transform:scale(.7);}
+  45%{opacity:.9;transform:scale(1.15);}
+  100%{opacity:.3;transform:scale(1);}
+}
+#fs-figures{
+  position:relative;z-index:2;
+  opacity:0;transform:scale(.25);
+}
+#friends-screen.show #fs-figures{animation:fsReveal 4s ease .35s forwards;}
+@keyframes fsReveal{
+  0%{opacity:0;transform:scale(.25);}
+  22%{opacity:1;transform:scale(.55);}
+  65%{transform:scale(.95);}
+  100%{transform:scale(1.35);opacity:1;}
+}
+#fs-txt{
+  position:absolute;bottom:10vh;left:50%;transform:translateX(-50%);
+  font-family:'Noto Serif KR',serif;font-size:clamp(1.2rem,3vw,2rem);font-weight:700;
+  color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.5);
+  white-space:nowrap;z-index:3;opacity:0;
+}
+#friends-screen.show #fs-txt{animation:fsTxt 1.5s ease 2.8s forwards;}
+@keyframes fsTxt{from{opacity:0;transform:translateX(-50%) translateY(12px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+
 /* vibrate animation for icon when notification arrives */
 @keyframes notifVibrate{
   0%,100%{transform:rotate(0deg);}
@@ -943,6 +1025,129 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
   </div>
 </div>
 
+<!-- ══ MASK BREAKING SCREEN ══ -->
+<div id="mask-screen">
+  <div class="mask-hint-txt" id="mask-hint-txt">탈을 연타해서 깨부수세요!</div>
+
+  <div id="mask-svg-wrap" onclick="onMaskTap()">
+    <svg viewBox="0 0 300 340" width="min(250px,68vw)" xmlns="http://www.w3.org/2000/svg"
+         style="filter:drop-shadow(0 8px 40px rgba(0,0,0,.6));display:block;">
+
+      <!-- Side ear extensions -->
+      <path d="M34,138 Q16,156 18,176 Q20,200 40,207 L60,193 L56,158 Z" fill="#F0ECE5" stroke="#C8C0B0" stroke-width="1.5"/>
+      <path d="M266,138 Q284,156 282,176 Q280,200 260,207 L240,193 L244,158 Z" fill="#F0ECE5" stroke="#C8C0B0" stroke-width="1.5"/>
+
+      <!-- Face -->
+      <ellipse cx="150" cy="166" rx="118" ry="146" fill="#F5F0E8" stroke="#D8D0C0" stroke-width="2"/>
+
+      <!-- Forehead wrinkles -->
+      <path d="M90,72 Q120,60 150,56 Q180,60 210,72" stroke="#C0B8A8" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M84,87 Q112,74 150,70 Q188,74 216,87" stroke="#C0B8A8" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+      <path d="M80,101 Q108,89 150,85 Q192,89 220,101" stroke="#C0B8A8" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+
+      <!-- Eyebrow ridges -->
+      <path d="M78,118 Q102,100 132,110 Q141,114 146,117" stroke="#A8A090" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+      <path d="M222,118 Q198,100 168,110 Q159,114 154,117" stroke="#A8A090" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+
+      <!-- Eye holes -->
+      <path d="M84,136 Q105,122 128,132 Q105,141 84,136 Z" fill="#D0C8B4" opacity="0.9"/>
+      <path d="M172,132 Q195,122 216,136 Q195,141 172,132 Z" fill="#D0C8B4" opacity="0.9"/>
+
+      <!-- Nose -->
+      <path d="M136,148 Q124,164 114,181 Q128,194 150,198 Q172,194 186,181 Q176,164 164,148 Z" fill="#EDE5D5" stroke="#C8C0B0" stroke-width="1.5"/>
+      <path d="M114,181 Q108,170 113,163 Q121,160 129,171" stroke="#C0B8A8" stroke-width="1.5" fill="none"/>
+      <path d="M186,181 Q192,170 187,163 Q179,160 171,171" stroke="#C0B8A8" stroke-width="1.5" fill="none"/>
+
+      <!-- Cheek folds -->
+      <path d="M105,188 Q97,214 108,234" stroke="#B8B0A0" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M195,188 Q203,214 192,234" stroke="#B8B0A0" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+      <!-- Smile -->
+      <path d="M106,238 Q150,280 194,238" stroke="#A89880" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M111,243 Q150,269 189,243" fill="#C4A898" opacity="0.4"/>
+
+      <!-- Chin -->
+      <path d="M123,297 Q150,314 177,297" stroke="#C8C0B0" stroke-width="1.5" fill="none"/>
+
+      <!-- String holes -->
+      <circle cx="34" cy="168" r="5" fill="#B8A888" opacity="0.7"/>
+      <circle cx="266" cy="168" r="5" fill="#B8A888" opacity="0.7"/>
+
+      <!-- ══ CRACK PATHS (opacity:0 → 1 per tap) ══ -->
+      <path class="mcrk" id="mc1"  stroke-width="1.8" d="M88,80 L75,67 L68,57 M75,67 L70,60"/>
+      <path class="mcrk" id="mc2"  stroke-width="1.8" d="M212,88 L226,74 L234,61 M226,74 L232,68 L237,74"/>
+      <path class="mcrk" id="mc3"  stroke-width="2.2" d="M92,96 L118,87 L143,83 L167,87 L192,81 M143,83 L140,73 L144,65"/>
+      <path class="mcrk" id="mc4"  stroke-width="1.8" d="M76,128 L88,120 L110,130 L114,145 L108,162 M88,120 L82,110 L76,102"/>
+      <path class="mcrk" id="mc5"  stroke-width="1.8" d="M224,128 L212,118 L193,128 L189,143 L196,160 M212,118 L220,107 L226,98"/>
+      <path class="mcrk" id="mc6"  stroke-width="2.2" d="M148,132 L144,150 L148,168 L143,184 L148,202 L143,218 M144,168 L136,178 L128,173"/>
+      <path class="mcrk" id="mc7"  stroke-width="3"   d="M151,38 L147,80 L152,118 L147,154 L153,192 L149,232 L152,278 M147,118 L138,107 L130,110 M153,192 L163,202 L170,215"/>
+      <path class="mcrk" id="mc8"  stroke-width="1.8" d="M80,183 L68,200 L62,218 L71,234 M68,200 L60,205 M71,234 L65,244 L73,252"/>
+      <path class="mcrk" id="mc9"  stroke-width="1.8" d="M220,183 L232,200 L238,218 L229,234 M232,200 L240,207 M124,234 L113,248 L120,260 M176,234 L187,248 L180,260 M165,92 L174,104 L169,116"/>
+      <path class="mcrk" id="mc10" stroke-width="3.2" d="M40,156 L70,148 L98,153 L124,146 L150,151 L178,144 L206,150 L232,144 L260,153 M98,153 L92,162 L99,172 M178,144 L184,154 L177,165"/>
+    </svg>
+  </div>
+
+  <div id="mask-prog">탭해서 깨부수기 &nbsp;0 / 10</div>
+</div>
+
+<!-- ══ FRIENDS SCREEN ══ -->
+<div id="friends-screen">
+  <div id="fs-burst"></div>
+
+  <div id="fs-figures">
+    <svg viewBox="0 0 760 460" width="min(760px,98vw)" height="auto" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="fg2" cx="50%" cy="58%" r="52%">
+          <stop offset="0%" stop-color="#FFD070" stop-opacity=".55"/>
+          <stop offset="100%" stop-color="#C87820" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="760" height="460" fill="url(#fg2)"/>
+
+      <!-- Friend LEFT -->
+      <g transform="translate(178,285)">
+        <circle cy="-118" r="26" fill="#4A2810"/>
+        <rect x="-20" y="-90" width="40" height="62" rx="4" fill="#7A3C18"/>
+        <path d="M-20,-68 Q-68,-42 -95,-26" stroke="#7A3C18" stroke-width="18" stroke-linecap="round" fill="none"/>
+        <path d="M20,-68 Q58,-46 76,-34" stroke="#7A3C18" stroke-width="18" stroke-linecap="round" fill="none"/>
+        <line x1="-12" y1="-28" x2="-15" y2="52" stroke="#4A2810" stroke-width="16" stroke-linecap="round"/>
+        <line x1="12" y1="-28" x2="15" y2="52" stroke="#4A2810" stroke-width="16" stroke-linecap="round"/>
+      </g>
+
+      <!-- Friend RIGHT -->
+      <g transform="translate(582,285)">
+        <circle cy="-118" r="26" fill="#4A2810"/>
+        <rect x="-20" y="-90" width="40" height="62" rx="4" fill="#7A3C18"/>
+        <path d="M-20,-68 Q-58,-46 -76,-34" stroke="#7A3C18" stroke-width="18" stroke-linecap="round" fill="none"/>
+        <path d="M20,-68 Q68,-42 95,-26" stroke="#7A3C18" stroke-width="18" stroke-linecap="round" fill="none"/>
+        <line x1="-12" y1="-28" x2="-15" y2="52" stroke="#4A2810" stroke-width="16" stroke-linecap="round"/>
+        <line x1="12" y1="-28" x2="15" y2="52" stroke="#4A2810" stroke-width="16" stroke-linecap="round"/>
+      </g>
+
+      <!-- CENTER friend (bigger, closest) -->
+      <g transform="translate(380,318)">
+        <circle cy="-152" r="36" fill="#3A2010"/>
+        <rect x="-28" y="-112" width="56" height="74" rx="5" fill="#6B3818"/>
+        <!-- arms wide open -->
+        <path d="M-28,-84 Q-110,-48 -148,-22" stroke="#6B3818" stroke-width="24" stroke-linecap="round" fill="none"/>
+        <path d="M28,-84 Q110,-48 148,-22" stroke="#6B3818" stroke-width="24" stroke-linecap="round" fill="none"/>
+        <!-- palms open hint -->
+        <ellipse cx="-148" cy="-22" rx="14" ry="10" fill="#6B3818" transform="rotate(-20,-148,-22)"/>
+        <ellipse cx="148" cy="-22" rx="14" ry="10" fill="#6B3818" transform="rotate(20,148,-22)"/>
+        <line x1="-18" y1="-38" x2="-22" y2="62" stroke="#3A2010" stroke-width="20" stroke-linecap="round"/>
+        <line x1="18" y1="-38" x2="22" y2="62" stroke="#3A2010" stroke-width="20" stroke-linecap="round"/>
+        <!-- warm hug glow -->
+        <ellipse cx="0" cy="-80" rx="80" ry="90" fill="rgba(255,200,80,.08)"/>
+      </g>
+
+      <!-- Warm floor glow -->
+      <ellipse cx="380" cy="445" rx="320" ry="28" fill="rgba(255,180,40,.18)"/>
+    </svg>
+  </div>
+
+  <div id="fs-txt">탈을 벗으니 여기 있었잖아 🤗</div>
+</div>
+
 <!-- ══ INCOMING CALL SCREEN ══ -->
 <div id="call-screen">
   <div style="text-align:center;">
@@ -1169,6 +1374,65 @@ function showArrival(){
   },500);
 }
 
+/* ── MASK BREAKING ── */
+let _mc=0;
+function showMaskScreen(){
+  document.getElementById('mask-screen').classList.add('show');
+}
+
+function onMaskTap(){
+  if(_mc>=10)return;
+  _mc++;
+
+  // Show crack
+  const el=document.getElementById('mc'+_mc);
+  if(el)el.classList.add('on');
+
+  // Shake
+  const w=document.getElementById('mask-svg-wrap');
+  w.classList.remove('crk');void w.offsetWidth;w.classList.add('crk');
+
+  // Crack sound (white noise burst)
+  _playCrack(_mc);
+
+  // Progress
+  document.getElementById('mask-prog').innerHTML=`탭해서 깨부수기 &nbsp;${_mc} / 10`;
+
+  if(_mc===10){
+    document.getElementById('mask-hint-txt').textContent='탈이 깨진다...!';
+    setTimeout(()=>{
+      w.classList.remove('crk');
+      w.classList.add('smash');
+      _playCrack(25);
+      setTimeout(()=>{
+        document.getElementById('mask-screen').classList.remove('show');
+        setTimeout(()=>{
+          const fs=document.getElementById('friends-screen');
+          fs.classList.add('show');
+        },120);
+      },650);
+    },250);
+  }
+}
+
+function _playCrack(i){
+  try{
+    const ac=getAC();if(ac.state==='suspended')ac.resume();
+    const dur=0.055+i*0.007;
+    const sr=ac.sampleRate;
+    const buf=ac.createBuffer(1,Math.floor(sr*dur),sr);
+    const d=buf.getChannelData(0);
+    for(let j=0;j<d.length;j++)d[j]=(Math.random()*2-1)*Math.pow(1-j/d.length,1.4)*0.75;
+    const src=ac.createBufferSource();
+    const g=ac.createGain();
+    const f=ac.createBiquadFilter();
+    f.type='highpass';f.frequency.value=1400+i*180;
+    src.buffer=buf;src.connect(f);f.connect(g);g.connect(ac.destination);
+    g.gain.value=0.28+i*0.035;
+    src.start();src.stop(ac.currentTime+dur+.05);
+  }catch(e){}
+}
+
 /* ── PHONE CALL ── */
 let _ringTimer=null, _callTimer=null, _callSec=0, _callShown=false;
 
@@ -1227,6 +1491,8 @@ function declineCall(){
 function hangupCall(){
   clearInterval(_callTimer);
   document.getElementById('call-screen').classList.remove('show');
+  /* 0.6초 후 탈 깨기 화면 */
+  setTimeout(showMaskScreen, 600);
 }
 
 /* ── EVERYTIME modal ── */
