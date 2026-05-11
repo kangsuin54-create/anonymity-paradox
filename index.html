@@ -751,7 +751,7 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
   <div class="pn-icon" id="pn-icon">💬</div>
   <div class="pn-body">
     <div class="pn-app">카카오톡 오픈채팅 <span class="pn-time">방금</span></div>
-    <div class="pn-msg"><span class="pn-sender">익명의 누군가</span>&nbsp; 사실 저도 많이 외로워요 ㅎ</div>
+    <div class="pn-msg"><span class="pn-sender">익명의 누군가</span>&nbsp; 나 고민 들어줄 사람?</div>
   </div>
 </div>
 
@@ -888,7 +888,6 @@ function showArrival(){
     const icon=document.getElementById('pn-icon');
     notif.classList.add('show');
     icon.classList.add('ring');
-    setTimeout(()=>{notif.classList.remove('show');notif.classList.add('dismiss');},4500);
   },500);
 }
 
