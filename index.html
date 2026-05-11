@@ -128,11 +128,34 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 
 /* ── Gate scene (실사 배경 이미지) ── */
 #s-gate{
-  background:url('gate-bg.png') center center / cover no-repeat;
+  background:#000;
   flex-direction:column;cursor:pointer;
+  overflow:hidden;
+}
+#gate-bg-img{
+  position:absolute;inset:0;z-index:0;
+  width:100%;height:100%;object-fit:cover;object-position:center;
+  transform:scale(1);
+  transition:transform .05s;
+}
+#s-gate.rushing #gate-bg-img{
+  animation:gateImgRush .65s cubic-bezier(.5,0,1,1) forwards;
+}
+@keyframes gateImgRush{
+  0%  {transform:scale(1);      filter:brightness(1);}
+  30% {transform:scale(1.8);    filter:brightness(1.4);}
+  65% {transform:scale(5);      filter:brightness(2.5)blur(2px);}
+  100%{transform:scale(14);     filter:brightness(4)blur(12px);opacity:0;}
+}
+/* 이미지 상단 부제목 텍스트(경상북도~) 가리기 */
+#gate-text-cover{
+  position:absolute;top:0;left:0;right:0;height:9%;z-index:2;
+  background:linear-gradient(180deg,
+    rgba(135,195,225,.95) 0%,rgba(135,195,225,.8) 60%,transparent 100%);
+  pointer-events:none;
 }
 #stars-c{display:none;}
-#gate-scene-bg{display:none;}/* 이미지 배경 사용으로 SVG 일러스트 숨김 */
+#gate-scene-bg{display:none;}
 
 /* 이미지에 텍스트 포함돼 있어서 HTML 텍스트 숨김 */
 .gate-title{display:none;}
@@ -153,8 +176,25 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 .g-hint.hide{opacity:0;transition:opacity .3s;}
 @keyframes hpulse{0%,100%{opacity:.5;transform:translateX(-50%) translateY(0);}50%{opacity:1;transform:translateX(-50%) translateY(-5px);}}
 
-/* ── Village scene ── */
-#s-village{background:#100820;flex-direction:column;overflow:hidden;cursor:pointer;}
+/* ── Village scene (이미지 기반) ── */
+#s-village{background:#0A0806;flex-direction:column;overflow:hidden;cursor:pointer;}
+#village-img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center 40%;
+  transform:scale(1);
+  transition:transform 1s cubic-bezier(.25,0,.1,1);
+  pointer-events:none;z-index:1;
+}
+#village-img.zoom1{transform:scale(1.18);}
+#village-img.zoom2{transform:scale(1.42);}
+#village-img.zoom3{transform:scale(2);transition:transform .5s cubic-bezier(.6,0,1,1);}
+/* 어두운 바닥 비네트 */
+#village-vignette{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:
+    radial-gradient(ellipse 90% 90% at 50% 50%, transparent 55%, rgba(10,8,6,.55) 100%),
+    linear-gradient(0deg, rgba(10,8,6,.7) 0%, transparent 30%);
+}
 #village-parallax{position:absolute;inset:0;transform-style:preserve-3d;transition:none;}
 .vl{position:absolute;inset:0;transform-origin:50% 100%;transition:transform .9s cubic-bezier(.25,0,.1,1);}
 #walk-hint{position:absolute;bottom:5vh;left:50%;transform:translateX(-50%);z-index:50;pointer-events:none;text-align:center;animation:hpulse2 2.2s ease-in-out infinite;}
@@ -775,7 +815,11 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 
   <!-- § GATE -->
   <section id="s-gate" class="scene" onclick="handleGateClick()">
-    <!-- 배경 일러스트 (상세 조선 마을) -->
+    <!-- 실사 배경 이미지 -->
+    <img id="gate-bg-img" src="gate-bg.png" alt=""/>
+    <!-- 상단 "경상북도 안동 하회마을" 텍스트 가리기 -->
+    <div id="gate-text-cover"></div>
+    <!-- SVG 일러스트 숨김 처리됨 -->
     <svg id="gate-scene-bg" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice"
          xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;">
       <defs>
@@ -1127,7 +1171,9 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 
   <!-- § VILLAGE -->
   <section id="s-village" class="scene" onclick="walkForward()">
-    <div id="village-parallax">
+    <img id="village-img" src="village-bg.png" alt="잔칫날"/>
+    <div id="village-vignette"></div>
+    <div id="village-parallax" style="display:none;">
 
       <!-- ══ LAYER 0: 맑은 하늘 ══ -->
       <div class="vl" id="vl0" style="z-index:1;">
@@ -3420,56 +3466,54 @@ setTimeout(()=>{
   addEventListener('resize',resize);init();draw();
 })();
 
-/* ── GATE OPEN ── */
+/* ── GATE OPEN (이미지 줌 돌입) ── */
 let gateDone=false;
 function handleGateClick(){
   if(gateDone)return;
-  const wrap=document.getElementById('gate-wrap');
-  wrap.classList.add('shake');
+  gateDone=true;
+  document.getElementById('gate-hint').classList.add('hide');
+  const sec=document.getElementById('s-gate');
+  sec.classList.add('rushing');
+  /* 따뜻한 빛 플래시 */
   setTimeout(()=>{
-    wrap.classList.remove('shake');
-    document.getElementById('gate-svg').classList.add('gate-open');
-    document.getElementById('gate-glow').style.transition='opacity .4s ease .3s';
-    document.getElementById('gate-glow').style.opacity='0.9';
-    setTimeout(()=>{
-      gateDone=true;
-      document.getElementById('gate-hint').classList.add('hide');
-      wrap.classList.add('rushing');
-      setTimeout(()=>{const f=document.getElementById('flash');f.className='warm';setTimeout(()=>{f.className='out';},150);},400);
-      setTimeout(()=>{
-        document.getElementById('s-gate').style.display='none';
-        const sv=document.getElementById('s-village');sv.style.display='flex';sv.classList.add('active');
-      },600);
-    },700);
-  },80);
+    const f=document.getElementById('flash');
+    f.className='warm';
+    setTimeout(()=>{f.className='out';},180);
+  },380);
+  /* 마을로 전환 */
+  setTimeout(()=>{
+    sec.style.display='none';
+    const sv=document.getElementById('s-village');
+    sv.style.display='flex';
+    sv.classList.add('active');
+  },620);
 }
 
-/* ── VILLAGE WALK ── */
-let walkStep=0;const MAX_WALK=3;
-const SCALES=[[1,1,1,1,1],[1.05,1.14,1.35,1.65,1],[1.10,1.30,1.75,2.50,1],[1.16,1.50,2.30,3.80,1]];
-function setLayerScales(step){
-  ['vl0','vl1','vl2','vl3','vl4'].forEach((id,i)=>{
-    const el=document.getElementById(id);if(!el)return;
-    el.style.transition='transform .85s cubic-bezier(.25,0,.1,1)';
-    el.style.transform=`scale(${SCALES[step][i]})`;
-  });
-}
+/* ── VILLAGE WALK (이미지 줌) ── */
+let walkStep=0;
 function walkForward(){
   walkStep++;
-  if(walkStep<MAX_WALK){
-    setLayerScales(walkStep);
-    if(walkStep===MAX_WALK-1)document.querySelector('#walk-hint span:last-child').textContent='한 걸음 더...';
-  }else{
-    document.getElementById('walk-hint').classList.add('hide');
-    setLayerScales(MAX_WALK);
-    setTimeout(()=>{['vl0','vl1','vl2','vl3','vl4'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.transition='transform .5s cubic-bezier(.6,0,1,1)';el.style.transform='scale(8)';}});},200);
-    setTimeout(()=>{const f=document.getElementById('flash');f.className='warm';setTimeout(()=>{f.className='out';},180);},600);
+  const img=document.getElementById('village-img');
+  const hint=document.getElementById('walk-hint');
+  if(walkStep===1){
+    img.classList.add('zoom1');
+    document.querySelector('#walk-hint span:last-child').textContent='더 가까이...';
+  } else if(walkStep===2){
+    img.classList.remove('zoom1');img.classList.add('zoom2');
+    document.querySelector('#walk-hint span:last-child').textContent='한 걸음 더...';
+  } else {
+    hint.classList.add('hide');
+    img.classList.remove('zoom2');img.classList.add('zoom3');
+    setTimeout(()=>{
+      const f=document.getElementById('flash');f.className='warm';
+      setTimeout(()=>{f.className='out';},180);
+    },400);
     setTimeout(()=>{
       document.getElementById('intro').style.display='none';
       document.body.classList.add('scrollable');
       document.getElementById('main-content').classList.add('show');
       window.scrollTo(0,0);
-    },800);
+    },700);
   }
 }
 
