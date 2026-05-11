@@ -3589,35 +3589,61 @@ setTimeout(()=>{
 })();
 
 /* ── GATE OPEN ── */
-let gateDone=false;
+let gateClicks=0;
 function handleGateClick(){
-  if(gateDone)return;
-  gateDone=true;
+  if(gateClicks>=2)return;
+  gateClicks++;
 
+  if(gateClicks===1){
+    /* 1번째 클릭: 똑똑똑 노크만 */
+    playDoorKnock();
+    return;
+  }
+
+  /* 2번째 클릭: 문 열기 */
   document.getElementById('gate-hint').classList.add('hide');
   const sec=document.getElementById('s-gate');
   const fg=document.getElementById('fullgate');
 
-  /* 1. 문 열리기 + 끼익 소리 */
-  playDoorCreak();
-  fg.classList.add('fullgate-open');
+  /* 문 끼익 소리 (Freesound CDN) */
+  const creakAudio=new Audio('https://cdn.freesound.org/previews/346/346267__stib__door-creak.mp3');
+  creakAudio.volume=0.85;
+  creakAudio.play().catch(()=>{});
 
-  /* 2. 황금빛 나타남 (CSS transition 자동) */
+  /* 문 열리기 — 오디오 0.1초 후 애니메이션 시작 */
+  setTimeout(()=>{ fg.classList.add('fullgate-open'); }, 100);
 
-  /* 3. 플래시 */
+  /* 황금빛 + 플래시 */
   setTimeout(()=>{
     const f=document.getElementById('flash');
     f.className='warm';
     setTimeout(()=>{f.className='out';},200);
-  },1000);
+  },1200);
 
-  /* 4. 마을로 전환 */
+  /* 마을로 전환 */
   setTimeout(()=>{
     sec.style.display='none';
     const sv=document.getElementById('s-village');
     sv.style.display='flex';
     sv.classList.add('active');
-  },1400);
+  },1600);
+}
+
+function playDoorKnock(){
+  try{
+    const ac=getAC(); if(ac.state==='suspended')ac.resume();
+    const t=ac.currentTime;
+    [0,.28,.56].forEach(delay=>{
+      const o=ac.createOscillator(); const g=ac.createGain();
+      o.type='sine';
+      o.frequency.setValueAtTime(300,t+delay);
+      o.frequency.exponentialRampToValueAtTime(150,t+delay+.03);
+      g.gain.setValueAtTime(.6,t+delay);
+      g.gain.exponentialRampToValueAtTime(.001,t+delay+.2);
+      o.connect(g); g.connect(ac.destination);
+      o.start(t+delay); o.stop(t+delay+.22);
+    });
+  }catch(e){}
 }
 
 /* ── VILLAGE WALK (이미지 줌 + 걷기 느낌) ── */
@@ -3692,52 +3718,6 @@ function triggerFlight(){
 let _ac=null;
 function getAC(){if(!_ac)_ac=new(window.AudioContext||window.webkitAudioContext)();return _ac;}
 
-/* ── 대문: 똑똑똑 노크 + 끼익 ── */
-function playDoorCreak(){
-  try{
-    const ac=getAC(); if(ac.state==='suspended')ac.resume();
-    const t=ac.currentTime;
-
-    /* ① 똑똑똑 — 나무문 노크 3번 */
-    [0, .3, .6].forEach(delay=>{
-      const o=ac.createOscillator(); const g=ac.createGain();
-      o.type='sine';
-      o.frequency.setValueAtTime(280, t+delay);
-      o.frequency.exponentialRampToValueAtTime(140, t+delay+.03);
-      g.gain.setValueAtTime(.6, t+delay);
-      g.gain.exponentialRampToValueAtTime(.001, t+delay+.22);
-      o.connect(g); g.connect(ac.destination);
-      o.start(t+delay); o.stop(t+delay+.25);
-    });
-
-    /* ② 끼익 — 사인파 기반 (방구소리 없음) */
-    const crk=ac.createOscillator(); crk.type='sine';
-    crk.frequency.setValueAtTime(200,  t+.9);
-    crk.frequency.linearRampToValueAtTime(480, t+1.6);
-    crk.frequency.linearRampToValueAtTime(340, t+2.1);
-    crk.frequency.linearRampToValueAtTime(560, t+2.6);
-    crk.frequency.linearRampToValueAtTime(390, t+3.1);
-
-    /* LFO 트레몰로 — 경첩이 불규칙하게 긁히는 질감 */
-    const lfo=ac.createOscillator(); lfo.type='sine'; lfo.frequency.value=8;
-    const lfoG=ac.createGain(); lfoG.gain.value=.035;
-    lfo.connect(lfoG);
-
-    const mg=ac.createGain();
-    mg.gain.setValueAtTime(0,   t+.88);
-    mg.gain.linearRampToValueAtTime(.10, t+1.0);
-    mg.gain.linearRampToValueAtTime(.07, t+1.5);
-    mg.gain.linearRampToValueAtTime(.11, t+2.0);
-    mg.gain.linearRampToValueAtTime(.06, t+2.5);
-    mg.gain.linearRampToValueAtTime(.09, t+2.9);
-    mg.gain.linearRampToValueAtTime(0,   t+3.2);
-    lfoG.connect(mg.gain);
-
-    crk.connect(mg); mg.connect(ac.destination);
-    lfo.start(t+.88); lfo.stop(t+3.3);
-    crk.start(t+.88); crk.stop(t+3.3);
-  }catch(e){}
-}
 
 /* ── 또각또각 — 남자 구두 소리 ── */
 function playFootstep(){
