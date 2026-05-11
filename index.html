@@ -3692,59 +3692,50 @@ function triggerFlight(){
 let _ac=null;
 function getAC(){if(!_ac)_ac=new(window.AudioContext||window.webkitAudioContext)();return _ac;}
 
-/* ── 대문: 철컥 + 끼익 ── */
+/* ── 대문: 똑똑똑 노크 + 끼익 ── */
 function playDoorCreak(){
   try{
     const ac=getAC(); if(ac.state==='suspended')ac.resume();
     const t=ac.currentTime;
 
-    /* ① 철컥 — 잠금장치 열리는 금속 클릭 두 번 */
-    function clack(delay, freq, vol){
-      const o=ac.createOscillator(); const og=ac.createGain();
-      o.type='square'; o.frequency.value=freq;
-      og.gain.setValueAtTime(vol,t+delay);
-      og.gain.exponentialRampToValueAtTime(0.001,t+delay+.045);
-      o.connect(og); og.connect(ac.destination);
-      o.start(t+delay); o.stop(t+delay+.05);
-      /* 충격 노이즈 (아주 짧음) */
-      const bl=Math.ceil(ac.sampleRate*.04);
-      const bf=ac.createBuffer(1,bl,ac.sampleRate);
-      const dd=bf.getChannelData(0);
-      for(let i=0;i<bl;i++) dd[i]=(Math.random()*2-1)*Math.exp(-i/(bl*.08));
-      const ns=ac.createBufferSource(); ns.buffer=bf;
-      const nf=ac.createBiquadFilter(); nf.type='highpass'; nf.frequency.value=2000;
-      const ng=ac.createGain(); ng.gain.value=vol*.6;
-      ns.connect(nf); nf.connect(ng); ng.connect(ac.destination);
-      ns.start(t+delay); ns.stop(t+delay+.05);
-    }
-    clack(0,   1900, .5);
-    clack(.07, 1300, .32);
+    /* ① 똑똑똑 — 나무문 노크 3번 */
+    [0, .3, .6].forEach(delay=>{
+      const o=ac.createOscillator(); const g=ac.createGain();
+      o.type='sine';
+      o.frequency.setValueAtTime(280, t+delay);
+      o.frequency.exponentialRampToValueAtTime(140, t+delay+.03);
+      g.gain.setValueAtTime(.6, t+delay);
+      g.gain.exponentialRampToValueAtTime(.001, t+delay+.22);
+      o.connect(g); g.connect(ac.destination);
+      o.start(t+delay); o.stop(t+delay+.25);
+    });
 
-    /* ② 끼익 — 오실레이터 기반 (노이즈 없음 = 바람소리 없음) */
-    /* sawtooth → lowpass → 금속 긁히는 배음 유지, 바람느낌 제거 */
-    const osc=ac.createOscillator();
-    const lp=ac.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=1100; lp.Q.value=.7;
-    const g=ac.createGain();
+    /* ② 끼익 — 사인파 기반 (방구소리 없음) */
+    const crk=ac.createOscillator(); crk.type='sine';
+    crk.frequency.setValueAtTime(200,  t+.9);
+    crk.frequency.linearRampToValueAtTime(480, t+1.6);
+    crk.frequency.linearRampToValueAtTime(340, t+2.1);
+    crk.frequency.linearRampToValueAtTime(560, t+2.6);
+    crk.frequency.linearRampToValueAtTime(390, t+3.1);
 
-    osc.type='sawtooth';
-    osc.frequency.setValueAtTime(110,  t+.12);
-    osc.frequency.linearRampToValueAtTime(260,  t+.6);
-    osc.frequency.linearRampToValueAtTime(180,  t+1.0);
-    osc.frequency.linearRampToValueAtTime(340,  t+1.5);
-    osc.frequency.linearRampToValueAtTime(230,  t+1.95);
-    osc.frequency.linearRampToValueAtTime(170,  t+2.4);
+    /* LFO 트레몰로 — 경첩이 불규칙하게 긁히는 질감 */
+    const lfo=ac.createOscillator(); lfo.type='sine'; lfo.frequency.value=8;
+    const lfoG=ac.createGain(); lfoG.gain.value=.035;
+    lfo.connect(lfoG);
 
-    /* 게인 웨이빙 — 문 속도가 일정하지 않은 느낌 */
-    g.gain.setValueAtTime(0,    t+.1);
-    g.gain.linearRampToValueAtTime(.13, t+.22);
-    g.gain.linearRampToValueAtTime(.07, t+.55);
-    g.gain.linearRampToValueAtTime(.13, t+.9);
-    g.gain.linearRampToValueAtTime(.06, t+1.35);
-    g.gain.linearRampToValueAtTime(.11, t+1.75);
-    g.gain.linearRampToValueAtTime(0,   t+2.4);
+    const mg=ac.createGain();
+    mg.gain.setValueAtTime(0,   t+.88);
+    mg.gain.linearRampToValueAtTime(.10, t+1.0);
+    mg.gain.linearRampToValueAtTime(.07, t+1.5);
+    mg.gain.linearRampToValueAtTime(.11, t+2.0);
+    mg.gain.linearRampToValueAtTime(.06, t+2.5);
+    mg.gain.linearRampToValueAtTime(.09, t+2.9);
+    mg.gain.linearRampToValueAtTime(0,   t+3.2);
+    lfoG.connect(mg.gain);
 
-    osc.connect(lp); lp.connect(g); g.connect(ac.destination);
-    osc.start(t+.1); osc.stop(t+2.5);
+    crk.connect(mg); mg.connect(ac.destination);
+    lfo.start(t+.88); lfo.stop(t+3.3);
+    crk.start(t+.88); crk.stop(t+3.3);
   }catch(e){}
 }
 
