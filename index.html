@@ -147,11 +147,11 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
   65% {transform:scale(5);      filter:brightness(2.5)blur(2px);}
   100%{transform:scale(14);     filter:brightness(4)blur(12px);opacity:0;}
 }
-/* 이미지 상단 부제목 텍스트(경상북도~) 가리기 */
+/* 이미지 상단 텍스트(경상북도~) 완전 가리기 */
 #gate-text-cover{
-  position:absolute;top:0;left:0;right:0;height:9%;z-index:2;
+  position:absolute;top:0;left:0;right:0;height:13%;z-index:5;
   background:linear-gradient(180deg,
-    rgba(135,195,225,.95) 0%,rgba(135,195,225,.8) 60%,transparent 100%);
+    #6EA8C8 0%, #6EA8C8 40%, rgba(110,168,200,.7) 70%, transparent 100%);
   pointer-events:none;
 }
 #stars-c{display:none;}
@@ -161,8 +161,7 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 .gate-title{display:none;}
 .gate-year{display:none;}
 .gate-main{display:none;}
-#gate-wrap{position:relative;z-index:10;}
-#gate-wrap.rushing{animation:rush .65s cubic-bezier(.5,0,1,1) forwards;}
+#gate-wrap{display:none;}/* SVG 대문 완전 숨김 — 이미지 배경 사용 */
 @keyframes rush{0%{transform:scale(1);filter:blur(0);opacity:1;}60%{transform:scale(4) translateY(-2%);filter:blur(1px);opacity:1;}100%{transform:scale(14) translateY(-5%);filter:blur(10px);opacity:0;}}
 #door-l{transform-origin:40px 300px;transition:transform .75s cubic-bezier(.6,0,.1,1);}
 #door-r{transform-origin:460px 300px;transition:transform .75s cubic-bezier(.6,0,.1,1);}
@@ -176,25 +175,51 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 .g-hint.hide{opacity:0;transition:opacity .3s;}
 @keyframes hpulse{0%,100%{opacity:.5;transform:translateX(-50%) translateY(0);}50%{opacity:1;transform:translateX(-50%) translateY(-5px);}}
 
-/* ── Village scene (이미지 기반) ── */
+/* ── Village scene (이미지 기반, 걷기 효과) ── */
 #s-village{background:#0A0806;flex-direction:column;overflow:hidden;cursor:pointer;}
 #village-img{
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;object-position:center 40%;
-  transform:scale(1);
-  transition:transform 1s cubic-bezier(.25,0,.1,1);
+  position:absolute;
+  /* 초기: 이미지보다 넓게 배치해서 "먼 거리"처럼 보이게 */
+  width:130%;height:130%;
+  top:50%;left:50%;
+  transform:translate(-50%,-44%) scale(1);
+  transform-origin:50% 65%;/* 댄서들 위치 향해 줌 */
+  object-fit:cover;
+  transition:transform 1.1s cubic-bezier(.25,0,.08,1);
   pointer-events:none;z-index:1;
+  filter:brightness(.92);
 }
-#village-img.zoom1{transform:scale(1.18);}
-#village-img.zoom2{transform:scale(1.42);}
-#village-img.zoom3{transform:scale(2);transition:transform .5s cubic-bezier(.6,0,1,1);}
-/* 어두운 바닥 비네트 */
+/* 클릭마다 댄서들 향해 가까워짐 */
+#village-img.zoom1{
+  transform:translate(-50%,-46%) scale(1.35);
+  filter:brightness(.96);
+  transition:transform 1.1s cubic-bezier(.25,0,.08,1),filter 1.1s ease;
+}
+#village-img.zoom2{
+  transform:translate(-50%,-48%) scale(1.82);
+  filter:brightness(1);
+  transition:transform 1.1s cubic-bezier(.25,0,.08,1),filter 1.1s ease;
+}
+#village-img.zoom3{
+  transform:translate(-50%,-50%) scale(3.2);
+  filter:brightness(1.15);
+  transition:transform .55s cubic-bezier(.6,0,1,1),filter .55s ease;
+}
+/* 걸음 느낌 흔들림 애니메이션 */
+@keyframes footstep{
+  0%,100%{transform:translate(-50%,-44%) scale(1) rotate(-.2deg);}
+  50%{transform:translate(-50%,-44%) scale(1) rotate(.2deg) translateY(-2px);}
+}
+/* 비네트 — 주변부 어둡게 */
 #village-vignette{
   position:absolute;inset:0;z-index:2;pointer-events:none;
   background:
-    radial-gradient(ellipse 90% 90% at 50% 50%, transparent 55%, rgba(10,8,6,.55) 100%),
-    linear-gradient(0deg, rgba(10,8,6,.7) 0%, transparent 30%);
+    radial-gradient(ellipse 80% 80% at 50% 55%, transparent 50%, rgba(8,6,4,.6) 100%),
+    linear-gradient(0deg, rgba(8,6,4,.65) 0%, transparent 25%);
 }
+/* 발소리 느낌 텍스트 진동 */
+#walk-hint.step{animation:hintStep .3s ease;}
+@keyframes hintStep{0%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-4px);}100%{transform:translateX(-50%) translateY(0);}}
 #village-parallax{position:absolute;inset:0;transform-style:preserve-3d;transition:none;}
 .vl{position:absolute;inset:0;transform-origin:50% 100%;transition:transform .9s cubic-bezier(.25,0,.1,1);}
 #walk-hint{position:absolute;bottom:5vh;left:50%;transform:translateX(-50%);z-index:50;pointer-events:none;text-align:center;animation:hpulse2 2.2s ease-in-out infinite;}
@@ -3489,31 +3514,37 @@ function handleGateClick(){
   },620);
 }
 
-/* ── VILLAGE WALK (이미지 줌) ── */
+/* ── VILLAGE WALK (이미지 줌 + 걷기 느낌) ── */
 let walkStep=0;
 function walkForward(){
   walkStep++;
   const img=document.getElementById('village-img');
   const hint=document.getElementById('walk-hint');
+
+  /* 발소리 진동 힌트 */
+  hint.classList.remove('step');
+  void hint.offsetWidth;
+  hint.classList.add('step');
+
   if(walkStep===1){
     img.classList.add('zoom1');
     document.querySelector('#walk-hint span:last-child').textContent='더 가까이...';
   } else if(walkStep===2){
     img.classList.remove('zoom1');img.classList.add('zoom2');
-    document.querySelector('#walk-hint span:last-child').textContent='한 걸음 더...';
+    document.querySelector('#walk-hint span:last-child').textContent='거의 다 왔어...';
   } else {
     hint.classList.add('hide');
     img.classList.remove('zoom2');img.classList.add('zoom3');
     setTimeout(()=>{
       const f=document.getElementById('flash');f.className='warm';
       setTimeout(()=>{f.className='out';},180);
-    },400);
+    },380);
     setTimeout(()=>{
       document.getElementById('intro').style.display='none';
       document.body.classList.add('scrollable');
       document.getElementById('main-content').classList.add('show');
       window.scrollTo(0,0);
-    },700);
+    },680);
   }
 }
 
