@@ -521,19 +521,34 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 .fcloud::before,.fcloud::after{content:'';position:absolute;background:rgba(255,255,255,.75);border-radius:50%;}
 @keyframes cloudDrift{from{transform:translateX(110vw);}to{transform:translateX(-30vw);}}
 
-/* Ground landscapes */
-#fl-ground{position:absolute;bottom:0;left:0;right:0;z-index:4;}
+/* Ground landscapes — 하단 60% 채우기 */
+#fl-ground{position:absolute;top:38%;bottom:0;left:0;right:0;z-index:4;}
 #fl-ground-jos{
-  position:absolute;bottom:0;left:0;right:0;
+  position:absolute;inset:0;
   clip-path:inset(0 0 0 0);
   transition:clip-path 3.8s cubic-bezier(.4,0,.2,1) .1s;
+  overflow:hidden;
+}
+#fl-ground-jos img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center 40%;
+  display:block;
+  /* 이미지가 짧을 경우 확대해서 채움 */
+  min-height:100%;transform:scale(1.08);transform-origin:50% 50%;
 }
 #fl-ground-mod{
-  position:absolute;bottom:0;left:0;right:0;
+  position:absolute;inset:0;
   clip-path:inset(0 100% 0 0);
   transition:clip-path 3.8s cubic-bezier(.4,0,.2,1) .1s;
+  overflow:hidden;
 }
-/* 동시에 초가집은 왼→오 사라지고, 아파트는 왼→오 나타남 */
+#fl-ground-mod img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center 40%;
+  display:block;
+  min-height:100%;transform:scale(1.08);transform-origin:50% 50%;
+}
+/* 전환 */
 #s-flight.flying #fl-ground-jos{clip-path:inset(0 0 0 100%);}
 #s-flight.flying #fl-ground-mod{clip-path:inset(0 0% 0 0);}
 
