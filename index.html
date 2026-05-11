@@ -32,7 +32,14 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
   background:linear-gradient(160deg,#0C0A18 0%,#140E22 60%,#0E0C18 100%);
   flex-direction:column;overflow-y:auto;
   padding:44px 20px 64px;gap:28px;
-  align-items:center;
+  align-items:center;cursor:pointer;
+}
+.sv-slide{display:none;flex-direction:column;align-items:center;gap:24px;width:100%;}
+.sv-slide.on{display:flex;}
+.sv-click-hint{
+  font-family:'Noto Sans KR',sans-serif;font-size:.8rem;
+  color:rgba(242,224,181,.45);letter-spacing:.25em;
+  animation:hpulse2 2s ease-in-out infinite;
 }
 
 /* Chart card */
@@ -85,61 +92,39 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 }
 .chart-src strong{color:#C1272D;}
 
-/* Survey card */
-.sv-card{
+/* Survey result card */
+.res-card{
   background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
-  border-radius:16px;padding:28px 24px;
-  width:100%;max-width:640px;
-  backdrop-filter:blur(14px);color:var(--hanji);
+  border-radius:16px;padding:32px 26px;
+  width:100%;max-width:640px;color:var(--hanji);
 }
-.sv-q{
-  font-family:'Noto Serif KR',serif;font-size:clamp(1rem,2.5vw,1.2rem);
-  font-weight:600;line-height:1.7;margin-bottom:22px;text-align:center;
+.res-title{
+  font-family:'Noto Serif KR',serif;font-size:clamp(1rem,2.6vw,1.25rem);
+  font-weight:700;line-height:1.65;text-align:center;margin-bottom:6px;
 }
-.sv-btns{display:flex;flex-direction:column;gap:12px;}
-.sv-btn{
-  width:100%;padding:14px 20px;border-radius:10px;border:1.5px solid rgba(255,255,255,.2);
-  background:rgba(255,255,255,.06);color:var(--hanji);
-  font-family:'Noto Sans KR',sans-serif;font-size:.9rem;
-  text-align:left;cursor:pointer;transition:background .2s,border-color .2s;
-  line-height:1.5;
+.res-sub{
+  font-family:'Noto Sans KR',sans-serif;font-size:.8rem;
+  color:rgba(242,224,181,.5);text-align:center;margin-bottom:28px;
 }
-.sv-btn:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.4);}
-.sv-btn.chosen{background:rgba(193,39,45,.25);border-color:var(--red);}
-
-/* Result bars */
-.sv-results{display:none;margin-top:20px;}
-.sv-results.show{display:block;}
-.rv-row{margin-bottom:14px;}
-.rv-lbl{
-  font-family:'Noto Sans KR',sans-serif;font-size:.82rem;
-  color:rgba(242,224,181,.75);margin-bottom:5px;
-  display:flex;justify-content:space-between;
+.res-row{margin-bottom:20px;}
+.res-lbl{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-family:'Noto Sans KR',sans-serif;font-size:.9rem;margin-bottom:8px;
 }
-.rv-track{background:rgba(255,255,255,.1);border-radius:4px;height:22px;}
-.rv-fill{
-  height:100%;border-radius:4px;width:0;
-  transition:width .8s cubic-bezier(.25,0,.1,1);
-  display:flex;align-items:center;padding-left:8px;
-  font-family:'Noto Sans KR',sans-serif;font-size:.78rem;font-weight:700;color:#fff;min-width:32px;
+.res-lbl .opt{font-weight:700;color:var(--hanji);}
+.res-lbl .pct{font-size:1.6rem;font-weight:900;}
+.res-lbl .cnt{font-size:.78rem;color:rgba(242,224,181,.5);margin-left:4px;}
+.res-track{background:rgba(255,255,255,.1);border-radius:6px;height:28px;overflow:hidden;}
+.res-bar{
+  height:100%;border-radius:6px;width:0;
+  transition:width 1.2s cubic-bezier(.25,0,.1,1);
 }
-.rv-a{background:linear-gradient(90deg,#C1272D,#E04040);}
-.rv-b{background:linear-gradient(90deg,#1B4A8A,#3366CC);}
-.sv-total{
-  font-family:'Noto Sans KR',sans-serif;font-size:.75rem;
-  color:rgba(242,224,181,.4);text-align:center;margin-top:10px;
+.res-bar-a{background:linear-gradient(90deg,#C1272D,#E04040);}
+.res-bar-b{background:linear-gradient(90deg,#1B4A8A,#4A80FF);}
+.res-total{
+  font-family:'Noto Sans KR',sans-serif;font-size:.78rem;
+  color:rgba(242,224,181,.35);text-align:right;margin-top:14px;
 }
-
-/* Proceed button */
-.sv-next{
-  margin-top:24px;width:100%;padding:15px;border-radius:10px;border:none;
-  background:linear-gradient(135deg,var(--red),#E04040);
-  color:#fff;font-family:'Noto Serif KR',serif;font-size:1rem;font-weight:700;
-  cursor:pointer;letter-spacing:.1em;transition:filter .2s,transform .2s;
-  display:none;
-}
-.sv-next.show{display:block;}
-.sv-next:hover{filter:brightness(1.15);transform:translateY(-2px);}
 
 /* ── Gate scene ── */
 #s-gate{
@@ -698,69 +683,70 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 <div id="intro">
 
   <!-- § SURVEY -->
-  <section id="s-survey" class="scene active">
+  <section id="s-survey" class="scene active" onclick="svNext()">
 
-    <!-- 차트 -->
-    <div class="chart-card" id="chartCard">
-      <div class="chart-title">SNS 의존 관련 요인 영향도 (0~100점 척도)</div>
-      <div class="chart-sub">X축 최대값을 100으로 설정하여 각 요인의 상대적 영향도를 수치화</div>
+    <!-- ── 슬라이드 1: 차트 ── -->
+    <div class="sv-slide on" id="sv1">
+      <div class="chart-card">
+        <div class="chart-title">SNS 의존 관련 요인 영향도 (0~100점 척도)</div>
+        <div class="chart-sub">X축 최대값을 100으로 설정하여 각 요인의 상대적 영향도를 수치화</div>
 
-      <div class="bar-row">
-        <div class="bar-lbl">온라인 익명성</div>
-        <div class="bar-track"><div class="bar-fill bar-b1" data-w="88"><span>88</span></div></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-lbl">자기애</div>
-        <div class="bar-track"><div class="bar-fill bar-b2" data-w="72"><span>72</span></div></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-lbl">불안/우울</div>
-        <div class="bar-track"><div class="bar-fill bar-b3" data-w="56"><span>56</span></div></div>
-      </div>
-      <div class="bar-row">
-        <div class="bar-lbl">현실 대인관계 회피</div>
-        <div class="bar-track"><div class="bar-fill bar-b4" data-w="38"><span>38</span></div></div>
-      </div>
+        <div class="bar-row">
+          <div class="bar-lbl">온라인 익명성</div>
+          <div class="bar-track"><div class="bar-fill bar-b1" data-w="88"><span>88</span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-lbl">자기애</div>
+          <div class="bar-track"><div class="bar-fill bar-b2" data-w="72"><span>72</span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-lbl">불안/우울</div>
+          <div class="bar-track"><div class="bar-fill bar-b3" data-w="56"><span>56</span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-lbl">현실 대인관계 회피</div>
+          <div class="bar-track"><div class="bar-fill bar-b4" data-w="38"><span>38</span></div></div>
+        </div>
 
-      <div class="chart-axis">
-        <span>0</span><span>10</span><span>20</span><span>30</span><span>40</span>
-        <span>50</span><span>60</span><span>70</span><span>80</span><span>90</span><span>100</span>
-      </div>
-      <div style="font-family:'Noto Sans KR',sans-serif;font-size:.72rem;color:#888;text-align:center;margin-top:4px;">영향도 점수 (0~100)</div>
+        <div class="chart-axis">
+          <span>0</span><span>10</span><span>20</span><span>30</span><span>40</span>
+          <span>50</span><span>60</span><span>70</span><span>80</span><span>90</span><span>100</span>
+        </div>
+        <div style="font-family:'Noto Sans KR',sans-serif;font-size:.72rem;color:#888;text-align:center;margin-top:4px;">영향도 점수 (0~100)</div>
 
-      <div class="chart-note">※ 본 수치는 선행연구(대학생 대상 연구)를 기반으로 상대적 영향도를 0~100점 척도로 환산한 예시입니다.</div>
-      <div class="chart-src">
-        <strong>출처:</strong> 강하나, 하승수 (2019). 대학생 집단의 SNS 중독경향성과 인터넷 중독의 차이: 온라인 익명성, 자기애, 정신건강 및 대학생활 변인들을 중심으로. 한국심리학회지: 건강, 24(4), 709-733.
+        <div class="chart-note">※ 본 수치는 선행연구(대학생 대상 연구)를 기반으로 상대적 영향도를 0~100점 척도로 환산한 예시입니다.</div>
+        <div class="chart-src">
+          <strong>출처:</strong> 강하나, 하승수 (2019). 대학생 집단의 SNS 중독경향성과 인터넷 중독의 차이: 온라인 익명성, 자기애, 정신건강 및 대학생활 변인들을 중심으로. 한국심리학회지: 건강, 24(4), 709-733.
+        </div>
       </div>
+      <div class="sv-click-hint">클릭하여 계속</div>
     </div>
 
-    <!-- 설문 -->
-    <div class="sv-card">
-      <div class="sv-q">진솔한 얘기를 털어놓고 싶을 때<br>내가 찾게 되는 상대는?</div>
-      <div class="sv-btns" id="svBtns">
-        <button class="sv-btn" onclick="castVote('A')">
-          <strong>A.</strong> 가족·친구 등 내 주변 지인들
-        </button>
-        <button class="sv-btn" onclick="castVote('B')">
-          <strong>B.</strong> 오픈채팅·에브리타임 등 익명의 공간의 사람들
-        </button>
-      </div>
+    <!-- ── 슬라이드 2: 설문 결과 ── -->
+    <div class="sv-slide" id="sv2">
+      <div class="res-card">
+        <div class="res-title">진솔한 얘기를 털어놓고 싶을 때<br>내가 찾게 되는 상대는?</div>
+        <div class="res-sub">대학생 150명 대상 설문조사 결과</div>
 
-      <div class="sv-results" id="svResults">
-        <div class="rv-row">
-          <div class="rv-lbl"><span>A. 주변 지인들</span><span id="pctA">0%</span></div>
-          <div class="rv-track"><div class="rv-fill rv-a" id="barA"></div></div>
+        <div class="res-row">
+          <div class="res-lbl">
+            <span class="opt">A. 가족·친구 등 내 주변 지인들</span>
+            <span><span class="pct" style="color:var(--red);">15%</span><span class="cnt">(23명)</span></span>
+          </div>
+          <div class="res-track"><div class="res-bar res-bar-a" id="resBarA"></div></div>
         </div>
-        <div class="rv-row">
-          <div class="rv-lbl"><span>B. 익명의 공간</span><span id="pctB">0%</span></div>
-          <div class="rv-track"><div class="rv-fill rv-b" id="barB"></div></div>
-        </div>
-        <div class="sv-total" id="svTotal">총 0명 참여</div>
-      </div>
 
-      <button class="sv-next" id="svNext" onclick="goToGate()">
-        대문을 열어보세요 →
-      </button>
+        <div class="res-row">
+          <div class="res-lbl">
+            <span class="opt">B. 오픈채팅·에브리타임 등 익명의 공간</span>
+            <span><span class="pct" style="color:#4A80FF;">85%</span><span class="cnt">(127명)</span></span>
+          </div>
+          <div class="res-track"><div class="res-bar res-bar-b" id="resBarB"></div></div>
+        </div>
+
+        <div class="res-total">총 150명 참여</div>
+      </div>
+      <div class="sv-click-hint">클릭하여 대문으로 →</div>
     </div>
 
   </section>
@@ -1442,65 +1428,35 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 </div>
 
 <script>
-/* ── SURVEY ── */
-const voteDB = gun.get('anon-paradox-survey-v1');
-let _myVote = localStorage.getItem('sv-vote');
+/* ── SURVEY SLIDES ── */
+let _svStep = 0;
 
-function _updateVoteUI(a, b){
-  const total = a + b;
-  if(total === 0) return;
-  const pa = Math.round(a/total*100), pb = 100-pa;
-  document.getElementById('pctA').textContent = pa+'%';
-  document.getElementById('pctB').textContent = pb+'%';
-  document.getElementById('barA').style.width  = pa+'%';
-  document.getElementById('barB').style.width  = pb+'%';
-  document.getElementById('svTotal').textContent = `총 ${total}명 참여`;
+function svNext(){
+  if(_svStep === 0){
+    // 슬라이드 1 → 2
+    document.getElementById('sv1').classList.remove('on');
+    document.getElementById('sv2').classList.add('on');
+    _svStep = 1;
+    // 결과 바 애니메이션
+    setTimeout(()=>{
+      document.getElementById('resBarA').style.width = '15%';
+      document.getElementById('resBarB').style.width = '85%';
+    }, 200);
+  } else {
+    // 슬라이드 2 → 대문
+    document.getElementById('s-survey').style.display = 'none';
+    const sg = document.getElementById('s-gate');
+    sg.style.display = 'flex';
+    sg.classList.add('active');
+  }
 }
 
-let _vA=0,_vB=0;
-voteDB.get('A').on(v=>{ _vA=v||0; _updateVoteUI(_vA,_vB); });
-voteDB.get('B').on(v=>{ _vB=v||0; _updateVoteUI(_vA,_vB); });
-
-function castVote(choice){
-  if(_myVote) return; // 이미 투표함
-  _myVote = choice;
-  localStorage.setItem('sv-vote', choice);
-
-  // 버튼 강조
-  document.querySelectorAll('.sv-btn').forEach(b=>b.disabled=true);
-  document.querySelectorAll('.sv-btn')[choice==='A'?0:1].classList.add('chosen');
-
-  // GunJS에 +1
-  voteDB.get(choice).once(v=>{
-    voteDB.get(choice).put((v||0)+1);
-  });
-
-  // 결과 표시
-  document.getElementById('svResults').classList.add('show');
-  document.getElementById('svNext').classList.add('show');
-}
-
-// 이미 투표한 경우 결과 바로 보여주기
-if(_myVote){
-  document.querySelectorAll('.sv-btn').forEach(b=>b.disabled=true);
-  document.querySelectorAll('.sv-btn')[_myVote==='A'?0:1].classList.add('chosen');
-  document.getElementById('svResults').classList.add('show');
-  document.getElementById('svNext').classList.add('show');
-}
-
-function goToGate(){
-  document.getElementById('s-survey').style.display='none';
-  const sg=document.getElementById('s-gate');
-  sg.style.display='flex';sg.classList.add('active');
-  // 차트 바 애니메이션 이미 실행됐으므로 생략
-}
-
-// 차트 바 애니메이션 (섹션 시작 시)
+// 차트 바 애니메이션
 setTimeout(()=>{
   document.querySelectorAll('.bar-fill').forEach(el=>{
     el.style.width = el.dataset.w + '%';
   });
-},400);
+}, 400);
 
 /* ── STARS (gate bg) ── */
 (function(){
