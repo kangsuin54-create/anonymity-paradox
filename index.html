@@ -536,39 +536,21 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 /* ══ FRIENDS SCREEN ══ */
 #friends-screen{
   position:fixed;inset:0;z-index:9901;
-  background:#000;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
+  background:#fff;
+  display:flex;align-items:center;justify-content:center;
   opacity:0;pointer-events:none;
+  transition:opacity .5s ease;
 }
-#friends-screen.show{animation:fsBg 2.8s ease forwards;pointer-events:auto;}
-@keyframes fsBg{
-  0%  {opacity:0;background:#000;}
-  12% {opacity:1;background:#111;}
-  45% {background:#aaa;}
-  100%{background:#fff;}
+#friends-screen.show{
+  opacity:1;pointer-events:auto;
 }
-#fs-burst{
-  position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(circle at 50% 50%,#fff 0%,rgba(255,255,255,.98) 25%,rgba(255,255,255,.6) 55%,transparent 75%);
-  opacity:0;
-}
-#friends-screen.show #fs-burst{animation:fsBurst 1.8s ease .08s forwards;}
-@keyframes fsBurst{
-  0%  {opacity:0;transform:scale(0);}
-  18% {opacity:1;transform:scale(.6);}
-  50% {opacity:1;transform:scale(1.05);}
-  100%{opacity:0;transform:scale(1);}
-}
+#fs-burst{display:none;}
 #fs-figures{
   position:relative;z-index:2;
-  opacity:0;
+  opacity:0;transition:opacity .8s ease .3s;
 }
 #friends-screen.show #fs-figures{
-  animation:fsFadeIn 1s ease .6s forwards;
-}
-@keyframes fsFadeIn{
-  from{opacity:0;}
-  to  {opacity:1;}
+  opacity:1;
 }
 #fs-txt{display:none;}
 
