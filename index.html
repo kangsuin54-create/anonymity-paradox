@@ -451,6 +451,53 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
   to{opacity:1;transform:translateY(0);}
 }
 
+/* ══ INCOMING CALL SCREEN ══ */
+#call-screen{
+  position:fixed;inset:0;z-index:9800;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:space-between;
+  padding:80px 40px 64px;
+  background:linear-gradient(180deg,#1A1230 0%,#261640 50%,#1A1230 100%);
+  opacity:0;pointer-events:none;
+  transition:opacity .45s ease;
+}
+#call-screen.show{opacity:1;pointer-events:auto;}
+#call-screen.answered{background:linear-gradient(180deg,#0A1A0E 0%,#0E240E 50%,#0A1A0E 100%);}
+
+/* Pulsing rings */
+.cr-wrap{position:relative;display:flex;align-items:center;justify-content:center;width:160px;height:160px;margin-bottom:28px;}
+.cr-ring{position:absolute;border-radius:50%;border:2px solid rgba(255,255,255,.18);animation:crPulse 2.4s ease-out infinite;}
+.cr-ring.r1{width:140px;height:140px;animation-delay:0s;}
+.cr-ring.r2{width:185px;height:185px;animation-delay:.55s;}
+.cr-ring.r3{width:230px;height:230px;animation-delay:1.1s;}
+@keyframes crPulse{0%{transform:scale(.7);opacity:.6;}100%{transform:scale(1.15);opacity:0;}}
+.cr-avatar{
+  width:108px;height:108px;border-radius:50%;position:relative;z-index:2;
+  background:linear-gradient(135deg,#6B9BFF,#4A5AFF);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Noto Serif KR',serif;font-size:2.4rem;font-weight:700;color:#fff;
+  box-shadow:0 8px 36px rgba(74,122,255,.45);
+}
+.cr-name{font-family:'Noto Serif KR',serif;font-size:2.5rem;font-weight:900;color:#fff;text-align:center;letter-spacing:.03em;}
+.cr-sub{font-family:'Noto Sans KR',sans-serif;font-size:.88rem;color:rgba(255,255,255,.55);margin-top:8px;text-align:center;}
+#cr-timer{font-family:'Noto Sans KR',sans-serif;font-size:1.05rem;color:#4ADE80;margin-top:10px;display:none;letter-spacing:.05em;}
+
+/* Buttons */
+.cr-btns{display:flex;gap:64px;align-items:center;justify-content:center;}
+.cr-btn-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.cr-btn{
+  width:76px;height:76px;border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:1.9rem;
+  transition:transform .15s,filter .15s;
+}
+.cr-btn:active{transform:scale(.88);}
+.cr-btn:hover{filter:brightness(1.15);}
+.cr-decline{background:#FF3B30;}
+.cr-accept {background:#34C759;animation:acceptPulse 1.5s ease-in-out infinite;}
+.cr-hangup {background:#FF3B30;display:none;}
+@keyframes acceptPulse{0%,100%{box-shadow:0 0 0 0 rgba(52,199,89,.6);}50%{box-shadow:0 0 0 14px rgba(52,199,89,0);}}
+.cr-btn-lbl{font-family:'Noto Sans KR',sans-serif;font-size:.78rem;color:rgba(255,255,255,.65);}
+
 /* vibrate animation for icon when notification arrives */
 @keyframes notifVibrate{
   0%,100%{transform:rotate(0deg);}
@@ -896,6 +943,36 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
   </div>
 </div>
 
+<!-- ══ INCOMING CALL SCREEN ══ -->
+<div id="call-screen">
+  <div style="text-align:center;">
+    <div class="cr-wrap">
+      <div class="cr-ring r1"></div>
+      <div class="cr-ring r2"></div>
+      <div class="cr-ring r3"></div>
+      <div class="cr-avatar">유</div>
+    </div>
+    <div class="cr-name">유지성</div>
+    <div class="cr-sub" id="cr-sub">이동전화 · 전화 수신 중...</div>
+    <div id="cr-timer">00:00</div>
+  </div>
+
+  <div class="cr-btns">
+    <div class="cr-btn-wrap" id="cr-decline-wrap">
+      <button class="cr-btn cr-decline" onclick="declineCall()">📵</button>
+      <div class="cr-btn-lbl">거절</div>
+    </div>
+    <div class="cr-btn-wrap" id="cr-accept-wrap">
+      <button class="cr-btn cr-accept" onclick="acceptCall()">📞</button>
+      <div class="cr-btn-lbl">수락</div>
+    </div>
+    <div class="cr-btn-wrap" id="cr-hangup-wrap" style="display:none;">
+      <button class="cr-btn cr-hangup" onclick="hangupCall()">📵</button>
+      <div class="cr-btn-lbl">종료</div>
+    </div>
+  </div>
+</div>
+
 <!-- ══ EVERYTIME POST MODAL ══ -->
 <div id="et-overlay" onclick="closeET()"></div>
 <div id="et-modal">
@@ -1092,6 +1169,66 @@ function showArrival(){
   },500);
 }
 
+/* ── PHONE CALL ── */
+let _ringTimer=null, _callTimer=null, _callSec=0, _callShown=false;
+
+function showCall(){
+  if(_callShown)return;
+  _callShown=true;
+  document.getElementById('call-screen').classList.add('show');
+  _startRinging();
+}
+
+function _startRinging(){
+  _playRing();
+  _ringTimer=setInterval(_playRing,3600);
+}
+function _stopRinging(){ clearInterval(_ringTimer); }
+
+function _playRing(){
+  try{
+    const ac=getAC();
+    if(ac.state==='suspended')ac.resume();
+    [[440,0],[480,0],[440,.5],[480,.5],[440,1],[480,1]].forEach(([freq,t])=>{
+      const o=ac.createOscillator(),g=ac.createGain();
+      o.connect(g);g.connect(ac.destination);
+      o.type='sine';o.frequency.value=freq;
+      g.gain.setValueAtTime(.15,ac.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+t+.4);
+      o.start(ac.currentTime+t);o.stop(ac.currentTime+t+.45);
+    });
+  }catch(e){}
+}
+
+function acceptCall(){
+  _stopRinging();
+  const s=document.getElementById('call-screen');
+  s.classList.add('answered');
+  document.getElementById('cr-sub').textContent='통화 중';
+  document.getElementById('cr-timer').style.display='block';
+  document.getElementById('cr-accept-wrap').style.display='none';
+  document.getElementById('cr-decline-wrap').style.display='none';
+  document.getElementById('cr-hangup-wrap').style.display='flex';
+  document.querySelectorAll('.cr-ring').forEach(r=>r.style.animation='none');
+  _callSec=0;
+  _callTimer=setInterval(()=>{
+    _callSec++;
+    const m=String(Math.floor(_callSec/60)).padStart(2,'0');
+    const s2=String(_callSec%60).padStart(2,'0');
+    document.getElementById('cr-timer').textContent=`${m}:${s2}`;
+  },1000);
+}
+
+function declineCall(){
+  _stopRinging();
+  document.getElementById('call-screen').classList.remove('show');
+}
+
+function hangupCall(){
+  clearInterval(_callTimer);
+  document.getElementById('call-screen').classList.remove('show');
+}
+
 /* ── EVERYTIME modal ── */
 function openET(){
   document.getElementById('et-overlay').classList.add('open');
@@ -1102,6 +1239,8 @@ function closeET(){
   document.getElementById('et-overlay').classList.remove('open');
   document.getElementById('et-modal').classList.remove('open');
   document.body.style.overflow='';
+  /* 게시글 닫으면 1.5초 후 유지성한테 전화 옴 */
+  setTimeout(showCall, 1500);
 }
 /* ══ GunJS 실시간 댓글 ══ */
 const gun = Gun([
