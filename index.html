@@ -1,653 +1,1218 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>탈 뒤에서 — 익명성과 친밀함의 역설</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;900&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --hanji:#F2E0B5; --ink:#1A140E;
-      --red:#C1272D; --blue:#1B4A8A; --green:#2D7A4F; --gold:#C9A84C;
-    }
-    *{margin:0;padding:0;box-sizing:border-box;}
-    html{scroll-behavior:smooth;}
-    body{font-family:'Noto Serif KR',serif;background:#060402;color:var(--hanji);overflow-x:hidden;}
-    body.locked{overflow:hidden;}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>탈 뒤에서 — 익명성과 친밀함의 역설</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;900&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --hanji:#F2E0B5;--ink:#1A140E;
+  --red:#C1272D;--blue:#1B4A8A;--green:#2D7A4F;--gold:#C9A84C;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;}
+body{font-family:'Noto Serif KR',serif;background:#060402;color:var(--hanji);}
+body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 
-    /* FLASH */
-    #flash{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0;transition:opacity .06s;}
-    #flash.warm{background:#FFF0C8;opacity:1;}
-    #flash.cold{background:#081828;opacity:1;}
-    #flash.out{transition:opacity 1.2s;opacity:0;}
+/* ── FLASH ── */
+#flash{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0;transition:opacity .05s;}
+#flash.warm{background:#FFF5D8;opacity:1;}
+#flash.cold{background:#081828;opacity:1;}
+#flash.out{transition:opacity 1s;opacity:0;}
 
-    /* PROGRESS */
-    #bar{position:fixed;top:0;left:0;height:3px;
-      background:linear-gradient(90deg,var(--red),var(--gold));
-      z-index:1000;pointer-events:none;transition:width .1s;}
+/* ── PROGRESS ── */
+#bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--red),var(--gold));z-index:1000;pointer-events:none;transition:width .1s;}
 
-    /* NAV DOTS */
-    .snav{position:fixed;right:24px;top:50%;transform:translateY(-50%);
-      display:flex;flex-direction:column;gap:12px;z-index:200;}
-    .sdot{width:7px;height:7px;border-radius:50%;
-      background:rgba(242,224,181,.25);cursor:pointer;transition:all .3s;}
-    .sdot.on{background:var(--gold);transform:scale(1.6);}
+/* ══════════════════════════════════════
+   INTRO OVERLAY
+══════════════════════════════════════ */
+#intro{position:fixed;inset:0;z-index:500;overflow:hidden;}
 
-    /* ═══ GATE SECTION (shared) ═══ */
-    .gate-sec{min-height:100vh;position:relative;
-      display:flex;align-items:center;justify-content:center;
-      overflow:hidden;cursor:pointer;user-select:none;}
+.scene{position:absolute;inset:0;display:none;align-items:center;justify-content:center;}
+.scene.active{display:flex;}
 
-    .sky{position:absolute;inset:0;z-index:0;transition:opacity 2s ease;}
-    .sky-jos{background:
-      radial-gradient(ellipse 60% 40% at 50% 35%,rgba(255,180,60,.55) 0%,transparent 65%),
-      linear-gradient(180deg,#0C0820 0%,#1A1040 12%,#3A1828 28%,#8B3820 42%,#D46828 55%,#5C3010 72%,#2A1808 100%);}
-    .sky-mod{background:
-      radial-gradient(ellipse 40% 50% at 20% 50%,rgba(88,166,255,.18) 0%,transparent 50%),
-      radial-gradient(ellipse 40% 40% at 80% 35%,rgba(180,60,240,.15) 0%,transparent 50%),
-      linear-gradient(180deg,#020408 0%,#0D1117 50%,#080C12 100%);
-      opacity:0;}
+/* ── GATE SCENE ── */
+#s-gate{
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 80%, rgba(180,80,20,.2) 0%, transparent 60%),
+    linear-gradient(180deg,#04030A 0%,#0C0818 25%,#1A0E28 50%,#2A1008 75%,#0E0806 100%);
+  flex-direction:column;cursor:pointer;
+}
+#stars-c{position:absolute;inset:0;z-index:0;pointer-events:none;}
 
-    #stars{position:absolute;inset:0;z-index:1;pointer-events:none;}
-    .fog{position:absolute;bottom:0;left:0;right:0;height:35%;
-      background:linear-gradient(0deg,rgba(20,12,4,.7) 0%,transparent 100%);
-      z-index:2;pointer-events:none;}
+.gate-title{
+  position:absolute;top:6vh;left:50%;transform:translateX(-50%);
+  text-align:center;z-index:20;pointer-events:none;white-space:nowrap;
+}
+.gate-year{font-family:'Noto Sans KR',sans-serif;font-size:.76rem;letter-spacing:.5em;color:var(--gold);margin-bottom:12px;}
+.gate-main{font-size:clamp(1.8rem,4.5vw,3rem);font-weight:900;color:var(--hanji);text-shadow:0 2px 24px rgba(0,0,0,.9);}
+.gate-main em{color:var(--red);font-style:normal;}
 
-    /* Gate structure */
-    .gate-wrap{position:relative;z-index:10;width:min(520px,88vw);
-      display:flex;flex-direction:column;align-items:center;
-      filter:drop-shadow(0 20px 60px rgba(0,0,0,.8));}
+/* Gate container (what gets zoomed) */
+#gate-wrap{position:relative;z-index:10;}
+#gate-wrap.rushing{animation:rush .65s cubic-bezier(.5,0,1,1) forwards;}
+@keyframes rush{
+  0%{transform:scale(1);filter:blur(0);opacity:1;}
+  60%{transform:scale(4) translateY(-2%);filter:blur(1px);opacity:1;}
+  100%{transform:scale(14) translateY(-5%);filter:blur(10px);opacity:0;}
+}
 
-    /* Roof */
-    .g-roof{width:116%;height:80px;position:relative;flex-shrink:0;}
-    .g-roof-body{position:absolute;bottom:0;left:0;right:0;height:65px;
-      background:linear-gradient(180deg,#0F2A5A 0%,#1B4A8A 55%,#0D2040 100%);
-      clip-path:polygon(0% 100%,2% 68%,6% 30%,50% 2%,94% 30%,98% 68%,100% 100%);}
-    .g-roof-ridge{position:absolute;top:0;left:50%;transform:translateX(-50%);
-      width:72px;height:22px;background:linear-gradient(180deg,#D4A030,#8B6010);border-radius:3px 3px 0 0;}
-    .g-roof-eave{position:absolute;bottom:0;height:22px;width:18%;
-      background:linear-gradient(180deg,#1B4A8A,#0D2040);border-radius:50% 50% 0 0/100% 100% 0 0;}
-    .g-roof-eave.l{left:0;}.g-roof-eave.r{right:0;}
+/* Gate SVG styling */
+#gate-svg{display:block;width:min(500px,90vw);height:auto;}
 
-    .g-lintel{width:100%;height:20px;background:linear-gradient(180deg,#2A1A08,#4A2E10,#2A1A08);border-top:3px solid #6A4018;}
+/* Door opening animation */
+#door-l{transform-origin:40px 300px;transition:transform .75s cubic-bezier(.6,0,.1,1);}
+#door-r{transform-origin:460px 300px;transition:transform .75s cubic-bezier(.6,0,.1,1);}
+.gate-open #door-l{transform:rotateY(-108deg);}
+.gate-open #door-r{transform:rotateY(108deg);}
 
-    /* Body row */
-    .g-body{display:flex;width:100%;height:min(420px,58vh);}
-    .g-pillar{width:11%;flex-shrink:0;
-      background:
-        repeating-linear-gradient(180deg,rgba(0,0,0,.18) 0px,rgba(0,0,0,0) 4px,rgba(0,0,0,0) 14px,rgba(0,0,0,.15) 18px),
-        linear-gradient(90deg,#181208,#302818,#3E3422,#302818,#181208);
-      box-shadow:inset 0 0 18px rgba(0,0,0,.5);position:relative;}
-    .g-pillar::before{content:'';position:absolute;top:0;left:-3px;right:-3px;height:14px;
-      background:linear-gradient(180deg,#4E3E22,#302818);border-radius:2px 2px 0 0;}
+/* Shake on click */
+#gate-wrap.shake{animation:gateShake .25s ease;}
+@keyframes gateShake{
+  0%{transform:translateX(0);}
+  20%{transform:translateX(-6px);}
+  40%{transform:translateX(6px);}
+  60%{transform:translateX(-4px);}
+  80%{transform:translateX(4px);}
+  100%{transform:translateX(0);}
+}
 
-    /* Perspective wrapper */
-    .g-doors-outer{flex:1;perspective:700px;perspective-origin:50% 48%;position:relative;overflow:hidden;}
+/* Click hint */
+.g-hint{
+  position:absolute;bottom:6vh;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  animation:hpulse 2s ease-in-out infinite;pointer-events:none;z-index:20;
+}
+.g-hint span{font-family:'Noto Sans KR',sans-serif;font-size:.8rem;letter-spacing:.3em;color:rgba(242,224,181,.65);}
+.g-hint .ico{font-size:1.4rem;}
+.g-hint.hide{opacity:0;transition:opacity .3s;}
+@keyframes hpulse{0%,100%{opacity:.5;transform:translateX(-50%) translateY(0);}50%{opacity:1;transform:translateX(-50%) translateY(-5px);}}
 
-    /* Glow behind doors */
-    .g-glow{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .6s ease .8s;}
-    .g-glow.jos-gl{background:radial-gradient(ellipse 80% 80% at 50% 50%,rgba(255,185,55,.95) 0%,rgba(230,110,20,.6) 35%,rgba(160,55,0,.2) 65%,transparent 85%);}
-    .g-glow.mod-gl{background:radial-gradient(ellipse 80% 80% at 50% 50%,rgba(80,160,255,.85) 0%,rgba(140,40,220,.5) 40%,transparent 75%);}
-    .gate-open .g-glow{opacity:1;}
+/* ── VILLAGE SCENE ── */
+#s-village{background:#0A0618;flex-direction:column;overflow:hidden;cursor:pointer;}
 
-    /* Doors */
-    .g-doors{display:flex;width:100%;height:100%;position:relative;z-index:5;transform-style:preserve-3d;}
-    .door{flex:1;position:relative;transform-style:preserve-3d;
-      transition:transform 1.9s cubic-bezier(.22,.05,.1,1);
-      background:
-        repeating-linear-gradient(90deg,rgba(0,0,0,.28) 0px,rgba(0,0,0,0) 2px,rgba(0,0,0,0) 16px,rgba(0,0,0,.22) 18px,rgba(255,255,255,.03) 18px,rgba(255,255,255,.03) 20px),
-        linear-gradient(175deg,#200E04 0%,#4E1E08 22%,#6E3010 50%,#4E1E08 78%,#200E04 100%);
-      box-shadow:inset 0 0 50px rgba(0,0,0,.55),inset 0 0 15px rgba(0,0,0,.35);overflow:hidden;}
-    .door::before{content:'';position:absolute;inset:0;
-      background:repeating-linear-gradient(180deg,rgba(255,255,255,.025) 0px,rgba(255,255,255,.025) 1px,transparent 1px,transparent 28px);}
-    .door.dl{transform-origin:left center;border-right:1px solid rgba(0,0,0,.7);}
-    .door.dr{transform-origin:right center;border-left:1px solid rgba(0,0,0,.7);}
-    .gate-open .door.dl{transform:rotateY(-102deg);}
-    .gate-open .door.dr{transform:rotateY(102deg);}
+/* Parallax container */
+#village-parallax{
+  position:absolute;inset:0;
+  transform-style:preserve-3d;
+  transition:none;
+}
 
-    /* Door details */
-    .band{position:absolute;left:0;right:0;height:10px;
-      background:linear-gradient(180deg,#2E2418,#18100C,#2E2418);box-shadow:0 1px 6px rgba(0,0,0,.7);z-index:2;}
-    .band.b1{top:14%;}.band.b2{top:50%;transform:translateY(-50%);}.band.b3{bottom:14%;}
-    .hinge{position:absolute;width:18px;height:44px;
-      background:linear-gradient(90deg,#221A10,#3E3020,#221A10);border-radius:2px;z-index:3;}
-    .door.dl .hinge{left:5px;}.door.dr .hinge{right:5px;}
-    .hinge.ht{top:9%;}.hinge.hb{bottom:9%;}
-    .ring-wrap{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:4;}
-    .ring-out{width:50px;height:50px;border-radius:50%;
-      background:radial-gradient(circle at 32% 28%,#EEC840,#C9A030,#7A5810,#3A2C08);
-      box-shadow:0 3px 12px rgba(0,0,0,.7),inset 0 1px 4px rgba(255,210,100,.35);
-      display:flex;align-items:center;justify-content:center;}
-    .ring-in{width:28px;height:28px;border-radius:50%;
-      background:radial-gradient(circle at 38% 35%,#C9A030,#5A3C08);border:3px solid #8B6010;}
-    .seam{position:absolute;top:0;bottom:0;width:3px;
-      background:linear-gradient(90deg,rgba(0,0,0,.5),rgba(0,0,0,.2),rgba(0,0,0,.5));z-index:3;}
-    .door.dl .seam{right:0;}.door.dr .seam{left:0;}
-    .g-base{width:100%;height:22px;background:linear-gradient(180deg,#1E1608,#2E2418);
-      border-top:3px solid #4E3C1C;box-shadow:0 4px 16px rgba(0,0,0,.6);}
+.vl{
+  position:absolute;inset:0;
+  transform-origin:50% 100%;
+  transition:transform .9s cubic-bezier(.25,0,.1,1);
+}
 
-    /* Text overlays */
-    .g-text{position:absolute;z-index:20;text-align:center;pointer-events:none;}
-    .g-text.top{top:7vh;left:50%;transform:translateX(-50%);white-space:nowrap;}
-    .g-text.bot{bottom:7vh;left:50%;transform:translateX(-50%);}
-    .g-era{font-family:'Noto Sans KR',sans-serif;font-size:.76rem;letter-spacing:.5em;color:var(--gold);margin-bottom:14px;}
-    .g-title{font-size:clamp(1.8rem,4.5vw,3rem);font-weight:900;color:var(--hanji);text-shadow:0 2px 24px rgba(0,0,0,.85);line-height:1.25;}
-    .g-title em{color:var(--red);font-style:normal;}
-    .click-hint{display:flex;flex-direction:column;align-items:center;gap:9px;animation:hpulse 2.2s ease-in-out infinite;}
-    .click-hint span{font-family:'Noto Sans KR',sans-serif;font-size:.8rem;letter-spacing:.28em;color:rgba(242,224,181,.65);}
-    .click-hint .ico{font-size:1.5rem;}
-    .click-hint.done{animation:none;opacity:0;transition:opacity .4s;}
-    @keyframes hpulse{0%,100%{opacity:.55;transform:translateY(0);}50%{opacity:1;transform:translateY(-6px);}}
+/* Walk hint */
+#walk-hint{
+  position:absolute;bottom:5vh;left:50%;transform:translateX(-50%);
+  z-index:50;pointer-events:none;text-align:center;
+  animation:hpulse2 2.2s ease-in-out infinite;
+}
+#walk-hint span{font-family:'Noto Sans KR',sans-serif;font-size:.78rem;letter-spacing:.28em;color:rgba(242,224,181,.6);}
+#walk-hint .wico{font-size:1.3rem;display:block;margin-bottom:5px;}
+@keyframes hpulse2{0%,100%{opacity:.5;}50%{opacity:1;}}
+#walk-hint.hide{opacity:0;transition:opacity .3s;}
 
-    /* ═══ JOSEON SECTIONS ═══ */
-    .reveal{opacity:0;transform:translateY(38px);transition:opacity .9s ease,transform .9s ease;}
-    .rev-l{opacity:0;transform:translateX(-55px);transition:opacity .9s,transform .9s;}
-    .rev-r{opacity:0;transform:translateX(55px);transition:opacity .9s,transform .9s;}
-    .reveal.vis,.rev-l.vis,.rev-r.vis{opacity:1;transform:translate(0);}
-    .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.35s}
-    .d4{transition-delay:.5s}.d5{transition-delay:.65s}.d6{transition-delay:.8s}
+/* dancer animations */
+@keyframes sway{0%,100%{transform:rotate(-4deg);}50%{transform:rotate(4deg);}}
+@keyframes sway2{0%,100%{transform:rotate(3deg);}50%{transform:rotate(-5deg);}}
+@keyframes sway3{0%,100%{transform:rotate(-2deg);}50%{transform:rotate(6deg);}}
+@keyframes lanternSwing{0%,100%{transform:rotate(-5deg) translateX(0);}50%{transform:rotate(5deg) translateX(2px);}}
 
-    .si{max-width:920px;margin:0 auto;padding:100px 40px;}
-    .s-lbl{font-family:'Noto Sans KR',sans-serif;font-size:.72rem;letter-spacing:.55em;margin-bottom:16px;}
-    .s-ttl{font-size:clamp(2rem,4.5vw,3.3rem);font-weight:900;line-height:1.25;}
-    .deco{display:flex;align-items:center;gap:14px;margin:30px 0;}
-    .deco::before,.deco::after{content:'';flex:1;height:1.5px;background:linear-gradient(90deg,transparent,var(--red) 40%,var(--blue) 60%,transparent);}
-    .deco-d{width:10px;height:10px;background:var(--red);transform:rotate(45deg);}
-    .body-t p{font-size:1.05rem;line-height:2.1;margin-bottom:1.3em;color:rgba(26,20,14,.82);}
-    .bq{border-left:4px solid var(--red);padding:20px 28px;margin:26px 0;
-      background:rgba(193,39,45,.05);font-size:1.18rem;font-weight:600;line-height:1.75;}
+/* ══════════════════════════════════════
+   MAIN CONTENT (below intro)
+══════════════════════════════════════ */
+#main-content{display:none;}
+#main-content.show{display:block;}
 
-    /* Hahoe */
-    #s-hahoe{min-height:100vh;background-color:#F0DDB0;
-      background-image:radial-gradient(ellipse at 15% 55%,rgba(193,39,45,.06) 0%,transparent 55%),radial-gradient(ellipse at 85% 40%,rgba(27,74,138,.06) 0%,transparent 55%);
-      color:var(--ink);position:relative;}
-    #s-hahoe::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;
-      background:linear-gradient(90deg,var(--red),#E8A427,var(--green),var(--blue));}
-    .hg{display:grid;grid-template-columns:250px 1fr;gap:65px;align-items:start;margin-top:56px;}
-    .mask-glow-ring{position:absolute;inset:-28px;border-radius:50%;
-      background:radial-gradient(circle,rgba(193,39,45,.2),transparent 65%);animation:mglow 3.5s ease-in-out infinite;}
-    @keyframes mglow{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.07)}}
-    .fg{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px;}
-    .fc{background:rgba(26,20,14,.05);border:1px solid rgba(26,20,14,.1);padding:20px;}
-    .fn{font-size:2.4rem;font-weight:900;color:var(--red);line-height:1;margin-bottom:7px;}
-    .fd{font-family:'Noto Sans KR',sans-serif;font-size:.8rem;color:rgba(26,20,14,.62);line-height:1.6;}
+/* Progress + nav */
+.snav{position:fixed;right:22px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:200;}
+.sdot{width:7px;height:7px;border-radius:50%;background:rgba(242,224,181,.25);cursor:pointer;transition:all .3s;}
+.sdot.on{background:var(--gold);transform:scale(1.6);}
 
-    /* Paradox */
-    #s-paradox{min-height:100vh;background:#0E0B06;color:var(--hanji);}
-    .bq-lg{font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:600;line-height:1.65;text-align:center;margin:56px 0;}
-    .bq-lg em{color:var(--gold);font-style:normal;}
-    .split2{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin:46px 0;}
-    .sp-card{padding:44px 36px;}
-    .sp-card.jos{background:#EDD9A3;color:var(--ink);}
-    .sp-card.mod{background:#0D1117;color:#D8D2C8;border:1px solid rgba(255,255,255,.04);}
-    .sp-era{font-family:'Noto Sans KR',sans-serif;font-size:.7rem;letter-spacing:.45em;margin-bottom:16px;}
-    .jos .sp-era{color:var(--red);}.mod .sp-era{color:#58A6FF;}
-    .sp-ico{font-size:2.6rem;display:block;margin-bottom:16px;}
-    .sp-h{font-size:1.35rem;font-weight:700;margin-bottom:14px;line-height:1.4;}
-    .sp-b{font-family:'Noto Sans KR',sans-serif;font-size:.9rem;line-height:1.9;opacity:.78;}
-    .ins{background:linear-gradient(135deg,rgba(193,39,45,.12),rgba(27,74,138,.12));
-      border:1px solid rgba(201,168,76,.28);padding:46px 42px;margin:46px 0;text-align:center;}
-    .ins h3{font-size:1.25rem;color:var(--gold);margin-bottom:18px;}
-    .ins p{font-size:1rem;line-height:2.1;color:rgba(242,224,181,.82);}
-    .ins strong{color:var(--gold);}
+/* ── SECTIONS ── */
+.reveal{opacity:0;transform:translateY(38px);transition:opacity .9s ease,transform .9s ease;}
+.rev-l{opacity:0;transform:translateX(-55px);transition:opacity .9s,transform .9s;}
+.rev-r{opacity:0;transform:translateX(55px);transition:opacity .9s,transform .9s;}
+.reveal.vis,.rev-l.vis,.rev-r.vis{opacity:1;transform:translate(0);}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.35s}
+.d4{transition-delay:.5s}.d5{transition-delay:.65s}.d6{transition-delay:.8s}
+.si{max-width:920px;margin:0 auto;padding:100px 40px;}
+.s-lbl{font-family:'Noto Sans KR',sans-serif;font-size:.72rem;letter-spacing:.55em;margin-bottom:16px;}
+.s-ttl{font-size:clamp(2rem,4.5vw,3.3rem);font-weight:900;line-height:1.25;}
+.deco{display:flex;align-items:center;gap:14px;margin:30px 0;}
+.deco::before,.deco::after{content:'';flex:1;height:1.5px;background:linear-gradient(90deg,transparent,var(--red) 40%,var(--blue) 60%,transparent);}
+.deco-d{width:10px;height:10px;background:var(--red);transform:rotate(45deg);}
+.body-t p{font-size:1.05rem;line-height:2.1;margin-bottom:1.3em;color:rgba(26,20,14,.82);}
+.bq{border-left:4px solid var(--red);padding:20px 28px;margin:26px 0;background:rgba(193,39,45,.05);font-size:1.18rem;font-weight:600;line-height:1.75;}
+#s-hahoe{min-height:100vh;background-color:#F0DDB0;background-image:radial-gradient(ellipse at 15% 55%,rgba(193,39,45,.06) 0%,transparent 55%),radial-gradient(ellipse at 85% 40%,rgba(27,74,138,.06) 0%,transparent 55%);color:var(--ink);position:relative;}
+#s-hahoe::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--red),#E8A427,var(--green),var(--blue));}
+.hg{display:grid;grid-template-columns:250px 1fr;gap:65px;align-items:start;margin-top:56px;}
+.mask-gr{position:absolute;inset:-28px;border-radius:50%;background:radial-gradient(circle,rgba(193,39,45,.2),transparent 65%);animation:mglow 3.5s ease-in-out infinite;}
+@keyframes mglow{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.07)}}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px;}
+.fc{background:rgba(26,20,14,.05);border:1px solid rgba(26,20,14,.1);padding:20px;}
+.fn{font-size:2.4rem;font-weight:900;color:var(--red);line-height:1;margin-bottom:7px;}
+.fd{font-family:'Noto Sans KR',sans-serif;font-size:.8rem;color:rgba(26,20,14,.62);line-height:1.6;}
+#s-paradox{min-height:100vh;background:#0E0B06;color:var(--hanji);}
+.bq-lg{font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:600;line-height:1.65;text-align:center;margin:56px 0;}
+.bq-lg em{color:var(--gold);font-style:normal;}
+.split2{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin:46px 0;}
+.sp-card{padding:44px 36px;}
+.sp-card.jos{background:#EDD9A3;color:var(--ink);}
+.sp-card.mod{background:#0D1117;color:#D8D2C8;border:1px solid rgba(255,255,255,.04);}
+.sp-era{font-family:'Noto Sans KR',sans-serif;font-size:.7rem;letter-spacing:.45em;margin-bottom:16px;}
+.jos .sp-era{color:var(--red);}.mod .sp-era{color:#58A6FF;}
+.sp-ico{font-size:2.6rem;display:block;margin-bottom:16px;}
+.sp-h{font-size:1.35rem;font-weight:700;margin-bottom:14px;line-height:1.4;}
+.sp-b{font-family:'Noto Sans KR',sans-serif;font-size:.9rem;line-height:1.9;opacity:.78;}
+.ins{background:linear-gradient(135deg,rgba(193,39,45,.12),rgba(27,74,138,.12));border:1px solid rgba(201,168,76,.28);padding:46px 42px;margin:46px 0;text-align:center;}
+.ins h3{font-size:1.25rem;color:var(--gold);margin-bottom:18px;}
+.ins p{font-size:1rem;line-height:2.1;color:rgba(242,224,181,.82);}
+.ins strong{color:var(--gold);}
 
-    /* ═══ MODERN ═══ */
-    #s-modern{min-height:100vh;background:#0D1117;color:#E0D8CC;
-      border-top:3px solid transparent;border-image:linear-gradient(90deg,var(--red),var(--blue),var(--green)) 1;}
-    .mod-lbl{font-family:'Noto Sans KR',sans-serif;font-size:.72rem;letter-spacing:.55em;color:#58A6FF;margin-bottom:16px;}
-    .mod-ttl{font-size:clamp(2rem,4.5vw,3.3rem);font-weight:900;line-height:1.25;margin-bottom:42px;}
-    .mod-ttl span{background:linear-gradient(135deg,#58A6FF,#7EE8A2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-    .cflow{display:flex;align-items:center;justify-content:center;gap:20px;margin:52px 0;flex-wrap:wrap;}
-    .ci{text-align:center;padding:24px 28px;}
-    .ci-ico{font-size:2.8rem;display:block;margin-bottom:12px;}
-    .ci-era{font-family:'Noto Sans KR',sans-serif;font-size:.7rem;color:rgba(224,216,204,.45);letter-spacing:.14em;margin-bottom:5px;}
-    .ci-n{font-size:1.15rem;font-weight:700;}
-    .carr{font-size:2rem;color:var(--gold);opacity:.5;}
-    .pg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:36px 0;}
-    .pc{background:#161B22;border:1px solid #30363D;border-radius:6px;padding:24px 20px;transition:border-color .3s,transform .3s;}
-    .pc:hover{border-color:rgba(88,166,255,.4);transform:translateY(-5px);}
-    .pc-ico{font-size:1.9rem;margin-bottom:11px;}
-    .pc-lbl{font-family:'Noto Sans KR',sans-serif;font-size:.68rem;color:#58A6FF;letter-spacing:.2em;margin-bottom:7px;}
-    .pc-n{font-size:1.05rem;font-weight:700;margin-bottom:10px;}
-    .pc-d{font-family:'Noto Sans KR',sans-serif;font-size:.82rem;line-height:1.75;color:rgba(224,216,204,.56);}
-    .mod-q{text-align:center;font-size:clamp(1.2rem,2.8vw,1.8rem);font-weight:600;line-height:1.8;padding:52px 0;}
-    .mod-q em{color:#7EE8A2;font-style:normal;}
-    .clist{background:#161B22;border:1px solid #30363D;border-left:4px solid #58A6FF;padding:34px 38px;}
-    .clist h3{font-family:'Noto Sans KR',sans-serif;font-size:1rem;color:#58A6FF;margin-bottom:16px;}
-    .ccols{display:grid;grid-template-columns:1fr 1fr;gap:18px;font-family:'Noto Sans KR',sans-serif;font-size:.87rem;line-height:2;color:rgba(224,216,204,.7);}
+/* Gate close section */
+.gate-sec-c{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;user-select:none;}
+.sky{position:absolute;inset:0;z-index:0;transition:opacity 2s ease;}
+.sky-jos{background:radial-gradient(ellipse 60% 40% at 50% 35%,rgba(255,180,60,.55) 0%,transparent 65%),linear-gradient(180deg,#0C0820 0%,#1A1040 12%,#3A1828 28%,#8B3820 42%,#D46828 55%,#5C3010 72%,#2A1808 100%);}
+.sky-modc{background:radial-gradient(ellipse 40% 50% at 20% 50%,rgba(88,166,255,.18) 0%,transparent 50%),radial-gradient(ellipse 40% 40% at 80% 35%,rgba(180,60,240,.15) 0%,transparent 50%),linear-gradient(180deg,#020408 0%,#0D1117 50%,#080C12 100%);opacity:0;}
+.fog2{position:absolute;bottom:0;left:0;right:0;height:35%;background:linear-gradient(0deg,rgba(20,12,4,.7) 0%,transparent 100%);z-index:2;pointer-events:none;}
+.g-wrap-c{position:relative;z-index:10;width:min(520px,88vw);display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 20px 60px rgba(0,0,0,.8));}
+.g-roof-c{width:116%;height:80px;position:relative;flex-shrink:0;}
+.g-roof-b{position:absolute;bottom:0;left:0;right:0;height:65px;background:linear-gradient(180deg,#0F2A5A 0%,#1B4A8A 55%,#0D2040 100%);clip-path:polygon(0% 100%,2% 68%,6% 30%,50% 2%,94% 30%,98% 68%,100% 100%);}
+.g-roof-r{position:absolute;top:0;left:50%;transform:translateX(-50%);width:72px;height:22px;background:linear-gradient(180deg,#D4A030,#8B6010);border-radius:3px 3px 0 0;}
+.g-roof-e{position:absolute;bottom:0;height:22px;width:18%;background:linear-gradient(180deg,#1B4A8A,#0D2040);border-radius:50% 50% 0 0/100% 100% 0 0;}
+.g-roof-e.l{left:0;}.g-roof-e.r{right:0;}
+.g-lint{width:100%;height:20px;background:linear-gradient(180deg,#2A1A08,#4A2E10,#2A1A08);border-top:3px solid #6A4018;}
+.g-body-c{display:flex;width:100%;height:min(420px,58vh);}
+.g-pill{width:11%;flex-shrink:0;background:repeating-linear-gradient(180deg,rgba(0,0,0,.18) 0px,rgba(0,0,0,0) 4px,rgba(0,0,0,0) 14px,rgba(0,0,0,.15) 18px),linear-gradient(90deg,#181208,#302818,#3E3422,#302818,#181208);box-shadow:inset 0 0 18px rgba(0,0,0,.5);position:relative;}
+.g-pill::before{content:'';position:absolute;top:0;left:-3px;right:-3px;height:14px;background:linear-gradient(180deg,#4E3E22,#302818);border-radius:2px 2px 0 0;}
+.g-do{flex:1;perspective:700px;perspective-origin:50% 48%;position:relative;overflow:hidden;}
+.g-glow2{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .6s ease .8s;}
+.g-glow2.jos{background:radial-gradient(ellipse 80% 80% at 50% 50%,rgba(255,185,55,.95) 0%,rgba(230,110,20,.6) 35%,rgba(160,55,0,.2) 65%,transparent 85%);}
+.g-glow2.modc{background:radial-gradient(ellipse 80% 80% at 50% 50%,rgba(80,160,255,.85) 0%,rgba(140,40,220,.5) 40%,transparent 75%);}
+.gate-open .g-glow2{opacity:1;}
+.g-ds{display:flex;width:100%;height:100%;position:relative;z-index:5;transform-style:preserve-3d;}
+.dc{flex:1;position:relative;transform-style:preserve-3d;transition:transform 1.9s cubic-bezier(.22,.05,.1,1);background:repeating-linear-gradient(90deg,rgba(0,0,0,.28) 0px,rgba(0,0,0,0) 2px,rgba(0,0,0,0) 16px,rgba(0,0,0,.22) 18px,rgba(255,255,255,.03) 18px,rgba(255,255,255,.03) 20px),linear-gradient(175deg,#200E04 0%,#4E1E08 22%,#6E3010 50%,#4E1E08 78%,#200E04 100%);box-shadow:inset 0 0 50px rgba(0,0,0,.55);overflow:hidden;}
+.dc::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(180deg,rgba(255,255,255,.025) 0px,rgba(255,255,255,.025) 1px,transparent 1px,transparent 28px);}
+.dc.dl{transform-origin:left center;border-right:1px solid rgba(0,0,0,.7);}
+.dc.dr{transform-origin:right center;border-left:1px solid rgba(0,0,0,.7);}
+.gate-open .dc.dl{transform:rotateY(-102deg);}
+.gate-open .dc.dr{transform:rotateY(102deg);}
+.ba{position:absolute;left:0;right:0;height:10px;background:linear-gradient(180deg,#2E2418,#18100C,#2E2418);box-shadow:0 1px 6px rgba(0,0,0,.7);z-index:2;}
+.ba.b1{top:14%;}.ba.b2{top:50%;transform:translateY(-50%);}.ba.b3{bottom:14%;}
+.hi{position:absolute;width:18px;height:44px;background:linear-gradient(90deg,#221A10,#3E3020,#221A10);border-radius:2px;z-index:3;}
+.dc.dl .hi{left:5px;}.dc.dr .hi{right:5px;}
+.hi.ht{top:9%;}.hi.hb{bottom:9%;}
+.rw{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:4;}
+.ro{width:50px;height:50px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#EEC840,#C9A030,#7A5810,#3A2C08);box-shadow:0 3px 12px rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;}
+.ri{width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 38% 35%,#C9A030,#5A3C08);border:3px solid #8B6010;}
+.se{position:absolute;top:0;bottom:0;width:3px;background:linear-gradient(90deg,rgba(0,0,0,.5),rgba(0,0,0,.2),rgba(0,0,0,.5));z-index:3;}
+.dc.dl .se{right:0;}.dc.dr .se{left:0;}
+.g-base-c{width:100%;height:22px;background:linear-gradient(180deg,#1E1608,#2E2418);border-top:3px solid #4E3C1C;box-shadow:0 4px 16px rgba(0,0,0,.6);}
+.g-txt-c{position:absolute;z-index:20;text-align:center;pointer-events:none;}
+.g-txt-c.top{top:7vh;left:50%;transform:translateX(-50%);white-space:nowrap;}
+.g-txt-c.bot{bottom:7vh;left:50%;transform:translateX(-50%);}
+.g-era-c{font-family:'Noto Sans KR',sans-serif;font-size:.76rem;letter-spacing:.5em;color:var(--gold);margin-bottom:14px;}
+.g-tit-c{font-size:clamp(1.5rem,3.5vw,2.5rem);font-weight:900;color:var(--hanji);text-shadow:0 2px 24px rgba(0,0,0,.85);line-height:1.25;}
+.chint{display:flex;flex-direction:column;align-items:center;gap:9px;animation:hpulse 2.2s ease-in-out infinite;}
+.chint span{font-family:'Noto Sans KR',sans-serif;font-size:.8rem;letter-spacing:.28em;color:rgba(242,224,181,.65);}
+.chint.done{animation:none;opacity:0;transition:opacity .4s;}
 
-    /* ═══ CONCLUSION ═══ */
-    #s-conclusion{min-height:100vh;background:linear-gradient(180deg,#EEDAD0 0%,#E4D29A 50%,#EEDAD0 100%);color:var(--ink);position:relative;text-align:center;}
-    #s-conclusion::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--red),#E8A427,var(--green),var(--blue));}
-    .conc-q{font-size:clamp(1.5rem,3.3vw,2.4rem);font-weight:600;line-height:1.75;margin:38px 0;}
-    .conc-q strong{color:var(--red);}
-    .conc-b{font-family:'Noto Sans KR',sans-serif;font-size:1.02rem;line-height:2.2;color:rgba(26,20,14,.72);margin:36px 0;}
-    .conc-b strong{font-family:'Noto Serif KR',serif;color:var(--ink);}
-    .cta{display:inline-block;margin-top:32px;padding:15px 42px;background:var(--ink);color:var(--hanji);
-      font-family:'Noto Serif KR',serif;font-size:.95rem;font-weight:600;letter-spacing:.14em;border:none;cursor:pointer;transition:background .3s,transform .2s;}
-    .cta:hover{background:var(--red);transform:translateY(-3px);}
-    .fnote{margin-top:70px;padding-top:32px;border-top:1px solid rgba(26,20,14,.12);font-family:'Noto Sans KR',sans-serif;font-size:.76rem;color:rgba(26,20,14,.35);line-height:2;}
+/* Modern + conclusion */
+#s-modern{min-height:100vh;background:#0D1117;color:#E0D8CC;border-top:3px solid transparent;border-image:linear-gradient(90deg,var(--red),var(--blue),var(--green)) 1;}
+.mod-lbl{font-family:'Noto Sans KR',sans-serif;font-size:.72rem;letter-spacing:.55em;color:#58A6FF;margin-bottom:16px;}
+.mod-ttl{font-size:clamp(2rem,4.5vw,3.3rem);font-weight:900;line-height:1.25;margin-bottom:42px;}
+.mod-ttl span{background:linear-gradient(135deg,#58A6FF,#7EE8A2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cflow{display:flex;align-items:center;justify-content:center;gap:20px;margin:52px 0;flex-wrap:wrap;}
+.ci{text-align:center;padding:24px 28px;}.ci-ico{font-size:2.8rem;display:block;margin-bottom:12px;}
+.ci-era{font-family:'Noto Sans KR',sans-serif;font-size:.7rem;color:rgba(224,216,204,.45);letter-spacing:.14em;margin-bottom:5px;}.ci-n{font-size:1.15rem;font-weight:700;}
+.carr{font-size:2rem;color:var(--gold);opacity:.5;}
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:36px 0;}
+.pc{background:#161B22;border:1px solid #30363D;border-radius:6px;padding:24px 20px;transition:border-color .3s,transform .3s;}
+.pc:hover{border-color:rgba(88,166,255,.4);transform:translateY(-5px);}
+.pc-ico{font-size:1.9rem;margin-bottom:11px;}
+.pc-lbl{font-family:'Noto Sans KR',sans-serif;font-size:.68rem;color:#58A6FF;letter-spacing:.2em;margin-bottom:7px;}
+.pc-n{font-size:1.05rem;font-weight:700;margin-bottom:10px;}
+.pc-d{font-family:'Noto Sans KR',sans-serif;font-size:.82rem;line-height:1.75;color:rgba(224,216,204,.56);}
+.mod-q{text-align:center;font-size:clamp(1.2rem,2.8vw,1.8rem);font-weight:600;line-height:1.8;padding:52px 0;}
+.mod-q em{color:#7EE8A2;font-style:normal;}
+.clist{background:#161B22;border:1px solid #30363D;border-left:4px solid #58A6FF;padding:34px 38px;}
+.clist h3{font-family:'Noto Sans KR',sans-serif;font-size:1rem;color:#58A6FF;margin-bottom:16px;}
+.ccols{display:grid;grid-template-columns:1fr 1fr;gap:18px;font-family:'Noto Sans KR',sans-serif;font-size:.87rem;line-height:2;color:rgba(224,216,204,.7);}
+#s-conclusion{min-height:100vh;background:linear-gradient(180deg,#EEDAD0 0%,#E4D29A 50%,#EEDAD0 100%);color:var(--ink);position:relative;text-align:center;}
+#s-conclusion::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--red),#E8A427,var(--green),var(--blue));}
+.conc-q{font-size:clamp(1.5rem,3.3vw,2.4rem);font-weight:600;line-height:1.75;margin:38px 0;}
+.conc-q strong{color:var(--red);}
+.conc-b{font-family:'Noto Sans KR',sans-serif;font-size:1.02rem;line-height:2.2;color:rgba(26,20,14,.72);margin:36px 0;}
+.conc-b strong{font-family:'Noto Serif KR',serif;color:var(--ink);}
+.cta{display:inline-block;margin-top:32px;padding:15px 42px;background:var(--ink);color:var(--hanji);font-family:'Noto Serif KR',serif;font-size:.95rem;font-weight:600;letter-spacing:.14em;border:none;cursor:pointer;transition:background .3s,transform .2s;}
+.cta:hover{background:var(--red);transform:translateY(-3px);}
+.fnote{margin-top:70px;padding-top:32px;border-top:1px solid rgba(26,20,14,.12);font-family:'Noto Sans KR',sans-serif;font-size:.76rem;color:rgba(26,20,14,.35);line-height:2;}
 
-    @media(max-width:720px){
-      .hg,.split2,.pg,.ccols{grid-template-columns:1fr;}
-      .cflow{flex-direction:column;}
-      .snav{display:none;}
-      .g-text.top{white-space:normal;padding:0 20px;}
-    }
-  </style>
+@media(max-width:720px){
+  .hg,.split2,.pg,.ccols{grid-template-columns:1fr;}
+  .cflow{flex-direction:column;}
+  .snav{display:none;}
+}
+</style>
 </head>
-<body class="locked">
+<body>
 
 <div id="flash"></div>
 <div id="bar"></div>
 
-<nav class="snav">
-  <div class="sdot on"  data-s="s-gate-open"  onclick="goTo('s-gate-open')"></div>
-  <div class="sdot"     data-s="s-hahoe"      onclick="goTo('s-hahoe')"></div>
-  <div class="sdot"     data-s="s-paradox"    onclick="goTo('s-paradox')"></div>
-  <div class="sdot"     data-s="s-gate-close" onclick="goTo('s-gate-close')"></div>
-  <div class="sdot"     data-s="s-modern"     onclick="goTo('s-modern')"></div>
-  <div class="sdot"     data-s="s-conclusion" onclick="goTo('s-conclusion')"></div>
-</nav>
+<!-- ══════════════════════════════════════════════════
+     INTRO OVERLAY
+══════════════════════════════════════════════════ -->
+<div id="intro">
 
-<!-- ══════════════════════════════════
-     § 1 · 인트로 대문  (닫힘 → 클릭 → 열림)
-══════════════════════════════════ -->
-<section id="s-gate-open" class="gate-sec" onclick="openGate()">
-  <canvas id="stars"></canvas>
-  <div class="sky sky-jos"></div>
-  <div class="fog"></div>
+  <!-- ── SCENE 1: GATE ── -->
+  <section id="s-gate" class="scene active" onclick="handleGateClick()">
+    <canvas id="stars-c"></canvas>
 
-  <div class="g-text top" id="gt-top">
-    <div class="g-era">1700년경 · 경상북도 안동 하회마을</div>
-    <h1 class="g-title">탈 뒤에서<br><em>진짜 얼굴</em>을 찾다</h1>
-  </div>
-
-  <div class="gate-wrap">
-    <div class="g-roof">
-      <div class="g-roof-body"></div><div class="g-roof-ridge"></div>
-      <div class="g-roof-eave l"></div><div class="g-roof-eave r"></div>
+    <div class="gate-title">
+      <div class="gate-year">1700년경 · 경상북도 안동 하회마을</div>
+      <div class="gate-main">탈 뒤에서 <em>진짜 얼굴</em>을 찾다</div>
     </div>
-    <div class="g-lintel"></div>
-    <div class="g-body">
-      <div class="g-pillar"></div>
-      <div class="g-doors-outer" id="do-open">
-        <div class="g-glow jos-gl"></div>
-        <div class="g-doors">
-          <div class="door dl">
-            <div class="band b1"></div><div class="band b2"></div><div class="band b3"></div>
-            <div class="hinge ht"></div><div class="hinge hb"></div>
-            <div class="ring-wrap"><div class="ring-out"><div class="ring-in"></div></div></div>
-            <div class="seam"></div>
-          </div>
-          <div class="door dr">
-            <div class="band b1"></div><div class="band b2"></div><div class="band b3"></div>
-            <div class="hinge ht"></div><div class="hinge hb"></div>
-            <div class="ring-wrap"><div class="ring-out"><div class="ring-in"></div></div></div>
-            <div class="seam"></div>
-          </div>
-        </div>
-      </div>
-      <div class="g-pillar"></div>
-    </div>
-    <div class="g-base"></div>
-  </div>
 
-  <div class="g-text bot">
-    <div class="click-hint" id="ch-open">
-      <span>대문을 클릭하여 조선으로 들어가세요</span>
-      <div class="ico">🖱</div>
-    </div>
-  </div>
-</section>
+    <!-- ══ THE GATE SVG ══ -->
+    <div id="gate-wrap">
+      <svg id="gate-svg" viewBox="0 0 500 590" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Wood gradient left door -->
+          <linearGradient id="wdL" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   stop-color="#C07020"/>
+            <stop offset="20%"  stop-color="#E09830"/>
+            <stop offset="45%"  stop-color="#D48828"/>
+            <stop offset="65%"  stop-color="#C87020"/>
+            <stop offset="85%"  stop-color="#E0A038"/>
+            <stop offset="100%" stop-color="#B86018"/>
+          </linearGradient>
+          <!-- Wood gradient right door -->
+          <linearGradient id="wdR" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%"   stop-color="#B86018"/>
+            <stop offset="20%"  stop-color="#D88828"/>
+            <stop offset="45%"  stop-color="#E09830"/>
+            <stop offset="65%"  stop-color="#C87828"/>
+            <stop offset="85%"  stop-color="#D88020"/>
+            <stop offset="100%" stop-color="#C07020"/>
+          </linearGradient>
+          <!-- Frame gradient -->
+          <linearGradient id="frm" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#8B5018"/>
+            <stop offset="30%"  stop-color="#C07828"/>
+            <stop offset="70%"  stop-color="#C07828"/>
+            <stop offset="100%" stop-color="#8B5018"/>
+          </linearGradient>
+          <!-- Inner glow when open -->
+          <radialGradient id="innerGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%"   stop-color="#FFD878" stop-opacity="1"/>
+            <stop offset="40%"  stop-color="#FF9020" stop-opacity="0.7"/>
+            <stop offset="100%" stop-color="#C83000" stop-opacity="0"/>
+          </radialGradient>
+          <!-- Flower stud symbol -->
+          <g id="stud">
+            <circle r="7.5" fill="#14100A"/>
+            <circle cx="0"    cy="-5.2" r="2.3" fill="#1C1610"/>
+            <circle cx="3.7"  cy="-3.7" r="2.3" fill="#1C1610"/>
+            <circle cx="5.2"  cy="0"    r="2.3" fill="#1C1610"/>
+            <circle cx="3.7"  cy="3.7"  r="2.3" fill="#1C1610"/>
+            <circle cx="0"    cy="5.2"  r="2.3" fill="#1C1610"/>
+            <circle cx="-3.7" cy="3.7"  r="2.3" fill="#1C1610"/>
+            <circle cx="-5.2" cy="0"    r="2.3" fill="#1C1610"/>
+            <circle cx="-3.7" cy="-3.7" r="2.3" fill="#1C1610"/>
+            <circle r="3.2" fill="#201A12"/>
+            <circle r="1.2" fill="#2E2618" opacity="0.6"/>
+          </g>
+          <!-- Corner iron deco symbol -->
+          <g id="corner-tl">
+            <path d="M0,0 L40,0 Q42,0 42,2 L42,8 Q42,10 40,10 L10,10 L10,40 Q10,42 8,42 L2,42 Q0,42 0,40 Z" fill="#14100A"/>
+            <!-- Decorative cutout patterns -->
+            <rect x="14" y="1" width="6" height="6" rx="2" fill="#C07020" opacity="0.3"/>
+            <rect x="24" y="1" width="6" height="6" rx="2" fill="#C07020" opacity="0.3"/>
+            <rect x="1" y="14" width="6" height="6" rx="2" fill="#C07020" opacity="0.3"/>
+            <rect x="1" y="24" width="6" height="6" rx="2" fill="#C07020" opacity="0.3"/>
+            <!-- Center diamond -->
+            <rect x="3" y="3" width="8" height="8" rx="1" transform="rotate(45,7,7)" fill="#14100A" stroke="#2A2018" stroke-width="1"/>
+          </g>
+        </defs>
 
-<!-- ══════════════════════════════════
-     § 2 · 조선 인트로
-══════════════════════════════════ -->
-<section id="s-joseon" style="min-height:100vh;background:#080604;display:flex;align-items:center;justify-content:center;">
-  <div style="max-width:680px;padding:80px 40px;text-align:center;">
-    <div class="reveal" style="font-family:'Noto Sans KR',sans-serif;font-size:.76rem;letter-spacing:.5em;color:var(--gold);margin-bottom:22px;">조선시대 · 안동 하회마을</div>
-    <h2 class="reveal d2" style="font-size:clamp(1.8rem,4vw,2.9rem);font-weight:900;line-height:1.3;margin-bottom:28px;">마을 광장에<br>북소리가 울려 퍼집니다</h2>
-    <p class="reveal d3" style="font-size:1.02rem;line-height:2.15;color:rgba(242,224,181,.68);font-family:'Noto Sans KR',sans-serif;">
-      탈을 쓴 사람들이 하나씩 등장합니다.<br>
-      그 순간, 신분도 이름도 얼굴도 사라집니다.<br>
-      탈 뒤에서 처음으로 <strong style="color:var(--hanji);">진짜 말</strong>이 나옵니다.
-    </p>
-    <div class="reveal d5" style="margin-top:54px;">
-      <div style="width:1px;height:56px;background:linear-gradient(180deg,transparent,var(--gold));margin:0 auto;"></div>
-    </div>
-  </div>
-</section>
+        <!-- ── OUTER FRAME ── -->
+        <!-- Top lintel -->
+        <rect x="0" y="0" width="500" height="42" fill="url(#frm)"/>
+        <!-- Left post -->
+        <rect x="0" y="0" width="38" height="590" fill="url(#frm)"/>
+        <!-- Right post -->
+        <rect x="462" y="0" width="38" height="590" fill="url(#frm)"/>
+        <!-- Bottom sill -->
+        <rect x="0" y="558" width="500" height="32" fill="url(#frm)"/>
+        <!-- Frame wood grain lines (horizontal) -->
+        <line x1="0"   y1="14" x2="500" y2="14" stroke="#A06018" stroke-width="1" opacity="0.4"/>
+        <line x1="0"   y1="28" x2="500" y2="28" stroke="#A06018" stroke-width="1" opacity="0.4"/>
+        <!-- Frame inner shadow -->
+        <rect x="0" y="0" width="500" height="590" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="8"/>
 
-<!-- ══════════════════════════════════
-     § 3 · 하회탈 문화유산
-══════════════════════════════════ -->
-<section id="s-hahoe">
-  <div class="si">
-    <div class="reveal">
-      <div class="s-lbl" style="color:var(--red);">섹션 01 · 문화유산</div>
-      <h2 class="s-ttl">탈을 쓰면<br>신분이 사라진다</h2>
+        <!-- ── INNER GLOW (visible when open) ── -->
+        <rect id="gate-glow" x="38" y="42" width="424" height="516" fill="url(#innerGlow)" opacity="0"/>
+
+        <!-- ── LEFT DOOR (transforms from center) ── -->
+        <g id="door-l" style="transform-style:preserve-3d;">
+          <!-- Door panel -->
+          <rect x="40" y="44" width="208" height="514" fill="url(#wdL)"/>
+          <!-- Vertical plank dividers -->
+          <line x1="108" y1="44" x2="108" y2="558" stroke="#A05C10" stroke-width="2.5" opacity="0.6"/>
+          <line x1="176" y1="44" x2="176" y2="558" stroke="#A05C10" stroke-width="2.5" opacity="0.6"/>
+          <!-- Subtle plank highlights -->
+          <line x1="109" y1="44" x2="109" y2="558" stroke="rgba(255,200,100,.15)" stroke-width="1"/>
+          <line x1="177" y1="44" x2="177" y2="558" stroke="rgba(255,200,100,.15)" stroke-width="1"/>
+          <!-- Wood knots -->
+          <ellipse cx="80"  cy="160" rx="7" ry="5" fill="#8B4C10" opacity="0.5" transform="rotate(-15,80,160)"/>
+          <ellipse cx="155" cy="280" rx="9" ry="6" fill="#8B4C10" opacity="0.45" transform="rotate(10,155,280)"/>
+          <ellipse cx="75"  cy="410" rx="6" ry="4" fill="#8B4C10" opacity="0.4" transform="rotate(-8,75,410)"/>
+          <!-- Wood grain lines -->
+          <path d="M60,44 Q58,200 62,558" stroke="#A05C10" stroke-width="1" fill="none" opacity="0.25"/>
+          <path d="M90,44 Q92,300 88,558" stroke="#A05C10" stroke-width="1" fill="none" opacity="0.2"/>
+
+          <!-- ── STUD ROWS - Left door ── -->
+          <!-- Row 1: y=90 -->
+          <use href="#stud" x="62"  y="90"/><use href="#stud" x="96"  y="90"/>
+          <use href="#stud" x="130" y="90"/><use href="#stud" x="164" y="90"/>
+          <use href="#stud" x="198" y="90"/><use href="#stud" x="232" y="90"/>
+          <!-- Row 2: y=200 -->
+          <use href="#stud" x="62"  y="200"/><use href="#stud" x="96"  y="200"/>
+          <use href="#stud" x="130" y="200"/><use href="#stud" x="164" y="200"/>
+          <use href="#stud" x="198" y="200"/><use href="#stud" x="232" y="200"/>
+          <!-- Row 3: y=310 (center) -->
+          <use href="#stud" x="62"  y="310"/><use href="#stud" x="96"  y="310"/>
+          <use href="#stud" x="130" y="310"/><use href="#stud" x="164" y="310"/>
+          <use href="#stud" x="198" y="310"/>
+          <!-- Row 4: y=420 -->
+          <use href="#stud" x="62"  y="420"/><use href="#stud" x="96"  y="420"/>
+          <use href="#stud" x="130" y="420"/><use href="#stud" x="164" y="420"/>
+          <use href="#stud" x="198" y="420"/><use href="#stud" x="232" y="420"/>
+          <!-- Row 5: y=510 -->
+          <use href="#stud" x="62"  y="510"/><use href="#stud" x="96"  y="510"/>
+          <use href="#stud" x="130" y="510"/><use href="#stud" x="164" y="510"/>
+          <use href="#stud" x="198" y="510"/><use href="#stud" x="232" y="510"/>
+
+          <!-- Top-left corner iron deco -->
+          <use href="#corner-tl" x="42" y="46"/>
+          <!-- Top-right corner iron deco (mirrored) -->
+          <g transform="translate(248,46) scale(-1,1)"><use href="#corner-tl"/></g>
+          <!-- Bottom-left corner -->
+          <g transform="translate(42,558) scale(1,-1)"><use href="#corner-tl"/></g>
+          <!-- Bottom-right corner -->
+          <g transform="translate(248,558) scale(-1,-1)"><use href="#corner-tl"/></g>
+
+          <!-- Left hinge (iron) -->
+          <rect x="42" y="100" width="16" height="55" rx="2" fill="#14100A"/>
+          <rect x="42" y="390" width="16" height="55" rx="2" fill="#14100A"/>
+          <rect x="43" y="101" width="4" height="53" rx="1" fill="#2A2018" opacity="0.5"/>
+
+          <!-- Door inner shadow (right edge) -->
+          <rect x="238" y="44" width="10" height="514" fill="url(#shadowR)" opacity="0.4"/>
+        </g>
+
+        <!-- ── RIGHT DOOR ── -->
+        <g id="door-r" style="transform-style:preserve-3d;">
+          <rect x="252" y="44" width="208" height="514" fill="url(#wdR)"/>
+          <line x1="320" y1="44" x2="320" y2="558" stroke="#A05C10" stroke-width="2.5" opacity="0.6"/>
+          <line x1="390" y1="44" x2="390" y2="558" stroke="#A05C10" stroke-width="2.5" opacity="0.6"/>
+          <line x1="321" y1="44" x2="321" y2="558" stroke="rgba(255,200,100,.15)" stroke-width="1"/>
+          <line x1="391" y1="44" x2="391" y2="558" stroke="rgba(255,200,100,.15)" stroke-width="1"/>
+          <!-- Wood knots -->
+          <ellipse cx="350" cy="140" rx="8" ry="5" fill="#8B4C10" opacity="0.45" transform="rotate(12,350,140)"/>
+          <ellipse cx="295" cy="330" rx="7" ry="5" fill="#8B4C10" opacity="0.4" transform="rotate(-10,295,330)"/>
+          <ellipse cx="430" cy="460" rx="9" ry="6" fill="#8B4C10" opacity="0.5" transform="rotate(8,430,460)"/>
+          <path d="M440,44 Q442,200 438,558" stroke="#A05C10" stroke-width="1" fill="none" opacity="0.25"/>
+
+          <!-- STUD ROWS - Right door -->
+          <!-- Row 1: y=90 -->
+          <use href="#stud" x="268" y="90"/><use href="#stud" x="302" y="90"/>
+          <use href="#stud" x="336" y="90"/><use href="#stud" x="370" y="90"/>
+          <use href="#stud" x="404" y="90"/><use href="#stud" x="438" y="90"/>
+          <!-- Row 2: y=200 -->
+          <use href="#stud" x="268" y="200"/><use href="#stud" x="302" y="200"/>
+          <use href="#stud" x="336" y="200"/><use href="#stud" x="370" y="200"/>
+          <use href="#stud" x="404" y="200"/><use href="#stud" x="438" y="200"/>
+          <!-- Row 3: y=310 -->
+          <use href="#stud" x="302" y="310"/><use href="#stud" x="336" y="310"/>
+          <use href="#stud" x="370" y="310"/><use href="#stud" x="404" y="310"/>
+          <use href="#stud" x="438" y="310"/>
+          <!-- Row 4: y=420 -->
+          <use href="#stud" x="268" y="420"/><use href="#stud" x="302" y="420"/>
+          <use href="#stud" x="336" y="420"/><use href="#stud" x="370" y="420"/>
+          <use href="#stud" x="404" y="420"/><use href="#stud" x="438" y="420"/>
+          <!-- Row 5: y=510 -->
+          <use href="#stud" x="268" y="510"/><use href="#stud" x="302" y="510"/>
+          <use href="#stud" x="336" y="510"/><use href="#stud" x="370" y="510"/>
+          <use href="#stud" x="404" y="510"/><use href="#stud" x="438" y="510"/>
+
+          <!-- Corners -->
+          <use href="#corner-tl" x="252" y="46"/>
+          <g transform="translate(460,46) scale(-1,1)"><use href="#corner-tl"/></g>
+          <g transform="translate(252,558) scale(1,-1)"><use href="#corner-tl"/></g>
+          <g transform="translate(460,558) scale(-1,-1)"><use href="#corner-tl"/></g>
+
+          <!-- Right hinge -->
+          <rect x="442" y="100" width="16" height="55" rx="2" fill="#14100A"/>
+          <rect x="442" y="390" width="16" height="55" rx="2" fill="#14100A"/>
+          <rect x="453" y="101" width="4" height="53" rx="1" fill="#2A2018" opacity="0.5"/>
+
+          <!-- Door inner shadow (left edge) -->
+          <rect x="252" y="44" width="10" height="514" fill="rgba(0,0,0,.3)" opacity="0.5"/>
+        </g>
+
+        <!-- ── CENTER RING HARDWARE ── -->
+        <!-- Decorative backplate spanning center -->
+        <g id="center-hardware">
+          <!-- Main ornamental plate -->
+          <path d="M210,285 Q215,270 230,265 L270,265 Q285,265 290,280 L290,335 Q285,350 270,355 L230,355 Q215,350 210,335 Z" fill="#14100A"/>
+          <!-- Inner ornament with 만자(卍) pattern suggestion -->
+          <rect x="222" y="278" width="18" height="18" rx="2" fill="#201A10"/>
+          <rect x="260" y="278" width="18" height="18" rx="2" fill="#201A10"/>
+          <!-- 卍-like lines -->
+          <path d="M226,282 L238,282 L238,294 M234,282 L234,294" stroke="#2E2618" stroke-width="1.5" fill="none"/>
+          <path d="M264,282 L276,282 L276,294 M272,282 L272,294" stroke="#2E2618" stroke-width="1.5" fill="none"/>
+          <!-- Divider line at center gap -->
+          <line x1="249" y1="268" x2="249" y2="352" stroke="#0A0806" stroke-width="3"/>
+
+          <!-- Left ring (attached to left door) -->
+          <g transform="translate(228,318)">
+            <!-- Ring mount -->
+            <circle r="12" fill="#1A1410"/>
+            <circle r="8" fill="#221A10"/>
+            <!-- The ring itself - U shape -->
+            <path d="M-8,0 A8,8 0 0 1 8,0" stroke="#2A2018" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M-8,0 A8,8 0 0 0 8,0" stroke="#3A3020" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <!-- Ring highlight -->
+            <path d="M-6,-1 A6,6 0 0 1 6,-1" stroke="#4A3C28" stroke-width="2" fill="none" opacity="0.6"/>
+          </g>
+
+          <!-- Right ring (attached to right door) -->
+          <g transform="translate(272,318)">
+            <circle r="12" fill="#1A1410"/>
+            <circle r="8" fill="#221A10"/>
+            <path d="M-8,0 A8,8 0 0 1 8,0" stroke="#2A2018" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M-8,0 A8,8 0 0 0 8,0" stroke="#3A3020" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M-6,-1 A6,6 0 0 1 6,-1" stroke="#4A3C28" stroke-width="2" fill="none" opacity="0.6"/>
+          </g>
+        </g>
+
+        <!-- Center gap shadow -->
+        <rect x="246" y="44" width="8" height="514" fill="rgba(0,0,0,0.7)"/>
+
+        <!-- Overall door shadow overlay -->
+        <rect x="38" y="42" width="424" height="516" fill="rgba(0,0,0,0)" id="door-shadow"/>
+      </svg>
     </div>
-    <div class="deco reveal d1"><div class="deco-d"></div></div>
-    <div class="hg">
-      <!-- MASK -->
-      <div class="rev-l d2" style="display:flex;justify-content:center;position:relative;">
-        <div class="mask-glow-ring"></div>
-        <svg viewBox="0 0 200 228" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:240px;position:relative;z-index:1;">
+
+    <div class="g-hint" id="gate-hint">
+      <div class="ico">👆</div>
+      <span>대문을 클릭하여 들어가세요</span>
+    </div>
+  </section>
+
+  <!-- ── SCENE 2: VILLAGE FESTIVAL ── -->
+  <section id="s-village" class="scene" onclick="walkForward()">
+
+    <div id="village-parallax">
+
+      <!-- LAYER 0: SKY -->
+      <div class="vl" id="vl0" style="z-index:1;">
+        <svg viewBox="0 0 1000 700" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
           <defs>
-            <radialGradient id="fg" cx="50%" cy="42%" r="52%">
-              <stop offset="0%" stop-color="#F5E0A0"/><stop offset="100%" stop-color="#C8A055"/>
+            <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#FFF8E0" stop-opacity="1"/>
+              <stop offset="60%" stop-color="#FFE890" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#FF9020" stop-opacity="0"/>
             </radialGradient>
-            <filter id="ds"><feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#1A0A00" flood-opacity=".32"/></filter>
+            <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#04021A"/>
+              <stop offset="30%"  stop-color="#0C0828"/>
+              <stop offset="60%"  stop-color="#1C0A20"/>
+              <stop offset="85%"  stop-color="#3A1208"/>
+              <stop offset="100%" stop-color="#1A0806"/>
+            </linearGradient>
           </defs>
-          <ellipse cx="100" cy="112" rx="78" ry="94" fill="url(#fg)" stroke="#8B6210" stroke-width="2" filter="url(#ds)"/>
-          <path d="M38,60 Q100,22 162,60" stroke="#2C1A00" stroke-width="4" fill="none"/>
-          <path d="M68,73 Q100,63 132,73" stroke="#6B4A10" stroke-width="1.5" fill="none" opacity=".5"/>
-          <path d="M58,91 Q78,77 100,85 Q122,77 142,91" stroke="#2C1A00" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <ellipse cx="78"  cy="102" rx="15" ry="6.5" fill="#1A0A00"/>
-          <ellipse cx="122" cy="102" rx="15" ry="6.5" fill="#1A0A00"/>
-          <circle cx="78"  cy="102" r="4.5" fill="#2E1800"/>
-          <circle cx="122" cy="102" r="4.5" fill="#2E1800"/>
-          <circle cx="81"  cy="100" r="2" fill="white" opacity=".3"/>
-          <circle cx="125" cy="100" r="2" fill="white" opacity=".3"/>
-          <path d="M94,116 Q88,131 82,135 Q100,142 118,135 Q112,131 106,116 Z" fill="#C4934A" stroke="#8B6210" stroke-width="1" opacity=".65"/>
-          <path d="M62,158 Q100,194 138,158" stroke="#1A0A00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <path d="M67,162 Q100,182 133,162" fill="#C1272D" opacity=".55"/>
-          <ellipse cx="22"  cy="108" rx="13" ry="20" fill="#D4A055" stroke="#8B6210" stroke-width="1.5"/>
-          <ellipse cx="178" cy="108" rx="13" ry="20" fill="#D4A055" stroke="#8B6210" stroke-width="1.5"/>
-          <circle cx="100" cy="53" r="7" fill="none" stroke="#C1272D" stroke-width="1.5" opacity=".6"/>
-          <circle cx="100" cy="53" r="3" fill="#C1272D" opacity=".5"/>
+          <rect width="1000" height="700" fill="url(#skyG)"/>
+          <!-- Stars -->
+          <circle cx="80"  cy="60"  r="1.5" fill="white" opacity="0.9"/>
+          <circle cx="150" cy="40"  r="1"   fill="white" opacity="0.7"/>
+          <circle cx="220" cy="80"  r="1.5" fill="white" opacity="0.8"/>
+          <circle cx="320" cy="30"  r="1"   fill="white" opacity="0.6"/>
+          <circle cx="450" cy="55"  r="2"   fill="white" opacity="0.5"/>
+          <circle cx="600" cy="25"  r="1"   fill="white" opacity="0.8"/>
+          <circle cx="720" cy="70"  r="1.5" fill="white" opacity="0.9"/>
+          <circle cx="850" cy="35"  r="1"   fill="white" opacity="0.7"/>
+          <circle cx="950" cy="60"  r="1.5" fill="white" opacity="0.6"/>
+          <circle cx="180" cy="120" r="1"   fill="white" opacity="0.5"/>
+          <circle cx="550" cy="100" r="1"   fill="white" opacity="0.6"/>
+          <circle cx="800" cy="110" r="1.5" fill="white" opacity="0.7"/>
+          <!-- Moon -->
+          <circle cx="820" cy="90" r="55" fill="url(#moonGlow)"/>
+          <circle cx="820" cy="90" r="38" fill="#FFF5D0" opacity="0.9"/>
+          <circle cx="808" cy="82" r="38" fill="#F0E0A0" opacity="0.15"/>
         </svg>
       </div>
-      <!-- TEXT -->
-      <div>
-        <div class="body-t rev-r d2">
-          <p>경북 안동 하회마을에서 시작된 <strong>하회탈춤</strong>은 단순한 민속놀이가 아니었습니다. 탈을 쓰는 순간, 신분, 이름, 얼굴이 모두 사라졌습니다.</p>
-          <div class="bq reveal d3">"탈을 쓴 자는 신이 된다.<br>그 순간만큼은 누구도 그를 막을 수 없다."</div>
-          <p>양반이 노비에게 욕을 먹어도, 선비가 조롱을 당해도 — 탈 뒤에서는 모두가 평등했습니다. 익명성이 만들어낸 <strong>해방의 공간</strong>이었습니다.</p>
+
+      <!-- LAYER 1: DISTANT MOUNTAINS + TREES -->
+      <div class="vl" id="vl1" style="z-index:2;">
+        <svg viewBox="0 0 1000 700" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
+          <!-- Mountain silhouette -->
+          <path d="M0,420 Q80,340 180,370 Q260,310 380,355 Q440,295 520,335 Q590,305 680,340 Q760,300 860,330 Q920,310 1000,340 L1000,700 L0,700 Z" fill="#1A0C06" opacity="0.9"/>
+          <!-- Closer mountain layer -->
+          <path d="M0,460 Q120,400 240,435 Q320,410 400,440 Q480,415 560,445 Q640,418 720,448 Q820,420 940,445 L1000,450 L1000,700 L0,700 Z" fill="#140A04" opacity="0.95"/>
+          <!-- Distant tree line -->
+          <path d="M0,455 Q20,445 35,455 Q55,440 70,455 Q90,442 105,455 Q120,440 135,455 Q150,442 160,455 Q180,443 195,455 Q210,441 225,455 Q235,443 250,455 L250,700 L0,700 Z" fill="#0E0804"/>
+          <path d="M750,450 Q770,440 785,450 Q805,438 820,450 Q840,440 855,450 Q870,438 885,450 Q900,440 915,450 Q930,438 945,450 Q960,440 975,450 L1000,452 L1000,700 L750,700 Z" fill="#0E0804"/>
+        </svg>
+      </div>
+
+      <!-- LAYER 2: HANOK BUILDINGS (street corridor) -->
+      <div class="vl" id="vl2" style="z-index:3;">
+        <svg viewBox="0 0 1000 700" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
+          <defs>
+            <linearGradient id="bldL" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#1A0C04"/>
+              <stop offset="100%" stop-color="#3A1A08"/>
+            </linearGradient>
+            <linearGradient id="bldR" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#3A1A08"/>
+              <stop offset="100%" stop-color="#1A0C04"/>
+            </linearGradient>
+          </defs>
+
+          <!-- LEFT BUILDING COMPLEX -->
+          <!-- Back building -->
+          <rect x="-10" y="380" width="300" height="320" fill="#1A0C04"/>
+          <!-- Back roof -->
+          <path d="M-10,380 Q50,340 140,360 Q200,340 300,370 L300,385 L-10,385 Z" fill="#120806"/>
+          <path d="M-10,375 Q50,332 140,355 Q200,334 300,362 L300,375 L-10,380 Z" fill="#0E0602"/>
+          <!-- Roof ridge line -->
+          <path d="M50,348 Q140,334 290,368" stroke="#C8682A" stroke-width="3" fill="none" opacity="0.5"/>
+
+          <!-- Main left building -->
+          <rect x="-10" y="440" width="260" height="260" fill="#221208"/>
+          <!-- Roof -->
+          <path d="M-20,440 Q30,395 120,415 Q180,395 270,425 L270,445 L-20,445 Z" fill="#180E06"/>
+          <path d="M-20,433 Q30,387 120,408 Q180,388 270,418 L270,433 Z" fill="#120806"/>
+          <!-- Roof curve highlight -->
+          <path d="M20,404 Q120,386 260,422" stroke="#D07830" stroke-width="2" fill="none" opacity="0.4"/>
+          <!-- Wall texture / windows -->
+          <rect x="30"  y="480" width="40" height="50" rx="2" fill="#0A0604"/>
+          <rect x="90"  y="480" width="40" height="50" rx="2" fill="#0A0604"/>
+          <rect x="150" y="480" width="40" height="50" rx="2" fill="#0A0604"/>
+          <!-- Warm window glow (torchlight) -->
+          <rect x="31"  y="481" width="38" height="48" rx="1" fill="#C84810" opacity="0.25"/>
+          <rect x="91"  y="481" width="38" height="48" rx="1" fill="#C84810" opacity="0.3"/>
+          <rect x="151" y="481" width="38" height="48" rx="1" fill="#C84810" opacity="0.2"/>
+          <!-- Wooden pillars -->
+          <rect x="22" y="444" width="10" height="256" fill="#2A1408" opacity="0.8"/>
+          <rect x="82" y="444" width="10" height="256" fill="#2A1408" opacity="0.8"/>
+          <rect x="142" y="444" width="10" height="256" fill="#2A1408" opacity="0.8"/>
+          <rect x="202" y="444" width="10" height="256" fill="#2A1408" opacity="0.8"/>
+
+          <!-- RIGHT BUILDING COMPLEX -->
+          <!-- Back building -->
+          <rect x="710" y="380" width="310" height="320" fill="#1A0C04"/>
+          <path d="M710,380 Q800,340 880,360 Q940,340 1010,370 L1010,385 L710,385 Z" fill="#120806"/>
+          <path d="M710,375 Q800,332 880,355 Q940,334 1010,362 L1010,375 L710,380 Z" fill="#0E0602"/>
+          <path d="M720,348 Q810,334 990,368" stroke="#C8682A" stroke-width="3" fill="none" opacity="0.5"/>
+
+          <!-- Main right building -->
+          <rect x="740" y="440" width="270" height="260" fill="#221208"/>
+          <path d="M730,440 Q780,395 880,415 Q940,395 1020,425 L1020,445 L730,445 Z" fill="#180E06"/>
+          <path d="M730,433 Q780,387 880,408 Q940,388 1020,418 L1020,433 Z" fill="#120806"/>
+          <path d="M750,404 Q860,386 1010,422" stroke="#D07830" stroke-width="2" fill="none" opacity="0.4"/>
+          <!-- Windows -->
+          <rect x="760" y="480" width="40" height="50" rx="2" fill="#0A0604"/>
+          <rect x="820" y="480" width="40" height="50" rx="2" fill="#0A0604"/>
+          <rect x="880" y="480" width="40" height="50" rx="2" fill="#0A0604"/>
+          <rect x="761" y="481" width="38" height="48" rx="1" fill="#C84810" opacity="0.3"/>
+          <rect x="821" y="481" width="38" height="48" rx="1" fill="#C84810" opacity="0.25"/>
+          <rect x="881" y="481" width="38" height="48" rx="1" fill="#C84810" opacity="0.28"/>
+          <!-- Pillars -->
+          <rect x="752" y="444" width="10" height="256" fill="#2A1408" opacity="0.8"/>
+          <rect x="812" y="444" width="10" height="256" fill="#2A1408" opacity="0.8"/>
+          <rect x="872" y="444" width="10" height="256" fill="#2A1408" opacity="0.8"/>
+          <rect x="932" y="444" width="10" height="256" fill="#2A1408" opacity="0.8"/>
+
+          <!-- STREET GROUND (perspective) -->
+          <path d="M280,700 L720,700 L620,480 L380,480 Z" fill="#2A1408"/>
+          <path d="M300,700 L700,700 L610,490 L390,490 Z" fill="#3A1C0A" opacity="0.5"/>
+          <!-- Ground path texture lines -->
+          <path d="M340,680 L500,495 L560,495 L660,680" stroke="#4A2810" stroke-width="1" fill="none" opacity="0.5"/>
+          <path d="M380,700 L500,505 L500,495 L500,505 L620,700" stroke="#4A2810" stroke-width="1" fill="none" opacity="0.4"/>
+
+          <!-- Torch poles -->
+          <rect x="270" y="470" width="8" height="140" fill="#1A0C04"/>
+          <rect x="722" y="470" width="8" height="140" fill="#1A0C04"/>
+          <!-- Torch flames -->
+          <ellipse cx="274" cy="465" rx="10" ry="15" fill="#FF8020" opacity="0.9"/>
+          <ellipse cx="274" cy="460" rx="6" ry="10" fill="#FFD040" opacity="0.8"/>
+          <ellipse cx="726" cy="465" rx="10" ry="15" fill="#FF8020" opacity="0.9"/>
+          <ellipse cx="726" cy="460" rx="6" ry="10" fill="#FFD040" opacity="0.8"/>
+          <!-- Torch glow -->
+          <circle cx="274" cy="465" r="30" fill="#FF6010" opacity="0.12"/>
+          <circle cx="726" cy="465" r="30" fill="#FF6010" opacity="0.12"/>
+        </svg>
+      </div>
+
+      <!-- LAYER 3: LANTERNS + CROWD -->
+      <div class="vl" id="vl3" style="z-index:4;">
+        <svg viewBox="0 0 1000 700" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
+          <defs>
+            <radialGradient id="lantG" cx="50%" cy="40%" r="50%">
+              <stop offset="0%" stop-color="#FF4820"/>
+              <stop offset="60%" stop-color="#C82010"/>
+              <stop offset="100%" stop-color="#8B0A08"/>
+            </radialGradient>
+            <radialGradient id="lantGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#FF6020" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="#FF6020" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Lantern string rope -->
+          <path d="M260,300 Q350,310 500,295 Q650,310 740,300" stroke="#3A2010" stroke-width="2.5" fill="none"/>
+          <!-- Lanterns hanging -->
+          <!-- Helper function: lantern at cx,cy -->
+          <g style="animation:lanternSwing 3s ease-in-out infinite;transform-origin:350px 310px;">
+            <circle cx="350" cy="310" r="28" fill="#FF0808" opacity="0.15"/><!-- glow -->
+            <ellipse cx="350" cy="322" rx="16" ry="22" fill="url(#lantG)"/>
+            <rect x="346" y="300" width="8" height="6" rx="2" fill="#3A2010"/>
+            <rect x="346" y="343" width="8" height="5" rx="1" fill="#3A2010"/>
+            <line x1="350" y1="348" x2="346" y2="358" stroke="#C82010" stroke-width="1.5"/>
+            <line x1="350" y1="348" x2="354" y2="358" stroke="#C82010" stroke-width="1.5"/>
+          </g>
+          <g style="animation:lanternSwing 3.5s ease-in-out infinite .5s;transform-origin:420px 306px;">
+            <circle cx="420" cy="306" r="28" fill="#FF0808" opacity="0.15"/>
+            <ellipse cx="420" cy="318" rx="16" ry="22" fill="url(#lantG)"/>
+            <rect x="416" y="296" width="8" height="6" rx="2" fill="#3A2010"/>
+            <rect x="416" y="339" width="8" height="5" rx="1" fill="#3A2010"/>
+            <line x1="420" y1="344" x2="416" y2="354" stroke="#C82010" stroke-width="1.5"/>
+            <line x1="420" y1="344" x2="424" y2="354" stroke="#C82010" stroke-width="1.5"/>
+          </g>
+          <g style="animation:lanternSwing 2.8s ease-in-out infinite 1s;transform-origin:490px 297px;">
+            <circle cx="490" cy="297" r="28" fill="#FF0808" opacity="0.15"/>
+            <ellipse cx="490" cy="309" rx="16" ry="22" fill="url(#lantG)"/>
+            <rect x="486" y="287" width="8" height="6" rx="2" fill="#3A2010"/>
+            <rect x="486" y="330" width="8" height="5" rx="1" fill="#3A2010"/>
+            <line x1="490" y1="335" x2="486" y2="345" stroke="#C82010" stroke-width="1.5"/>
+            <line x1="490" y1="335" x2="494" y2="345" stroke="#C82010" stroke-width="1.5"/>
+          </g>
+          <g style="animation:lanternSwing 3.2s ease-in-out infinite 1.5s;transform-origin:560px 306px;">
+            <circle cx="560" cy="306" r="28" fill="#FF0808" opacity="0.15"/>
+            <ellipse cx="560" cy="318" rx="16" ry="22" fill="url(#lantG)"/>
+            <rect x="556" y="296" width="8" height="6" rx="2" fill="#3A2010"/>
+            <rect x="556" y="339" width="8" height="5" rx="1" fill="#3A2010"/>
+            <line x1="560" y1="344" x2="556" y2="354" stroke="#C82010" stroke-width="1.5"/>
+            <line x1="560" y1="344" x2="564" y2="354" stroke="#C82010" stroke-width="1.5"/>
+          </g>
+          <g style="animation:lanternSwing 3.8s ease-in-out infinite 0.3s;transform-origin:630px 310px;">
+            <circle cx="630" cy="310" r="28" fill="#FF0808" opacity="0.15"/>
+            <ellipse cx="630" cy="322" rx="16" ry="22" fill="url(#lantG)"/>
+            <rect x="626" y="300" width="8" height="6" rx="2" fill="#3A2010"/>
+            <rect x="626" y="343" width="8" height="5" rx="1" fill="#3A2010"/>
+            <line x1="630" y1="348" x2="626" y2="358" stroke="#C82010" stroke-width="1.5"/>
+            <line x1="630" y1="348" x2="634" y2="358" stroke="#C82010" stroke-width="1.5"/>
+          </g>
+
+          <!-- BACKGROUND CROWD (small silhouettes) -->
+          <g fill="#0A0604" opacity="0.85">
+            <!-- Row of people in background -->
+            <ellipse cx="360" cy="475" rx="10" ry="14"/><rect x="354" y="488" width="12" height="25"/>
+            <ellipse cx="395" cy="478" rx="10" ry="13"/><rect x="389" y="490" width="12" height="22"/>
+            <ellipse cx="430" cy="475" rx="11" ry="14"/><rect x="424" y="488" width="13" height="25"/>
+            <ellipse cx="465" cy="477" rx="10" ry="13"/><rect x="459" y="489" width="12" height="23"/>
+            <ellipse cx="500" cy="475" rx="11" ry="14"/><rect x="494" y="488" width="13" height="25"/>
+            <ellipse cx="535" cy="478" rx="10" ry="13"/><rect x="529" y="490" width="12" height="22"/>
+            <ellipse cx="570" cy="475" rx="11" ry="14"/><rect x="564" y="488" width="13" height="25"/>
+            <ellipse cx="605" cy="477" rx="10" ry="13"/><rect x="599" y="489" width="12" height="23"/>
+            <ellipse cx="640" cy="475" rx="11" ry="14"/><rect x="634" y="488" width="13" height="25"/>
+          </g>
+
+          <!-- Colorful hanbok crowd - slightly closer -->
+          <g opacity="0.9">
+            <!-- Person 1 - blue hanbok -->
+            <ellipse cx="370" cy="510" rx="11" ry="14" fill="#0A0604"/>
+            <path d="M359,522 Q355,560 365,575 L375,575 Q380,560 381,522 Z" fill="#1A3A7A"/>
+            <!-- Person 2 - red hanbok -->
+            <ellipse cx="420" cy="508" rx="12" ry="15" fill="#0A0604"/>
+            <path d="M408,520 Q403,565 415,578 L425,578 Q432,565 432,520 Z" fill="#8B1A18"/>
+            <!-- Person 3 - green hanbok -->
+            <ellipse cx="470" cy="510" rx="11" ry="14" fill="#0A0604"/>
+            <path d="M459,522 Q455,560 465,575 L475,575 Q480,560 481,522 Z" fill="#1A5A28"/>
+            <!-- Person 4 - yellow -->
+            <ellipse cx="530" cy="508" rx="12" ry="15" fill="#0A0604"/>
+            <path d="M518,520 Q514,563 525,576 L535,576 Q541,563 542,520 Z" fill="#8B6A08"/>
+            <!-- Person 5 - purple -->
+            <ellipse cx="580" cy="510" rx="11" ry="14" fill="#0A0604"/>
+            <path d="M569,522 Q565,558 575,574 L585,574 Q590,558 591,522 Z" fill="#4A1A6A"/>
+            <!-- Person 6 - teal -->
+            <ellipse cx="630" cy="508" rx="12" ry="15" fill="#0A0604"/>
+            <path d="M618,520 Q614,563 625,576 L635,576 Q641,563 642,520 Z" fill="#0A4A5A"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- LAYER 4: TALCHUM DANCERS (foreground) -->
+      <div class="vl" id="vl4" style="z-index:5;">
+        <svg viewBox="0 0 1000 700" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
+
+          <!-- Drum player (LEFT) -->
+          <g style="animation:sway2 2.8s ease-in-out infinite;transform-origin:320px 580px;" opacity="0.95">
+            <!-- Body -->
+            <rect x="302" y="540" width="36" height="55" rx="5" fill="#8B1A18"/>
+            <!-- Head -->
+            <ellipse cx="320" cy="530" rx="18" ry="20" fill="#1A0E08"/>
+            <!-- Topknot (상투) -->
+            <ellipse cx="320" cy="512" rx="5" ry="7" fill="#1A0E08"/>
+            <!-- Hat (갓) -->
+            <ellipse cx="320" cy="509" rx="22" ry="4" fill="#1A1410"/>
+            <rect x="315" y="505" width="10" height="7" fill="#1A1410"/>
+            <!-- Arms playing drum -->
+            <path d="M302,555 L265,540 Q258,535 260,528" stroke="#8B1A18" stroke-width="12" stroke-linecap="round" fill="none"/>
+            <path d="M338,555 L360,538 Q366,530 362,522" stroke="#8B1A18" stroke-width="12" stroke-linecap="round" fill="none"/>
+            <!-- Drumstick -->
+            <line x1="260" y1="528" x2="250" y2="515" stroke="#3A2010" stroke-width="4"/>
+            <line x1="362" y1="522" x2="372" y2="510" stroke="#3A2010" stroke-width="4"/>
+            <!-- Janggu drum (장구) -->
+            <ellipse cx="320" cy="620" rx="28" ry="16" fill="#6B3A08"/>
+            <rect x="294" y="614" width="52" height="12" rx="3" fill="#8B4A10"/>
+            <ellipse cx="294" cy="620" rx="10" ry="14" fill="#C87828"/>
+            <ellipse cx="346" cy="620" rx="10" ry="14" fill="#C87828"/>
+            <!-- Legs -->
+            <rect x="308" y="592" width="10" height="28" fill="#2A1808"/>
+            <rect x="322" y="592" width="10" height="28" fill="#2A1808"/>
+          </g>
+
+          <!-- CENTER DANCER 1 — YANGBAN mask (main dancer, dramatic pose) -->
+          <g style="animation:sway 2.4s ease-in-out infinite;transform-origin:500px 560px;" opacity="0.95">
+            <!-- Flowing white outer robe (도포) -->
+            <path d="M465,575 Q450,640 440,700 L480,700 L500,620 L520,700 L560,700 Q550,640 535,575 Z" fill="#E8DCC8"/>
+            <!-- Body -->
+            <rect x="472" y="510" width="56" height="75" rx="6" fill="#E8DCC8"/>
+            <!-- Blue inner jacket -->
+            <rect x="478" y="525" width="44" height="55" rx="4" fill="#2A4888"/>
+            <!-- Head - Hahoe MASK (양반) -->
+            <ellipse cx="500" cy="500" rx="26" ry="30" fill="#E8C860"/>
+            <!-- Mask eyes (narrow, curved up) -->
+            <path d="M486,493 Q492,488 499,491 Q492,497 486,493 Z" fill="#1A0A00"/>
+            <path d="M501,491 Q508,488 514,493 Q508,497 501,491 Z" fill="#1A0A00"/>
+            <!-- Mask brows arched dramatically -->
+            <path d="M483,485 Q492,479 500,482 Q508,479 517,485" stroke="#3A1A00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <!-- Mask nose -->
+            <path d="M497,498 Q494,507 490,509 Q500,513 510,509 Q506,507 503,498 Z" fill="#D4A040" opacity="0.7"/>
+            <!-- Mask BIG SMILE (하회탈 특징) -->
+            <path d="M483,515 Q500,534 517,515" stroke="#1A0A00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M487,518 Q500,528 513,518" fill="#C1272D" opacity="0.5"/>
+            <!-- Mask top knot area -->
+            <path d="M480,473 Q500,460 520,473" stroke="#3A2010" stroke-width="3" fill="none"/>
+            <ellipse cx="500" cy="470" rx="6" ry="8" fill="#1A0E08"/>
+            <!-- HAT (갓) on top -->
+            <ellipse cx="500" cy="466" rx="30" ry="6" fill="#1A1410"/>
+            <rect x="494" y="458" width="12" height="10" fill="#1A1410"/>
+
+            <!-- ARMS SPREAD WIDE (탈춤 특유의 동작) -->
+            <!-- Left arm sweeping up-out -->
+            <path d="M472,535 Q440,510 408,495 Q390,485 378,480" stroke="#E8DCC8" stroke-width="16" stroke-linecap="round" fill="none"/>
+            <!-- Left sleeve flowing -->
+            <path d="M378,480 Q358,474 340,480 Q330,488 338,498" stroke="#D0C8B8" stroke-width="14" stroke-linecap="round" fill="none"/>
+            <!-- Right arm -->
+            <path d="M528,535 Q560,510 592,495 Q610,485 622,480" stroke="#E8DCC8" stroke-width="16" stroke-linecap="round" fill="none"/>
+            <!-- Right sleeve -->
+            <path d="M622,480 Q642,474 660,480 Q670,488 662,498" stroke="#D0C8B8" stroke-width="14" stroke-linecap="round" fill="none"/>
+
+            <!-- Legs -->
+            <rect x="486" y="582" width="12" height="40" fill="#C8A848"/>
+            <rect x="502" y="582" width="12" height="40" fill="#C8A848"/>
+            <!-- Feet curled (dynamic) -->
+            <path d="M486,622 Q480,630 474,626" stroke="#2A1808" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <path d="M514,622 Q520,630 526,626" stroke="#2A1808" stroke-width="6" fill="none" stroke-linecap="round"/>
+          </g>
+
+          <!-- RIGHT DANCER — WOMAN MASK (각시) -->
+          <g style="animation:sway3 3s ease-in-out infinite .6s;transform-origin:700px 570px;" opacity="0.9">
+            <!-- Pink/red outer robe -->
+            <path d="M668,578 Q655,640 645,700 L685,700 L700,628 L715,700 L755,700 Q745,640 732,578 Z" fill="#C82A5A"/>
+            <!-- Body -->
+            <rect x="674" y="518" width="52" height="68" rx="5" fill="#C82A5A"/>
+            <!-- Head (각시 mask - fair/pale) -->
+            <ellipse cx="700" cy="508" rx="24" ry="28" fill="#F0E0C0"/>
+            <!-- Gentle eyes (각시 - soft gaze) -->
+            <ellipse cx="691" cy="500" rx="5" ry="3.5" fill="#1A0A00"/>
+            <ellipse cx="709" cy="500" rx="5" ry="3.5" fill="#1A0A00"/>
+            <!-- Delicate brows -->
+            <path d="M686,493 Q691,490 697,492 Q703,490 708,493" stroke="#3A1A00" stroke-width="1.5" fill="none"/>
+            <!-- Small gentle smile -->
+            <path d="M692,516 Q700,522 708,516" stroke="#C82020" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Hair -->
+            <path d="M678,482 Q700,468 722,482" stroke="#1A0E08" stroke-width="4" fill="none"/>
+            <ellipse cx="700" cy="479" rx="5" ry="7" fill="#1A0E08"/>
+            <!-- Hair ornament -->
+            <circle cx="700" cy="474" r="5" fill="#C82A5A"/>
+            <circle cx="700" cy="474" r="2.5" fill="#FFB040"/>
+            <!-- Arms in graceful dance position -->
+            <path d="M674,535 Q645,515 620,520 Q608,524 606,534" stroke="#C82A5A" stroke-width="14" stroke-linecap="round" fill="none"/>
+            <path d="M606,534 Q598,542 608,550" stroke="#E84A78" stroke-width="12" stroke-linecap="round" fill="none"/>
+            <!-- Right arm raised -->
+            <path d="M726,530 Q752,508 768,500 Q782,493 790,498" stroke="#C82A5A" stroke-width="14" stroke-linecap="round" fill="none"/>
+            <path d="M790,498 Q802,492 800,482" stroke="#E84A78" stroke-width="11" stroke-linecap="round" fill="none"/>
+            <!-- Legs -->
+            <rect x="686" y="584" width="11" height="38" fill="#8B1A40"/>
+            <rect x="703" y="584" width="11" height="38" fill="#8B1A40"/>
+          </g>
+
+          <!-- Ground glow / atmosphere -->
+          <ellipse cx="500" cy="695" rx="280" ry="30" fill="#FF6010" opacity="0.08"/>
+          <ellipse cx="320" cy="695" rx="100" ry="20" fill="#FF6010" opacity="0.05"/>
+          <ellipse cx="700" cy="695" rx="100" ry="20" fill="#FF6010" opacity="0.05"/>
+        </svg>
+      </div>
+
+      <!-- LAYER 5: FOREGROUND VIGNETTE -->
+      <div class="vl" id="vl5" style="z-index:6;pointer-events:none;">
+        <svg viewBox="0 0 1000 700" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
+          <!-- Side vignettes -->
+          <defs>
+            <linearGradient id="vigL" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#0A0604" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#0A0604" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="vigR" x1="1" y1="0" x2="0" y2="0">
+              <stop offset="0%" stop-color="#0A0604" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#0A0604" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="vigB" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stop-color="#0A0604" stop-opacity="0.95"/>
+              <stop offset="100%" stop-color="#0A0604" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="200" height="700" fill="url(#vigL)"/>
+          <rect x="800" y="0" width="200" height="700" fill="url(#vigR)"/>
+          <rect x="0" y="540" width="1000" height="160" fill="url(#vigB)"/>
+        </svg>
+      </div>
+
+    </div><!-- end village-parallax -->
+
+    <!-- Walk hint -->
+    <div id="walk-hint">
+      <span class="wico">👣</span>
+      <span>클릭하여 앞으로 걸어가세요</span>
+    </div>
+
+    <!-- Step counter (hidden but tracked) -->
+
+  </section>
+
+</div><!-- end intro -->
+
+<!-- ══════════════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════════════ -->
+<div id="main-content">
+  <div id="bar"></div>
+
+  <nav class="snav">
+    <div class="sdot on"  data-s="s-hahoe"      onclick="goTo('s-hahoe')"></div>
+    <div class="sdot"     data-s="s-paradox"     onclick="goTo('s-paradox')"></div>
+    <div class="sdot"     data-s="s-gate-close"  onclick="goTo('s-gate-close')"></div>
+    <div class="sdot"     data-s="s-modern"      onclick="goTo('s-modern')"></div>
+    <div class="sdot"     data-s="s-conclusion"  onclick="goTo('s-conclusion')"></div>
+  </nav>
+
+  <!-- § HAHOE -->
+  <section id="s-hahoe">
+    <div class="si">
+      <div class="reveal">
+        <div class="s-lbl" style="color:var(--red);">섹션 01 · 문화유산</div>
+        <h2 class="s-ttl">탈을 쓰면<br>신분이 사라진다</h2>
+      </div>
+      <div class="deco reveal d1"><div class="deco-d"></div></div>
+      <div class="hg">
+        <div class="rev-l d2" style="display:flex;justify-content:center;position:relative;">
+          <div class="mask-gr"></div>
+          <svg viewBox="0 0 200 228" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:240px;position:relative;z-index:1;">
+            <defs>
+              <radialGradient id="mfg" cx="50%" cy="42%" r="52%">
+                <stop offset="0%" stop-color="#F5E0A0"/><stop offset="100%" stop-color="#C8A055"/>
+              </radialGradient>
+              <filter id="mds"><feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#1A0A00" flood-opacity=".32"/></filter>
+            </defs>
+            <ellipse cx="100" cy="112" rx="78" ry="94" fill="url(#mfg)" stroke="#8B6210" stroke-width="2" filter="url(#mds)"/>
+            <path d="M38,60 Q100,22 162,60" stroke="#2C1A00" stroke-width="4" fill="none"/>
+            <path d="M68,73 Q100,63 132,73" stroke="#6B4A10" stroke-width="1.5" fill="none" opacity=".5"/>
+            <path d="M58,91 Q78,77 100,85 Q122,77 142,91" stroke="#2C1A00" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <ellipse cx="78"  cy="102" rx="15" ry="6.5" fill="#1A0A00"/>
+            <ellipse cx="122" cy="102" rx="15" ry="6.5" fill="#1A0A00"/>
+            <circle cx="78"  cy="102" r="4.5" fill="#2E1800"/>
+            <circle cx="122" cy="102" r="4.5" fill="#2E1800"/>
+            <circle cx="81"  cy="100" r="2" fill="white" opacity=".3"/>
+            <circle cx="125" cy="100" r="2" fill="white" opacity=".3"/>
+            <path d="M94,116 Q88,131 82,135 Q100,142 118,135 Q112,131 106,116 Z" fill="#C4934A" stroke="#8B6210" stroke-width="1" opacity=".65"/>
+            <path d="M62,158 Q100,194 138,158" stroke="#1A0A00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M67,162 Q100,182 133,162" fill="#C1272D" opacity=".55"/>
+            <ellipse cx="22"  cy="108" rx="13" ry="20" fill="#D4A055" stroke="#8B6210" stroke-width="1.5"/>
+            <ellipse cx="178" cy="108" rx="13" ry="20" fill="#D4A055" stroke="#8B6210" stroke-width="1.5"/>
+            <circle cx="100" cy="53" r="7" fill="none" stroke="#C1272D" stroke-width="1.5" opacity=".6"/>
+            <circle cx="100" cy="53" r="3" fill="#C1272D" opacity=".5"/>
+          </svg>
         </div>
-        <div class="fg">
-          <div class="fc reveal d3"><div class="fn">12</div><div class="fd">하회탈의 종류<br>각기 다른 계층 표현</div></div>
-          <div class="fc reveal d4"><div class="fn">600<span style="font-size:1.1rem">년+</span></div><div class="fd">탈춤의 역사<br>고려시대부터 이어진 전통</div></div>
-          <div class="fc reveal d5"><div class="fn">2022</div><div class="fd">UNESCO 등재<br>인류무형문화유산 선정</div></div>
-          <div class="fc reveal d6"><div class="fn">0</div><div class="fd">입이 닫힌 탈의 수<br>말 없이도 감정이 보인다</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════
-     § 4 · 친밀함의 역설
-══════════════════════════════════ -->
-<section id="s-paradox">
-  <div class="si">
-    <div class="reveal">
-      <div class="s-lbl" style="color:var(--gold);">섹션 02 · 친밀함의 역설</div>
-      <h2 class="s-ttl">왜 낯선 사람에게<br>더 솔직해질까?</h2>
-    </div>
-    <div class="bq-lg reveal d2">
-      10년 친구에게는 못 할 이야기를,<br>
-      <em>기차에서 만난 낯선 사람</em>에게는<br>술술 털어놓는다.
-    </div>
-    <div class="split2">
-      <div class="sp-card jos rev-l d2">
-        <span class="sp-ico">🎭</span>
-        <div class="sp-era">조선시대 · 탈춤</div>
-        <div class="sp-h">탈 뒤의 해방</div>
-        <div class="sp-b">하인이 양반을 조롱하고, 중이 여인을 희롱하는 장면도 탈춤에서는 허용됐다. 탈이 얼굴을 가리는 순간, 사회적 지위도 책임도 잠시 사라졌다.</div>
-      </div>
-      <div class="sp-card mod rev-r d2">
-        <span class="sp-ico">💬</span>
-        <div class="sp-era">현대 · 익명 커뮤니티</div>
-        <div class="sp-h">닉네임 뒤의 솔직함</div>
-        <div class="sp-b">"실은 부모님한테 화가 나 있어요." "그냥 외로워요." 아무도 이걸 실명으로는 못 적는다. 하지만 익명 공간에서는 매일 수천 명이 이런 고백을 쏟아낸다.</div>
-      </div>
-    </div>
-    <div class="ins reveal d3">
-      <h3>왜 이런 역설이 생기는 걸까?</h3>
-      <p>심리학자들은 이를 <strong>스트레인저 온 어 트레인 효과</strong>라 부릅니다.<br>
-      다시 만날 가능성이 없는 사람에게는 판단받을 두려움이 사라집니다.<br>
-      역설적으로, 가장 친한 사람일수록 그 관계를 잃을까 두려워 <strong>진짜 이야기를 숨기게</strong> 됩니다.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════
-     § 5 · 아웃트로 대문  (열림 → 클릭 → 닫힘)
-══════════════════════════════════ -->
-<section id="s-gate-close" class="gate-sec" onclick="closeGate()">
-  <div class="sky sky-jos" id="sky-jos2"></div>
-  <div class="sky sky-mod" id="sky-mod2" style="z-index:1;"></div>
-  <div class="fog"></div>
-
-  <div class="g-text top">
-    <div class="g-era" style="color:rgba(242,224,181,.5);">이제 현대로 돌아갈 시간</div>
-    <div class="g-title" style="font-size:clamp(1.5rem,3.5vw,2.5rem);">익명성은<br>300년째 변하지 않았다</div>
-  </div>
-
-  <div class="gate-wrap">
-    <div class="g-roof">
-      <div class="g-roof-body"></div><div class="g-roof-ridge"></div>
-      <div class="g-roof-eave l"></div><div class="g-roof-eave r"></div>
-    </div>
-    <div class="g-lintel"></div>
-    <div class="g-body">
-      <div class="g-pillar"></div>
-      <!-- starts OPEN -->
-      <div class="g-doors-outer gate-open" id="do-close">
-        <div class="g-glow jos-gl" id="gj2" style="opacity:1;transition:opacity .5s;"></div>
-        <div class="g-glow mod-gl" id="gm2" style="opacity:0;transition:opacity .6s ease .9s;"></div>
-        <div class="g-doors">
-          <div class="door dl">
-            <div class="band b1"></div><div class="band b2"></div><div class="band b3"></div>
-            <div class="hinge ht"></div><div class="hinge hb"></div>
-            <div class="ring-wrap"><div class="ring-out"><div class="ring-in"></div></div></div>
-            <div class="seam"></div>
+        <div>
+          <div class="body-t rev-r d2">
+            <p>경북 안동 하회마을에서 시작된 <strong>하회탈춤</strong>은 단순한 민속놀이가 아니었습니다. 탈을 쓰는 순간, 신분, 이름, 얼굴이 모두 사라졌습니다.</p>
+            <div class="bq reveal d3">"탈을 쓴 자는 신이 된다.<br>그 순간만큼은 누구도 그를 막을 수 없다."</div>
+            <p>양반이 노비에게 욕을 먹어도, 선비가 조롱을 당해도 — 탈 뒤에서는 모두가 평등했습니다. 익명성이 만들어낸 <strong>해방의 공간</strong>이었습니다.</p>
           </div>
-          <div class="door dr">
-            <div class="band b1"></div><div class="band b2"></div><div class="band b3"></div>
-            <div class="hinge ht"></div><div class="hinge hb"></div>
-            <div class="ring-wrap"><div class="ring-out"><div class="ring-in"></div></div></div>
-            <div class="seam"></div>
+          <div class="fg">
+            <div class="fc reveal d3"><div class="fn">12</div><div class="fd">하회탈의 종류<br>각기 다른 계층 표현</div></div>
+            <div class="fc reveal d4"><div class="fn">600<span style="font-size:1.1rem">년+</span></div><div class="fd">탈춤의 역사<br>고려시대부터 이어진 전통</div></div>
+            <div class="fc reveal d5"><div class="fn">2022</div><div class="fd">UNESCO 등재<br>인류무형문화유산 선정</div></div>
+            <div class="fc reveal d6"><div class="fn">0</div><div class="fd">입이 닫힌 탈의 수<br>말 없이도 감정이 보인다</div></div>
           </div>
         </div>
       </div>
-      <div class="g-pillar"></div>
     </div>
-    <div class="g-base"></div>
-  </div>
+  </section>
 
-  <div class="g-text bot">
-    <div class="click-hint" id="ch-close">
-      <span>대문을 클릭하여 현대로 돌아가세요</span>
-      <div class="ico">🖱</div>
+  <!-- § PARADOX -->
+  <section id="s-paradox">
+    <div class="si">
+      <div class="reveal">
+        <div class="s-lbl" style="color:var(--gold);">섹션 02 · 친밀함의 역설</div>
+        <h2 class="s-ttl">왜 낯선 사람에게<br>더 솔직해질까?</h2>
+      </div>
+      <div class="bq-lg reveal d2">10년 친구에게는 못 할 이야기를,<br><em>기차에서 만난 낯선 사람</em>에게는<br>술술 털어놓는다.</div>
+      <div class="split2">
+        <div class="sp-card jos rev-l d2"><span class="sp-ico">🎭</span><div class="sp-era">조선시대 · 탈춤</div><div class="sp-h">탈 뒤의 해방</div><div class="sp-b">하인이 양반을 조롱하고, 중이 여인을 희롱하는 장면도 탈춤에서는 허용됐다. 탈이 얼굴을 가리는 순간, 사회적 지위도 책임도 잠시 사라졌다.</div></div>
+        <div class="sp-card mod rev-r d2"><span class="sp-ico">💬</span><div class="sp-era">현대 · 익명 커뮤니티</div><div class="sp-h">닉네임 뒤의 솔직함</div><div class="sp-b">"실은 부모님한테 화가 나 있어요." "그냥 외로워요." 아무도 이걸 실명으로는 못 적는다. 하지만 익명 공간에서는 매일 수천 명이 이런 고백을 쏟아낸다.</div></div>
+      </div>
+      <div class="ins reveal d3"><h3>왜 이런 역설이 생기는 걸까?</h3><p>심리학자들은 이를 <strong>스트레인저 온 어 트레인 효과</strong>라 부릅니다.<br>다시 만날 가능성이 없는 사람에게는 판단받을 두려움이 사라집니다.<br>역설적으로, 가장 친한 사람일수록 그 관계를 잃을까 두려워 <strong>진짜 이야기를 숨기게</strong> 됩니다.</p></div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ══════════════════════════════════
-     § 6 · 현대의 탈
-══════════════════════════════════ -->
-<section id="s-modern">
-  <div class="si">
-    <div class="reveal">
-      <div class="mod-lbl">섹션 03 · 현대의 탈</div>
-      <h2 class="mod-ttl">오픈채팅·에브리타임 =<br><span>현대판 탈춤</span></h2>
-    </div>
-    <div class="cflow">
-      <div class="ci rev-l d2"><span class="ci-ico">🎭</span><div class="ci-era">조선 1700년대</div><div class="ci-n">하회탈</div></div>
-      <div class="carr reveal d3">→</div>
-      <div class="ci rev-r d2"><span class="ci-ico">📱</span><div class="ci-era">현대 디지털</div><div class="ci-n">익명 커뮤니티</div></div>
-    </div>
-    <div class="pg">
-      <div class="pc reveal d2">
-        <div class="pc-ico">💬</div><div class="pc-lbl">KAKAOTALK</div>
-        <div class="pc-n">오픈채팅</div>
-        <div class="pc-d">닉네임과 프로필로 참여하는 채팅방. 실명 없이 깊은 공감을 나눈다. 주제 기반 대화, 감정 토로, 고민 상담.</div>
+  <!-- § GATE CLOSE -->
+  <section id="s-gate-close" class="gate-sec-c" onclick="closeGate()">
+    <div class="sky sky-jos" id="skyJ"></div>
+    <div class="sky sky-modc" id="skyM"></div>
+    <div class="fog2"></div>
+    <div class="g-txt-c top"><div class="g-era-c" style="color:rgba(242,224,181,.5);">이제 현대로 돌아갈 시간</div><div class="g-tit-c">익명성은<br>300년째 변하지 않았다</div></div>
+    <div class="g-wrap-c">
+      <div class="g-roof-c"><div class="g-roof-b"></div><div class="g-roof-r"></div><div class="g-roof-e l"></div><div class="g-roof-e r"></div></div>
+      <div class="g-lint"></div>
+      <div class="g-body-c">
+        <div class="g-pill"></div>
+        <div class="g-do gate-open" id="gdo">
+          <div class="g-glow2 jos" id="gj" style="opacity:1;transition:opacity .5s;"></div>
+          <div class="g-glow2 modc" id="gm" style="opacity:0;transition:opacity .6s ease .9s;"></div>
+          <div class="g-ds">
+            <div class="dc dl"><div class="ba b1"></div><div class="ba b2"></div><div class="ba b3"></div><div class="hi ht"></div><div class="hi hb"></div><div class="rw"><div class="ro"><div class="ri"></div></div></div><div class="se"></div></div>
+            <div class="dc dr"><div class="ba b1"></div><div class="ba b2"></div><div class="ba b3"></div><div class="hi ht"></div><div class="hi hb"></div><div class="rw"><div class="ro"><div class="ri"></div></div></div><div class="se"></div></div>
+          </div>
+        </div>
+        <div class="g-pill"></div>
       </div>
-      <div class="pc reveal d3">
-        <div class="pc-ico">📚</div><div class="pc-lbl">EVERYTIME</div>
-        <div class="pc-n">에브리타임</div>
-        <div class="pc-d">대학생 익명 커뮤니티. 교수도 부모도 모르게 학교생활의 고민을 쏟아낸다. 매일 수만 건의 익명 고백.</div>
-      </div>
-      <div class="pc reveal d4">
-        <div class="pc-ico">🔮</div><div class="pc-lbl">BLIND</div>
-        <div class="pc-n">블라인드</div>
-        <div class="pc-d">직장인 익명 커뮤니티. 동료에게도 못 하는 회사 불만과 고민. 회사명으로 인증하지만 개인은 완전 익명.</div>
-      </div>
+      <div class="g-base-c"></div>
     </div>
-    <div class="mod-q reveal d3">
-      형식은 달라졌지만,<br><em>인간의 욕구</em>는 300년째 똑같다.
-    </div>
-    <div class="clist reveal d3">
-      <h3>탈춤과 익명 SNS의 공통점</h3>
-      <div class="ccols">
-        <div>✓ 얼굴·신분이 가려진다<br>✓ 평소 못 할 말을 할 수 있다<br>✓ 공동체가 함께 참여한다</div>
-        <div>✓ 끝나면 다시 일상으로 돌아간다<br>✓ 사회 비판의 기능을 한다<br>✓ 일시적 해방감을 준다</div>
-      </div>
-    </div>
-  </div>
-</section>
+    <div class="g-txt-c bot"><div class="chint" id="cch"><span>대문을 클릭하여 현대로 돌아가세요</span><div class="ico" style="font-size:1.3rem;">🖱</div></div></div>
+  </section>
 
-<!-- ══════════════════════════════════
-     § 7 · 결론
-══════════════════════════════════ -->
-<section id="s-conclusion">
-  <div class="si" style="text-align:center;">
-    <div class="reveal">
-      <div style="font-family:'Noto Sans KR',sans-serif;font-size:.72rem;letter-spacing:.55em;color:var(--red);margin-bottom:16px;">섹션 04 · 결론</div>
+  <!-- § MODERN -->
+  <section id="s-modern">
+    <div class="si">
+      <div class="reveal"><div class="mod-lbl">섹션 03 · 현대의 탈</div><h2 class="mod-ttl">오픈채팅·에브리타임 =<br><span>현대판 탈춤</span></h2></div>
+      <div class="cflow">
+        <div class="ci rev-l d2"><span class="ci-ico">🎭</span><div class="ci-era">조선 1700년대</div><div class="ci-n">하회탈</div></div>
+        <div class="carr reveal d3">→</div>
+        <div class="ci rev-r d2"><span class="ci-ico">📱</span><div class="ci-era">현대 디지털</div><div class="ci-n">익명 커뮤니티</div></div>
+      </div>
+      <div class="pg">
+        <div class="pc reveal d2"><div class="pc-ico">💬</div><div class="pc-lbl">KAKAOTALK</div><div class="pc-n">오픈채팅</div><div class="pc-d">닉네임과 프로필로 참여하는 채팅방. 실명 없이 깊은 공감을 나눈다. 주제 기반 대화, 감정 토로, 고민 상담.</div></div>
+        <div class="pc reveal d3"><div class="pc-ico">📚</div><div class="pc-lbl">EVERYTIME</div><div class="pc-n">에브리타임</div><div class="pc-d">대학생 익명 커뮤니티. 교수도 부모도 모르게 학교생활의 고민을 쏟아낸다. 매일 수만 건의 익명 고백.</div></div>
+        <div class="pc reveal d4"><div class="pc-ico">🔮</div><div class="pc-lbl">BLIND</div><div class="pc-n">블라인드</div><div class="pc-d">직장인 익명 커뮤니티. 동료에게도 못 하는 회사 불만과 고민. 회사명으로 인증하지만 개인은 완전 익명.</div></div>
+      </div>
+      <div class="mod-q reveal d3">형식은 달라졌지만,<br><em>인간의 욕구</em>는 300년째 똑같다.</div>
+      <div class="clist reveal d3"><h3>탈춤과 익명 SNS의 공통점</h3><div class="ccols"><div>✓ 얼굴·신분이 가려진다<br>✓ 평소 못 할 말을 할 수 있다<br>✓ 공동체가 함께 참여한다</div><div>✓ 끝나면 다시 일상으로 돌아간다<br>✓ 사회 비판의 기능을 한다<br>✓ 일시적 해방감을 준다</div></div></div>
     </div>
-    <div class="reveal d1" style="display:flex;align-items:center;justify-content:center;gap:28px;margin:46px 0;flex-wrap:wrap;">
-      <svg viewBox="0 0 60 68" width="68" height="76">
-        <ellipse cx="30" cy="36" rx="23" ry="28" fill="#F2DFA0" stroke="#8B6210" stroke-width="1.5"/>
-        <path d="M16,27 Q24,20 30,24 Q36,20 44,27" stroke="#2C1A00" stroke-width="2" fill="none"/>
-        <ellipse cx="22" cy="33" rx="5" ry="2.5" fill="#1A0A00"/>
-        <ellipse cx="38" cy="33" rx="5" ry="2.5" fill="#1A0A00"/>
-        <path d="M18,50 Q30,60 42,50" stroke="#1A0A00" stroke-width="1.5" fill="none"/>
-      </svg>
-      <span style="font-size:1.5rem;color:var(--red);opacity:.7;">→</span>
-      <svg viewBox="0 0 60 68" width="68" height="76">
-        <ellipse cx="30" cy="36" rx="23" ry="28" fill="#F2DFA0" stroke="#8B6210" stroke-width="1.5"/>
-        <path d="M30,8 A23,28 0 0 0 7,36 L30,36 Z" fill="#1B4A8A" opacity=".7"/>
-        <ellipse cx="22" cy="33" rx="5" ry="2.5" fill="white"/>
-        <ellipse cx="38" cy="33" rx="5" ry="2.5" fill="#1A0A00"/>
-        <path d="M18,50 Q30,60 42,50" stroke="#1A0A00" stroke-width="1.5" fill="none"/>
-      </svg>
-      <span style="font-size:1.5rem;color:var(--blue);opacity:.7;">→</span>
-      <div style="width:68px;height:76px;background:linear-gradient(135deg,#1B4A8A,#2D7A4F);border-radius:50% 50% 42% 42%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 0 22px rgba(27,74,138,.4);">💬</div>
+  </section>
+
+  <!-- § CONCLUSION -->
+  <section id="s-conclusion">
+    <div class="si" style="text-align:center;">
+      <div class="reveal"><div style="font-family:'Noto Sans KR',sans-serif;font-size:.72rem;letter-spacing:.55em;color:var(--red);margin-bottom:16px;">섹션 04 · 결론</div></div>
+      <div class="reveal d1" style="display:flex;align-items:center;justify-content:center;gap:28px;margin:46px 0;flex-wrap:wrap;">
+        <svg viewBox="0 0 60 68" width="68" height="76"><ellipse cx="30" cy="36" rx="23" ry="28" fill="#F2DFA0" stroke="#8B6210" stroke-width="1.5"/><path d="M16,27 Q24,20 30,24 Q36,20 44,27" stroke="#2C1A00" stroke-width="2" fill="none"/><ellipse cx="22" cy="33" rx="5" ry="2.5" fill="#1A0A00"/><ellipse cx="38" cy="33" rx="5" ry="2.5" fill="#1A0A00"/><path d="M18,50 Q30,60 42,50" stroke="#1A0A00" stroke-width="1.5" fill="none"/></svg>
+        <span style="font-size:1.5rem;color:var(--red);opacity:.7;">→</span>
+        <svg viewBox="0 0 60 68" width="68" height="76"><ellipse cx="30" cy="36" rx="23" ry="28" fill="#F2DFA0" stroke="#8B6210" stroke-width="1.5"/><path d="M30,8 A23,28 0 0 0 7,36 L30,36 Z" fill="#1B4A8A" opacity=".7"/><ellipse cx="22" cy="33" rx="5" ry="2.5" fill="white"/><ellipse cx="38" cy="33" rx="5" ry="2.5" fill="#1A0A00"/><path d="M18,50 Q30,60 42,50" stroke="#1A0A00" stroke-width="1.5" fill="none"/></svg>
+        <span style="font-size:1.5rem;color:var(--blue);opacity:.7;">→</span>
+        <div style="width:68px;height:76px;background:linear-gradient(135deg,#1B4A8A,#2D7A4F);border-radius:50% 50% 42% 42%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 0 22px rgba(27,74,138,.4);">💬</div>
+      </div>
+      <div class="conc-q reveal d2">익명성은 <strong>도피</strong>가 아니다.<br>진짜 자신을 찾아가는<br><strong>첫 번째 용기</strong>다.</div>
+      <div class="conc-b reveal d3">탈을 쓰고 춤을 추던 조선의 민중도,<br>오늘 새벽 익명 게시판에 고민을 올리는 당신도<br>같은 것을 원하고 있습니다.<br><br><strong>이해받고 싶다는 것.</strong><br>판단받지 않아도 되는 공간에서<br>진짜 나를 꺼내놓고 싶다는 것.</div>
+      <div class="deco reveal d4" style="max-width:360px;margin:36px auto;"><div class="deco-d"></div></div>
+      <div class="reveal d5" style="font-size:1.15rem;font-weight:600;line-height:1.8;color:rgba(26,20,14,.88);">하지만 진짜 관계는<br>탈을 벗는 순간부터 시작됩니다.</div>
+      <div class="reveal d6"><button class="cta" onclick="restartIntro()">처음으로 돌아가기</button></div>
+      <div class="fnote reveal d6">하회탈 — 국보 제121호 · UNESCO 인류무형문화유산 (2022년)<br>안동국제탈춤페스티벌 매년 9월 개최</div>
     </div>
-    <div class="conc-q reveal d2">익명성은 <strong>도피</strong>가 아니다.<br>진짜 자신을 찾아가는<br><strong>첫 번째 용기</strong>다.</div>
-    <div class="conc-b reveal d3">
-      탈을 쓰고 춤을 추던 조선의 민중도,<br>
-      오늘 새벽 익명 게시판에 고민을 올리는 당신도<br>
-      같은 것을 원하고 있습니다.<br><br>
-      <strong>이해받고 싶다는 것.</strong><br>
-      판단받지 않아도 되는 공간에서<br>진짜 나를 꺼내놓고 싶다는 것.
-    </div>
-    <div class="deco reveal d4" style="max-width:360px;margin:36px auto;"><div class="deco-d"></div></div>
-    <div class="reveal d5" style="font-size:1.15rem;font-weight:600;line-height:1.8;color:rgba(26,20,14,.88);">
-      하지만 진짜 관계는<br>탈을 벗는 순간부터 시작됩니다.
-    </div>
-    <div class="reveal d6">
-      <button class="cta" onclick="window.scrollTo({top:0,behavior:'smooth'})">처음으로 돌아가기</button>
-    </div>
-    <div class="fnote reveal d6">
-      하회탈 — 국보 제121호 · UNESCO 인류무형문화유산 (2022년)<br>
-      안동국제탈춤페스티벌 매년 9월 개최
-    </div>
-  </div>
-</section>
+  </section>
+
+</div><!-- end main-content -->
 
 <script>
-/* STARS */
+/* ══ STARS (gate background) ══ */
 (function(){
-  const c=document.getElementById('stars'),ctx=c.getContext('2d');
+  const c=document.getElementById('stars-c'),ctx=c.getContext('2d');
   let stars=[],t=0;
   function resize(){c.width=innerWidth;c.height=innerHeight;}
-  function init(){
-    resize();
-    stars=Array.from({length:130},()=>({
-      x:Math.random()*c.width,y:Math.random()*c.height,
-      r:Math.random()*1.3+.3,sp:Math.random()*.009+.004,off:Math.random()*Math.PI*2
-    }));
-  }
-  function draw(){
-    ctx.clearRect(0,0,c.width,c.height);
-    stars.forEach(s=>{
-      const a=.1+.75*(.5+.5*Math.sin(t*s.sp*60+s.off));
-      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(242,224,181,${a})`;ctx.fill();
-    });
-    t++;requestAnimationFrame(draw);
-  }
-  addEventListener('resize',resize);
-  init();draw();
+  function init(){resize();stars=Array.from({length:120},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.4+.3,sp:Math.random()*.009+.004,off:Math.random()*Math.PI*2}));}
+  function draw(){ctx.clearRect(0,0,c.width,c.height);stars.forEach(s=>{const a=.1+.75*(.5+.5*Math.sin(t*s.sp*60+s.off));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(242,224,181,${a})`;ctx.fill();});t++;requestAnimationFrame(draw);}
+  addEventListener('resize',resize);init();draw();
 })();
 
-/* ── GATE OPEN ── */
-let openDone=false;
-function openGate(){
-  if(openDone)return;
-  openDone=true;
-  document.getElementById('ch-open').classList.add('done');
-  // swing doors open
-  document.getElementById('do-open').classList.add('gate-open');
-  // warm flash at peak
+/* ══ GATE OPEN ══ */
+let gateDone=false;
+
+function handleGateClick(){
+  if(gateDone)return;
+
+  const wrap=document.getElementById('gate-wrap');
+
+  // 1. Shake (conan anticipation)
+  wrap.classList.add('shake');
+
   setTimeout(()=>{
-    const f=document.getElementById('flash');
-    f.className='warm';
-    setTimeout(()=>{f.className='out';},180);
-  },900);
-  // unlock scroll + jump past gate
-  setTimeout(()=>{
-    document.body.classList.remove('locked');
-    document.getElementById('s-joseon').scrollIntoView({behavior:'smooth'});
-  },2300);
+    wrap.classList.remove('shake');
+
+    // 2. Open doors fast
+    document.getElementById('gate-svg').classList.add('gate-open');
+
+    // 3. Light glow appears through crack
+    document.getElementById('gate-glow').style.transition='opacity .4s ease .3s';
+    document.getElementById('gate-glow').style.opacity='0.9';
+
+    // 4. RUSH THROUGH (conan zoom) - camera rushes toward gap
+    setTimeout(()=>{
+      gateDone=true;
+      document.getElementById('gate-hint').classList.add('hide');
+
+      wrap.classList.add('rushing');
+
+      // 5. Warm flash at peak speed
+      setTimeout(()=>{
+        const f=document.getElementById('flash');
+        f.className='warm';
+        setTimeout(()=>{f.className='out';},150);
+      },400);
+
+      // 6. Switch to village scene
+      setTimeout(()=>{
+        document.getElementById('s-gate').style.display='none';
+        const sv=document.getElementById('s-village');
+        sv.style.display='flex';
+        sv.classList.add('active');
+      },600);
+
+    },700);
+
+  },80);
 }
 
-/* ── GATE CLOSE ── */
+/* ══ VILLAGE WALK ══ */
+let walkStep=0;
+const MAX_WALK=3;
+
+// Parallax scales for each layer per step
+const SCALES=[
+  [1.0, 1.0, 1.0, 1.0, 1.0],
+  [1.05,1.14,1.35,1.65,1.0],
+  [1.10,1.30,1.75,2.50,1.0],
+  [1.16,1.50,2.30,3.80,1.0],
+];
+
+function setLayerScales(step){
+  const ids=['vl0','vl1','vl2','vl3','vl4'];
+  const sc=SCALES[step];
+  ids.forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    el.style.transition='transform .85s cubic-bezier(.25,0,.1,1)';
+    el.style.transform=`scale(${sc[i]})`;
+  });
+}
+
+function walkForward(){
+  walkStep++;
+
+  if(walkStep<MAX_WALK){
+    setLayerScales(walkStep);
+    // Update hint text
+    if(walkStep===MAX_WALK-1){
+      document.querySelector('#walk-hint span:last-child').textContent='한 걸음 더...';
+    }
+  } else {
+    // Final step — rush zoom then enter content
+    document.getElementById('walk-hint').classList.add('hide');
+    setLayerScales(MAX_WALK);
+
+    setTimeout(()=>{
+      // Accelerate all layers
+      ['vl0','vl1','vl2','vl3','vl4'].forEach(id=>{
+        const el=document.getElementById(id);
+        if(el){el.style.transition='transform .5s cubic-bezier(.6,0,1,1)';el.style.transform='scale(8)';}
+      });
+    },200);
+
+    setTimeout(()=>{
+      const f=document.getElementById('flash');
+      f.className='warm';
+      setTimeout(()=>{f.className='out';},180);
+    },600);
+
+    setTimeout(()=>{
+      // Hide intro, show content
+      document.getElementById('intro').style.display='none';
+      document.body.classList.add('scrollable');
+      const mc=document.getElementById('main-content');
+      mc.classList.add('show');
+      window.scrollTo(0,0);
+    },800);
+  }
+}
+
+/* ══ GATE CLOSE ══ */
 let closeDone=false;
 function closeGate(){
-  if(closeDone)return;
-  closeDone=true;
-  document.getElementById('ch-close').classList.add('done');
-  // swap glow: joseon → modern (neon bleeds through crack)
-  const gj=document.getElementById('gj2'),gm=document.getElementById('gm2');
-  gj.style.opacity='0';
-  gm.style.opacity='1';
-  // sky transition
-  const sj=document.getElementById('sky-jos2'),sm=document.getElementById('sky-mod2');
+  if(closeDone)return;closeDone=true;
+  document.getElementById('cch').classList.add('done');
+  document.getElementById('gj').style.opacity='0';
+  document.getElementById('gm').style.opacity='1';
+  const sj=document.getElementById('skyJ'),sm=document.getElementById('skyM');
   sj.style.transition='opacity 1.2s ease .2s';sj.style.opacity='0';
   sm.style.transition='opacity 1.2s ease .2s';sm.style.opacity='1';
-  // close doors
-  setTimeout(()=>{document.getElementById('do-close').classList.remove('gate-open');},250);
-  // cold flash as doors slam
-  setTimeout(()=>{
-    const f=document.getElementById('flash');
-    f.className='cold';
-    setTimeout(()=>{f.className='out';},280);
-  },1900);
-  // scroll to modern
-  setTimeout(()=>{
-    document.getElementById('s-modern').scrollIntoView({behavior:'smooth'});
-  },2700);
+  setTimeout(()=>{document.getElementById('gdo').classList.remove('gate-open');},250);
+  setTimeout(()=>{const f=document.getElementById('flash');f.className='cold';setTimeout(()=>{f.className='out';},280);},1900);
+  setTimeout(()=>{document.getElementById('s-modern').scrollIntoView({behavior:'smooth'});},2700);
 }
 
-/* SCROLL REVEAL */
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});
-},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+/* ══ SCROLL REVEAL ══ */
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.reveal,.rev-l,.rev-r').forEach(el=>obs.observe(el));
 
-/* PROGRESS + NAV */
-const SECS=['s-gate-open','s-hahoe','s-paradox','s-gate-close','s-modern','s-conclusion'];
-const bar=document.getElementById('bar');
+/* ══ PROGRESS + NAV ══ */
+const SECS2=['s-hahoe','s-paradox','s-gate-close','s-modern','s-conclusion'];
+const bar2=document.getElementById('bar');
 addEventListener('scroll',()=>{
   const st=scrollY,total=document.documentElement.scrollHeight-innerHeight;
-  bar.style.width=(st/total*100)+'%';
+  if(bar2)bar2.style.width=(st/total*100)+'%';
   const mid=st+innerHeight/2;
-  SECS.forEach(id=>{
+  SECS2.forEach(id=>{
     const sec=document.getElementById(id),dot=document.querySelector(`[data-s="${id}"]`);
     if(!sec||!dot)return;
     dot.classList.toggle('on',mid>=sec.offsetTop&&mid<sec.offsetTop+sec.offsetHeight);
@@ -655,11 +1220,10 @@ addEventListener('scroll',()=>{
 },{passive:true});
 function goTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'});}
 
-/* STAR PARALLAX */
-addEventListener('scroll',()=>{
-  if(scrollY<innerHeight)
-    document.getElementById('stars').style.transform=`translateY(${scrollY*.28}px)`;
-},{passive:true});
+/* ══ RESTART ══ */
+function restartIntro(){
+  window.location.reload();
+}
 </script>
 </body>
 </html>
