@@ -3652,35 +3652,38 @@ setTimeout(()=>{
 })();
 
 /* ── GATE OPEN ── */
+/* 페이지 로드 시 미리 버퍼링 → 클릭 즉시 재생 */
+const _knockAudio = new Audio('Knocking.mp3');
+_knockAudio.preload = 'auto';
+_knockAudio.volume = 0.9;
+const _creakAudio = new Audio('나무문.mp3');
+_creakAudio.preload = 'auto';
+_creakAudio.volume = 0.9;
+
 let gateClicks=0;
-let _knockAudio=null;
 
 function handleGateClick(){
   if(gateClicks>=2)return;
   gateClicks++;
 
   if(gateClicks===1){
-    /* 1번째 클릭: Knocking.mp3 앞 3초만 재생 */
-    _knockAudio=new Audio('Knocking.mp3');
-    _knockAudio.volume=0.9;
+    /* 1번째 클릭: Knocking.mp3 앞 3초만 */
+    _knockAudio.currentTime=0;
     _knockAudio.play().catch(()=>{});
-    setTimeout(()=>{
-      if(_knockAudio){ _knockAudio.pause(); _knockAudio.currentTime=0; }
-    },3000);
+    setTimeout(()=>{ _knockAudio.pause(); _knockAudio.currentTime=0; },3000);
     return;
   }
 
   /* 2번째 클릭: 노크 중지 + 나무문 소리 + 문 열기 */
-  if(_knockAudio){ _knockAudio.pause(); _knockAudio.currentTime=0; }
+  _knockAudio.pause(); _knockAudio.currentTime=0;
 
   document.getElementById('gate-hint').classList.add('hide');
   const sec=document.getElementById('s-gate');
   const fg=document.getElementById('fullgate');
 
-  /* 나무문.mp3 전체 재생 */
-  const creakAudio=new Audio('나무문.mp3');
-  creakAudio.volume=0.9;
-  creakAudio.play().catch(()=>{});
+  /* 나무문.mp3 즉시 재생 */
+  _creakAudio.currentTime=0;
+  _creakAudio.play().catch(()=>{});
 
   /* 소리 시작 직후 문 열리는 애니메이션 */
   setTimeout(()=>{ fg.classList.add('fullgate-open'); }, 80);
