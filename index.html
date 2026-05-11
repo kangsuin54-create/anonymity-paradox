@@ -498,7 +498,7 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 #s-flight.flying #fl-sky-mod{clip-path:inset(0 0% 0 0);}
 
 #fl-sun{
-  position:absolute;z-index:2;
+  position:absolute;z-index:5;
   width:110px;height:110px;border-radius:50%;
   background:radial-gradient(circle at 35% 35%,#FFFCE0,#FFEE60,#FFCC20);
   box-shadow:
@@ -511,7 +511,7 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 #fl-stars{display:none;}
 
 /* Clouds */
-#fl-clouds{position:absolute;inset:0;z-index:3;pointer-events:none;}
+#fl-clouds{position:absolute;inset:0;z-index:6;pointer-events:none;}
 .fcloud{
   position:absolute;
   background:rgba(255,255,255,.9);
@@ -521,33 +521,35 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 .fcloud::before,.fcloud::after{content:'';position:absolute;background:rgba(255,255,255,.75);border-radius:50%;}
 @keyframes cloudDrift{from{transform:translateX(110vw);}to{transform:translateX(-30vw);}}
 
-/* Ground landscapes — 하단 60% 채우기 */
-#fl-ground{position:absolute;top:38%;bottom:0;left:0;right:0;z-index:4;}
+/* Ground landscapes — 전체 채우기, 마스크로 상단 하늘과 블렌딩 */
+#fl-ground{position:absolute;inset:0;z-index:2;}
 #fl-ground-jos{
   position:absolute;inset:0;
   clip-path:inset(0 0 0 0);
   transition:clip-path 3.8s cubic-bezier(.4,0,.2,1) .1s;
   overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,transparent 28%,rgba(0,0,0,.6) 36%,black 44%,black 100%);
+  mask-image:linear-gradient(to bottom,transparent 0%,transparent 28%,rgba(0,0,0,.6) 36%,black 44%,black 100%);
 }
 #fl-ground-jos img{
   position:absolute;inset:0;
   width:100%;height:100%;
-  object-fit:cover;object-position:center top;
+  object-fit:cover;object-position:center 60%;
   display:block;
-  transform:scale(1.15);transform-origin:50% 0%;
 }
 #fl-ground-mod{
   position:absolute;inset:0;
   clip-path:inset(0 100% 0 0);
   transition:clip-path 3.8s cubic-bezier(.4,0,.2,1) .1s;
   overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,transparent 28%,rgba(0,0,0,.6) 36%,black 44%,black 100%);
+  mask-image:linear-gradient(to bottom,transparent 0%,transparent 28%,rgba(0,0,0,.6) 36%,black 44%,black 100%);
 }
 #fl-ground-mod img{
   position:absolute;inset:0;
   width:100%;height:100%;
-  object-fit:cover;object-position:center top;
+  object-fit:cover;object-position:center 60%;
   display:block;
-  transform:scale(1.15);transform-origin:50% 0%;
 }
 /* 전환 */
 #s-flight.flying #fl-ground-jos{clip-path:inset(0 0 0 100%);}
