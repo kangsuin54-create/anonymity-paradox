@@ -540,45 +540,39 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
   align-items:center;justify-content:center;
   opacity:0;pointer-events:none;
 }
-#friends-screen.show{animation:fsBg 4.5s ease forwards;pointer-events:auto;}
+#friends-screen.show{animation:fsBg 3s ease forwards;pointer-events:auto;}
 @keyframes fsBg{
-  0%{opacity:0;background:#000;}
-  18%{opacity:1;background:#000;}
-  45%{background:#1A0804;}
-  75%{background:#8B4010;}
-  100%{background:linear-gradient(180deg,#C87820,#F0B840);}
+  0%  {opacity:0;background:#000;}
+  15% {opacity:1;background:#111;}
+  50% {background:#888;}
+  100%{background:#fff;}
 }
 #fs-burst{
   position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(circle at 50% 52%,#fff 0%,rgba(255,220,100,.9) 12%,rgba(255,150,40,.4) 35%,transparent 60%);
+  background:radial-gradient(circle at 50% 52%,#fff 0%,rgba(255,255,255,.95) 18%,rgba(255,255,255,.5) 45%,transparent 68%);
   opacity:0;
 }
-#friends-screen.show #fs-burst{animation:fsBurst 2.5s ease .15s forwards;}
+#friends-screen.show #fs-burst{animation:fsBurst 2s ease .1s forwards;}
 @keyframes fsBurst{
-  0%{opacity:0;transform:scale(0);}
-  18%{opacity:1;transform:scale(.7);}
-  45%{opacity:.9;transform:scale(1.15);}
-  100%{opacity:.3;transform:scale(1);}
+  0%  {opacity:0;transform:scale(0);}
+  20% {opacity:1;transform:scale(.8);}
+  55% {opacity:1;transform:scale(1.1);}
+  100%{opacity:.5;transform:scale(1);}
 }
 #fs-figures{
   position:relative;z-index:2;
-  opacity:0;transform:scale(.25);
+  opacity:0;transform:scale(.18);
 }
-#friends-screen.show #fs-figures{animation:fsReveal 4s ease .35s forwards;}
-@keyframes fsReveal{
-  0%{opacity:0;transform:scale(.25);}
-  22%{opacity:1;transform:scale(.55);}
-  65%{transform:scale(.95);}
-  100%{transform:scale(1.35);opacity:1;}
+#friends-screen.show #fs-figures{
+  animation:fsRush 2.4s cubic-bezier(.2,0,.1,1) .2s forwards;
 }
-#fs-txt{
-  position:absolute;bottom:10vh;left:50%;transform:translateX(-50%);
-  font-family:'Noto Serif KR',serif;font-size:clamp(1.2rem,3vw,2rem);font-weight:700;
-  color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.5);
-  white-space:nowrap;z-index:3;opacity:0;
+@keyframes fsRush{
+  0%  {opacity:0;transform:scale(.18);}
+  12% {opacity:1;transform:scale(.4);}
+  55% {transform:scale(1.2);}
+  100%{transform:scale(3.5);opacity:0;}
 }
-#friends-screen.show #fs-txt{animation:fsTxt 1.5s ease 2.8s forwards;}
-@keyframes fsTxt{from{opacity:0;transform:translateX(-50%) translateY(12px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+#fs-txt{display:none;}
 
 /* vibrate animation for icon when notification arrives */
 @keyframes notifVibrate{
