@@ -1093,6 +1093,14 @@ button,a,[onclick]{ touch-action:manipulation; }
         <div class="chart-src">
           <strong>출처:</strong> 강하나, 하승수 (2019). 대학생 집단의 SNS 중독경향성과 인터넷 중독의 차이: 온라인 익명성, 자기애, 정신건강 및 대학생활 변인들을 중심으로. 한국심리학회지: 건강, 24(4), 709-733.
         </div>
+        <div style="text-align:center;margin-top:14px;">
+          <a href="https://lrl.kr/bEiXC" target="_blank" rel="noopener"
+             onclick="event.stopPropagation()"
+             style="display:inline-block;font-family:'Noto Sans KR',sans-serif;font-size:.78rem;
+                    color:#fff;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);
+                    border-radius:20px;padding:6px 18px;text-decoration:none;
+                    transition:background .2s;">📄 논문 보러가기</a>
+        </div>
       </div>
       <div class="sv-click-hint">클릭하여 계속</div>
     </div>
@@ -3866,27 +3874,33 @@ function playHangupSound(){
   }catch(e){}
 }
 
-/* ── 안겨 빠밤 소리 ── */
+/* ── 안겨 빠밤 소리 (1.3초 재생) ── */
 function playFanfare(){
   try{
     const ac=getAC(); if(ac.state==='suspended')ac.resume();
     const t=ac.currentTime;
+    /* 마스터 게인 — 1.1초까지 유지, 1.3초에 fade out */
+    const master=ac.createGain();
+    master.gain.setValueAtTime(1, t);
+    master.gain.setValueAtTime(1, t+1.7);
+    master.gain.linearRampToValueAtTime(0, t+2.0);
+    master.connect(ac.destination);
     /* 화음 상행: C5-E5-G5-C6 */
-    [[523,0,.35],[659,.12,.3],[784,.24,.4],[1047,.38,.6]].forEach(([freq,del,dur])=>{
+    [[523,0,.5],[659,.12,.45],[784,.24,.55],[1047,.38,.75]].forEach(([freq,del,dur])=>{
       const o=ac.createOscillator(); const g=ac.createGain();
       o.type='triangle'; o.frequency.value=freq;
       g.gain.setValueAtTime(0,t+del); g.gain.linearRampToValueAtTime(.22,t+del+.04);
-      g.gain.setValueAtTime(.18,t+del+dur-.1); g.gain.linearRampToValueAtTime(0,t+del+dur);
-      o.connect(g); g.connect(ac.destination); o.start(t+del); o.stop(t+del+dur+.05);
+      g.gain.setValueAtTime(.18,t+del+dur-.08); g.gain.linearRampToValueAtTime(0,t+del+dur);
+      o.connect(g); g.connect(master); o.start(t+del); o.stop(t+del+dur+.05);
     });
     /* 반짝 노이즈 */
-    const blen=Math.ceil(ac.sampleRate*.12);
+    const blen=Math.ceil(ac.sampleRate*.15);
     const buf=ac.createBuffer(1,blen,ac.sampleRate);
     const bd=buf.getChannelData(0); for(let i=0;i<blen;i++) bd[i]=(Math.random()*2-1)*(1-i/blen);
     const ns=ac.createBufferSource(); ns.buffer=buf;
     const nf=ac.createBiquadFilter(); nf.type='highpass'; nf.frequency.value=3000;
     const ng=ac.createGain(); ng.gain.value=.08;
-    ns.connect(nf); nf.connect(ng); ng.connect(ac.destination); ns.start(t+.36); ns.stop(t+.5);
+    ns.connect(nf); nf.connect(ng); ng.connect(master); ns.start(t+.36); ns.stop(t+.52);
   }catch(e){}
 }
 
