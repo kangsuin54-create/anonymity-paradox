@@ -3730,6 +3730,9 @@ _knockAudio.volume = 0.9;
 const _creakAudio = new Audio('나무문.mp3');
 _creakAudio.preload = 'auto';
 _creakAudio.volume = 0.9;
+const _samulAudio = new Audio('사물놀이.mp3');
+_samulAudio.preload = 'auto';
+_samulAudio.volume = 1.0;
 
 let gateClicks=0;
 
@@ -3766,12 +3769,23 @@ function handleGateClick(){
     setTimeout(()=>{f.className='out';},200);
   },1200);
 
-  /* 마을로 전환 */
+  /* 마을로 전환 + 사물놀이 3초 재생 후 페이드아웃 */
   setTimeout(()=>{
     sec.style.display='none';
     const sv=document.getElementById('s-village');
     sv.style.display='flex';
     sv.classList.add('active');
+
+    _samulAudio.currentTime=0;
+    _samulAudio.volume=1.0;
+    _samulAudio.play().catch(()=>{});
+    /* 3초 후 1초에 걸쳐 페이드아웃 */
+    setTimeout(()=>{
+      const fade=setInterval(()=>{
+        _samulAudio.volume=Math.max(0,_samulAudio.volume-0.05);
+        if(_samulAudio.volume<=0){ clearInterval(fade); _samulAudio.pause(); _samulAudio.currentTime=0; }
+      },50);
+    },3000);
   },1600);
 }
 
