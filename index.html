@@ -634,6 +634,54 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 #fl-arrival span{font-family:'Noto Sans KR',sans-serif;font-size:.78rem;letter-spacing:.3em;color:rgba(242,224,181,.6);}
 #fl-arrival .wico{font-size:1.4rem;display:block;margin-bottom:6px;animation:hpulse2 2s ease-in-out infinite;}
 
+@keyframes fadeUpSimple{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── Paradox splash ── */
+#s-paradox{
+  background:#060402;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:28px;
+  cursor:pointer;
+}
+#s-paradox .px-label{
+  font-family:'Noto Sans KR',sans-serif;
+  font-size:.75rem;letter-spacing:.55em;
+  color:rgba(242,224,181,.45);
+  animation:hpulse2 2s ease-in-out infinite;
+}
+#s-paradox .px-title{
+  font-size:clamp(2.2rem,7vw,4.2rem);
+  font-weight:900;
+  color:var(--hanji);
+  text-align:center;
+  line-height:1.2;
+  opacity:0;
+  animation:fadeUpSimple .9s ease .3s forwards;
+}
+#s-paradox .px-link{
+  display:inline-block;
+  font-family:'Noto Sans KR',sans-serif;
+  font-size:.9rem;letter-spacing:.08em;
+  color:#4A90D9;
+  border:1px solid rgba(74,144,217,.5);
+  border-radius:8px;
+  padding:12px 28px;
+  text-decoration:none;
+  opacity:0;
+  animation:fadeUpSimple .9s ease .7s forwards;
+  transition:background .25s,color .25s;
+}
+#s-paradox .px-link:hover{background:rgba(74,144,217,.15);}
+#s-paradox .px-hint{
+  font-family:'Noto Sans KR',sans-serif;
+  font-size:.75rem;letter-spacing:.2em;
+  color:rgba(242,224,181,.35);
+  opacity:0;
+  animation:fadeUpSimple .9s ease 1.2s forwards;
+}
+
 /* ── Modern (BRIGHT) ── */
 #s-modern{min-height:100vh;background:#F5F0E8;color:var(--ink);border-top:5px solid;border-image:linear-gradient(90deg,var(--red),var(--gold),var(--green),var(--blue)) 1;}
 .mod-lbl{font-family:'Noto Sans KR',sans-serif;font-size:.72rem;letter-spacing:.55em;color:var(--blue);margin-bottom:16px;}
@@ -1135,6 +1183,14 @@ button,a,[onclick]{ touch-action:manipulation; }
   </section>
 
   <!-- § GATE -->
+  <!-- § PARADOX SPLASH -->
+  <section id="s-paradox" class="scene" onclick="enterGate()">
+    <div class="px-label">SULER, 2004</div>
+    <div class="px-title">친밀함의 역설</div>
+    <a class="px-link" href="https://johnsuler.com/article_pdfs/online_dis_effect.pdf" target="_blank" rel="noopener" onclick="event.stopPropagation()">논문 바로가기 →</a>
+    <div class="px-hint">클릭하여 계속</div>
+  </section>
+
   <section id="s-gate" class="scene" onclick="handleGateClick()">
     <!-- 배경: 마을 야경 이미지 (문 뒤에 숨겨짐) -->
     <img id="gate-bg-img" src="village-inside-bg.png" alt=""/>
@@ -3635,12 +3691,19 @@ function svNext(){
       document.getElementById('resBarB').style.width = '85%';
     }, 200);
   } else {
-    // 슬라이드 2 → 대문
+    // 슬라이드 2 → 친밀함의 역설 splash
     document.getElementById('s-survey').style.display = 'none';
-    const sg = document.getElementById('s-gate');
-    sg.style.display = 'flex';
-    sg.classList.add('active');
+    const sp = document.getElementById('s-paradox');
+    sp.style.display = 'flex';
+    sp.classList.add('active');
   }
+}
+
+function enterGate(){
+  document.getElementById('s-paradox').style.display = 'none';
+  const sg = document.getElementById('s-gate');
+  sg.style.display = 'flex';
+  sg.classList.add('active');
 }
 
 // 차트 바 애니메이션
