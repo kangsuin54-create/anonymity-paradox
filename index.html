@@ -1123,9 +1123,9 @@ button,a,[onclick]{ touch-action:manipulation; }
   <section id="s-survey" class="scene active" onclick="svNext()">
 
     <!-- ── 슬라이드 1: 이미지 ── -->
-    <div class="sv-slide on" id="sv1">
-      <img src="OIP.webp" alt="익명성" style="width:min(480px,90vw);border-radius:16px;object-fit:cover;box-shadow:0 8px 40px rgba(0,0,0,0.6);"/>
-      <div class="sv-click-hint">클릭하여 계속</div>
+    <div class="sv-slide on" id="sv1" style="position:relative;padding:0;width:100%;height:100%;">
+      <img src="OIP.webp" alt="익명성" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"/>
+      <div class="sv-click-hint" style="position:absolute;bottom:32px;z-index:10;">클릭하여 계속</div>
     </div>
 
     <!-- ── 슬라이드 2: 설문 결과 ── -->
@@ -1166,9 +1166,9 @@ button,a,[onclick]{ touch-action:manipulation; }
   <!-- § GATE -->
   <!-- § PARADOX SPLASH -->
   <section id="s-paradox" class="scene" onclick="enterGate()">
-    <div class="px-label">SULER, 2004</div>
-    <div class="px-title">친밀함의 역설</div>
-    <a class="px-link" href="https://johnsuler.com/article_pdfs/online_dis_effect.pdf" target="_blank" rel="noopener" onclick="event.stopPropagation()">논문 바로가기 →</a>
+    <div class="px-label">ANONYMITY</div>
+    <div class="px-title">익명성</div>
+    <a class="px-link" href="https://lrl.kr/bEiXC" target="_blank" rel="noopener" onclick="event.stopPropagation()">논문 바로가기 →</a>
     <div class="px-hint">클릭하여 계속</div>
   </section>
 
@@ -3672,7 +3672,7 @@ function svNext(){
       document.getElementById('resBarB').style.width = '85%';
     }, 200);
   } else {
-    // 슬라이드 2 → 친밀함의 역설 splash
+    // 슬라이드 2 → 익명성 splash
     document.getElementById('s-survey').style.display = 'none';
     const sp = document.getElementById('s-paradox');
     sp.style.display = 'flex';
