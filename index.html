@@ -735,6 +735,74 @@ body.scrollable{overflow-x:hidden;overflow-y:auto;height:auto;}
 .cta:hover{background:var(--red);transform:translateY(-3px);}
 .fnote{margin-top:70px;padding-top:32px;border-top:1px solid rgba(26,20,14,.12);font-family:'Noto Sans KR',sans-serif;font-size:.76rem;color:rgba(26,20,14,.35);line-height:2;}
 
+/* ══ iOS HOME SCREEN ══ */
+#s-ios{
+  position:fixed;inset:0;z-index:5000;
+  display:none;flex-direction:column;
+  overflow:hidden;
+}
+.ios-wp-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(160deg,#89F7FE 0%,#5BC8F5 35%,#66A6FF 70%,#8B9FFF 100%);
+}
+.ios-sb{
+  position:relative;z-index:10;
+  height:48px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 22px;flex-shrink:0;
+}
+.ios-sb-time{font-size:.95rem;font-weight:800;color:white;}
+.ios-sb-r{display:flex;align-items:center;gap:5px;}
+.ios-batt-wrap{width:22px;height:11px;border:1.5px solid rgba(255,255,255,.85);border-radius:2.5px;position:relative;overflow:hidden;}
+.ios-batt-fill{height:100%;width:78%;background:white;}
+.ios-app-grid{
+  position:relative;z-index:10;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  align-content:start;
+  padding:16px 12px 0;
+  gap:clamp(14px,2.8vh,24px) 4px;
+  flex:1;
+}
+.ios-app{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.ios-app:active .ios-app-box{transform:scale(0.88);}
+.ios-app-box{
+  width:clamp(54px,13vw,68px);height:clamp(54px,13vw,68px);
+  border-radius:clamp(12px,3vw,16px);
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(1.6rem,4vw,2rem);
+  box-shadow:0 2px 10px rgba(0,0,0,.25);
+  transition:transform .1s;flex-shrink:0;position:relative;overflow:hidden;
+}
+.ios-app-lbl{
+  font-family:'Noto Sans KR',sans-serif;
+  font-size:clamp(.6rem,1.5vw,.72rem);color:white;
+  text-shadow:0 1px 3px rgba(0,0,0,.6);
+  text-align:center;width:clamp(54px,13vw,68px);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.ios-badge{
+  position:absolute;top:-5px;right:-5px;
+  background:#FF3B30;color:white;
+  min-width:17px;height:17px;border-radius:9px;
+  font-size:.52rem;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+  padding:0 3px;border:2px solid white;z-index:5;
+}
+.ios-page-dots{
+  position:relative;z-index:10;
+  display:flex;justify-content:center;gap:6px;padding:10px 0;
+}
+.ios-page-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.38);}
+.ios-page-dot.on{background:white;}
+.ios-dock{
+  position:relative;z-index:10;
+  margin:0 8px 8px;
+  background:rgba(255,255,255,.2);
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  border-radius:20px;border:1px solid rgba(255,255,255,.28);
+  display:flex;align-items:center;justify-content:space-around;
+  padding:10px 14px;flex-shrink:0;
+}
+
 /* ══ PHONE NOTIFICATION ══ */
 #phone-notif{
   position:fixed;
@@ -3368,6 +3436,52 @@ button,a,[onclick]{ touch-action:manipulation; }
 
 </div><!-- /main-content -->
 
+<!-- ══ iOS HOME SCREEN ══ -->
+<div id="s-ios">
+  <div class="ios-wp-bg"></div>
+  <div class="ios-sb">
+    <span class="ios-sb-time" id="ios-clock">9:41</span>
+    <div class="ios-sb-r">
+      <svg width="17" height="12" viewBox="0 0 17 12"><rect x="0" y="8" width="3" height="4" rx="0.5" fill="white" opacity="0.35"/><rect x="4.5" y="5.5" width="3" height="6.5" rx="0.5" fill="white" opacity="0.55"/><rect x="9" y="2.5" width="3" height="9.5" rx="0.5" fill="white" opacity="0.78"/><rect x="13.5" y="0" width="3" height="12" rx="0.5" fill="white"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><circle cx="8" cy="10.5" r="1.4" fill="white"/><path d="M4.8 7.8 Q8 4.8 11.2 7.8" stroke="white" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M2 5.2 Q8 -0.5 14 5.2" stroke="white" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      <div class="ios-batt-wrap"><div class="ios-batt-fill"></div></div>
+    </div>
+  </div>
+
+  <div class="ios-app-grid">
+    <div class="ios-app"><div class="ios-app-box" style="background:linear-gradient(160deg,#3DCC58,#25A03E)">📹</div><span class="ios-app-lbl">영상통화</span></div>
+    <div class="ios-app"><div class="ios-app-box" style="background:linear-gradient(160deg,#1A82F7,#006FE8)">✉️</div><span class="ios-app-lbl">메일</span></div>
+    <div class="ios-app"><div class="ios-app-box" style="background:linear-gradient(160deg,#FF2D55,#FF6B00)">🌸</div><span class="ios-app-lbl">사진</span></div>
+    <div class="ios-app"><div class="ios-app-box" style="background:linear-gradient(160deg,#2C2C2E,#444)">📷</div><span class="ios-app-lbl">카메라</span></div>
+    <div class="ios-app"><div class="ios-app-box" style="background:#1C1C1E">⏰</div><span class="ios-app-lbl">시계</span></div>
+    <div class="ios-app"><div class="ios-app-box" style="background:linear-gradient(160deg,#68B8FF,#A8E05A)">🗺️</div><span class="ios-app-lbl">지도</span></div>
+    <div class="ios-app"><div class="ios-app-box" style="background:linear-gradient(160deg,#44B5F5,#79D0FA)">🌤️</div><span class="ios-app-lbl">날씨</span></div>
+    <div class="ios-app"><div class="ios-app-box" style="background:linear-gradient(160deg,#FFD60A,#FFBA08)">📝</div><span class="ios-app-lbl">메모</span></div>
+    <div class="ios-app"><div class="ios-app-box" style="background:linear-gradient(160deg,#FF9500,#D47800)">📚</div><span class="ios-app-lbl">도서</span></div>
+    <div class="ios-app"><div class="ios-app-box" style="background:linear-gradient(160deg,#1C8CF3,#0060D0);font-family:system-ui;font-size:1.1rem;font-weight:800;color:white;">A</div><span class="ios-app-lbl">앱 스토어</span></div>
+    <div class="ios-app"><div class="ios-app-box" style="background:white">❤️</div><span class="ios-app-lbl">건강</span></div>
+    <div class="ios-app"><div class="ios-app-box" style="background:linear-gradient(160deg,#C068D0,#8B2FC9)">🎙️</div><span class="ios-app-lbl">팟캐스트</span></div>
+    <div class="ios-app"><div class="ios-app-box" style="background:#1C1C1E">📺</div><span class="ios-app-lbl">TV</span></div>
+    <div class="ios-app"><div class="ios-app-box" style="background:linear-gradient(160deg,#FF3B30,#FF6B00)">🔔</div><span class="ios-app-lbl">알림</span></div>
+    <div class="ios-app"><div class="ios-app-box" style="background:linear-gradient(160deg,#34C759,#248A3D)">💬</div><span class="ios-app-lbl">메시지</span></div>
+    <div class="ios-app"><div class="ios-app-box" style="background:linear-gradient(160deg,#5E5CE6,#3634A3)">🔍</div><span class="ios-app-lbl">검색</span></div>
+  </div>
+
+  <div class="ios-page-dots"><div class="ios-page-dot on"></div><div class="ios-page-dot"></div></div>
+
+  <div class="ios-dock">
+    <div class="ios-app"><div class="ios-app-box" style="background:linear-gradient(160deg,#3DCC58,#25A03E)">📞</div><span class="ios-app-lbl">전화</span></div>
+    <div class="ios-app" onclick="openET()">
+      <div class="ios-app-box" style="background:linear-gradient(135deg,#FFD400,#FFA800);position:relative;">
+        📚<div class="ios-badge" id="et-badge">1</div>
+      </div>
+      <span class="ios-app-lbl">에브리타임</span>
+    </div>
+    <div class="ios-app"><div class="ios-app-box" style="background:#FEE500">💬</div><span class="ios-app-lbl">카카오톡</span></div>
+    <div class="ios-app"><div class="ios-app-box" style="background:linear-gradient(135deg,#FC3C44,#FF2D55)">🎵</div><span class="ios-app-lbl">음악</span></div>
+  </div>
+</div>
+
 <!-- ══ PHONE NOTIFICATION ══ -->
 <div id="phone-notif" onclick="openET()">
   <div class="pn-icon" id="pn-icon">📚</div>
@@ -3818,9 +3932,16 @@ function walkForward(){
     },380);
     setTimeout(()=>{
       document.getElementById('intro').style.display='none';
-      document.body.classList.add('scrollable');
-      document.getElementById('main-content').classList.add('show');
-      window.scrollTo(0,0);
+      const ios=document.getElementById('s-ios');
+      ios.style.display='flex';
+      const now=new Date();
+      document.getElementById('ios-clock').textContent=
+        `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+      setTimeout(()=>{
+        playTirong();
+        document.getElementById('phone-notif').classList.add('show');
+        document.getElementById('pn-icon').classList.add('ring');
+      },2000);
     },680);
   }
 }
