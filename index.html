@@ -3749,19 +3749,8 @@ function toggleMama(){
 let gateClicks=0;
 
 function handleGateClick(){
-  if(gateClicks>=2)return;
+  if(gateClicks>=1)return;
   gateClicks++;
-
-  if(gateClicks===1){
-    /* 1번째 클릭: Knocking.mp3 앞 3초만 */
-    _knockAudio.currentTime=0;
-    _knockAudio.play().catch(()=>{});
-    setTimeout(()=>{ _knockAudio.pause(); _knockAudio.currentTime=0; },3000);
-    return;
-  }
-
-  /* 2번째 클릭: 노크 중지 + 나무문 소리 + 문 열기 */
-  _knockAudio.pause(); _knockAudio.currentTime=0;
 
   document.getElementById('gate-hint').classList.add('hide');
   const sec=document.getElementById('s-gate');
