@@ -4314,13 +4314,6 @@ const likesDB    = gun.get('anonymity-paradox-v1-likes');
 /* 이미 렌더링한 ID 추적 (중복 방지) */
 const rendered = new Set(['seed-1','seed-2']);
 
-/* 페이지 로드 시 시드 댓글은 이미 HTML에 있으므로 DB와 연결만 */
-commentsDB.map().on((data, id) => {
-  if (!data || !data.text || rendered.has(id)) return;
-  rendered.add(id);
-  appendComment(id, data.text, data.ts || Date.now(), false);
-});
-
 /* 좋아요 실시간 동기화 */
 likesDB.get('count').on(val => {
   if (val == null) return;
