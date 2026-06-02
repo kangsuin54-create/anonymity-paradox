@@ -4173,8 +4173,10 @@ function hangupCall(){
   clearInterval(_callTimer);
   playHangupSound();
   document.getElementById('call-screen').classList.remove('show');
-  /* 0.6초 후 탈 깨기 화면 */
-  setTimeout(showMaskScreen, 600);
+  setTimeout(()=>{
+    document.getElementById('friends-screen').classList.add('show');
+    playFanfare();
+  }, 600);
 }
 
 /* ── EVERYTIME modal ── */
