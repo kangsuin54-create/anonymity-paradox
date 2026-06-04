@@ -1188,7 +1188,7 @@ button,a,[onclick]{ touch-action:manipulation; }
 <div id="intro">
 
   <!-- § SURVEY -->
-  <section id="s-survey" class="scene active" onclick="svNext()">
+  <section id="s-survey" class="scene" onclick="svNext()">
 
     <!-- ── 슬라이드 1: 이미지 ── -->
     <div class="sv-slide on" id="sv1" style="position:relative;padding:0;width:100%;height:100%;">
@@ -1233,7 +1233,7 @@ button,a,[onclick]{ touch-action:manipulation; }
 
   <!-- § GATE -->
   <!-- § PARADOX SPLASH -->
-  <section id="s-paradox" class="scene" onclick="enterGate()">
+  <section id="s-paradox" class="scene active" onclick="showSurvey()">
     <div class="px-label">ANONYMITY</div>
     <div class="px-title">익명성</div>
     <a class="px-link" href="https://lrl.kr/bEiXC" target="_blank" rel="noopener" onclick="event.stopPropagation()">논문 바로가기 →</a>
@@ -3786,12 +3786,19 @@ function svNext(){
       document.getElementById('resBarB').style.width = '85%';
     }, 200);
   } else {
-    // 슬라이드 2 → 익명성 splash
+    // 슬라이드 2 → 대문
     document.getElementById('s-survey').style.display = 'none';
-    const sp = document.getElementById('s-paradox');
-    sp.style.display = 'flex';
-    sp.classList.add('active');
+    const sg = document.getElementById('s-gate');
+    sg.style.display = 'flex';
+    sg.classList.add('active');
   }
+}
+
+function showSurvey(){
+  document.getElementById('s-paradox').style.display = 'none';
+  const ss = document.getElementById('s-survey');
+  ss.style.display = 'flex';
+  ss.classList.add('active');
 }
 
 function enterGate(){
@@ -3822,13 +3829,13 @@ setTimeout(()=>{
 const _knockAudio = new Audio('Knocking.mp3');
 _knockAudio.preload = 'auto';
 _knockAudio.volume = 0.9;
-const _creakAudio = new Audio('나무문.mp3');
+const _creakAudio = new Audio('wooden-door.mp3');
 _creakAudio.preload = 'auto';
 _creakAudio.volume = 0.9;
-const _samulAudio = new Audio('사물놀이.mp3');
+const _samulAudio = new Audio('samulnori.mp3');
 _samulAudio.preload = 'auto';
 _samulAudio.volume = 1.0;
-const _mamaAudio = new Audio('엑소 마마.mp3');
+const _mamaAudio = new Audio('exo-mama.mp3');
 _mamaAudio.preload = 'auto';
 _mamaAudio.volume = 1.0;
 let _mamaFadeTimer = null;
@@ -3870,7 +3877,7 @@ function handleGateClick(){
   const sec=document.getElementById('s-gate');
   const fg=document.getElementById('fullgate');
 
-  /* 나무문.mp3 즉시 재생 */
+  /* wooden-door.mp3 즉시 재생 */
   _creakAudio.currentTime=0;
   _creakAudio.play().catch(()=>{});
 
