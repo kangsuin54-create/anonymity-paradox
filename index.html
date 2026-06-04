@@ -1188,7 +1188,7 @@ button,a,[onclick]{ touch-action:manipulation; }
 <div id="intro">
 
   <!-- § SURVEY -->
-  <section id="s-survey" class="scene" onclick="svNext()">
+  <section id="s-survey" class="scene active" onclick="svNext()">
 
     <!-- ── 슬라이드 1: 이미지 ── -->
     <div class="sv-slide on" id="sv1" style="position:relative;padding:0;width:100%;height:100%;">
@@ -1233,7 +1233,7 @@ button,a,[onclick]{ touch-action:manipulation; }
 
   <!-- § GATE -->
   <!-- § PARADOX SPLASH -->
-  <section id="s-paradox" class="scene active" onclick="showSurvey()">
+  <section id="s-paradox" class="scene" onclick="showSurveyResult()">
     <div class="px-label">ANONYMITY</div>
     <div class="px-title">익명성</div>
     <a class="px-link" href="https://lrl.kr/bEiXC" target="_blank" rel="noopener" onclick="event.stopPropagation()">논문 바로가기 →</a>
@@ -3776,17 +3776,14 @@ let _svStep = 0;
 
 function svNext(){
   if(_svStep === 0){
-    // 슬라이드 1 → 2
-    document.getElementById('sv1').classList.remove('on');
-    document.getElementById('sv2').classList.add('on');
+    // 슬라이드 1(이미지) → 익명성 화면
+    document.getElementById('s-survey').style.display = 'none';
+    const sp = document.getElementById('s-paradox');
+    sp.style.display = 'flex';
+    sp.classList.add('active');
     _svStep = 1;
-    // 결과 바 애니메이션
-    setTimeout(()=>{
-      document.getElementById('resBarA').style.width = '15%';
-      document.getElementById('resBarB').style.width = '85%';
-    }, 200);
   } else {
-    // 슬라이드 2 → 대문
+    // 설문 결과 → 대문
     document.getElementById('s-survey').style.display = 'none';
     const sg = document.getElementById('s-gate');
     sg.style.display = 'flex';
@@ -3794,8 +3791,15 @@ function svNext(){
   }
 }
 
-function showSurvey(){
+function showSurveyResult(){
+  // 익명성 → 설문 결과(sv2)
   document.getElementById('s-paradox').style.display = 'none';
+  document.getElementById('sv1').classList.remove('on');
+  document.getElementById('sv2').classList.add('on');
+  setTimeout(()=>{
+    document.getElementById('resBarA').style.width = '15%';
+    document.getElementById('resBarB').style.width = '85%';
+  }, 200);
   const ss = document.getElementById('s-survey');
   ss.style.display = 'flex';
   ss.classList.add('active');
